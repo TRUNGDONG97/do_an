@@ -1,0 +1,65 @@
+body {
+    background-color: #f3f5f9;
+    flex-direction: row;
+}
+
+
+
+.container-tab {
+    margin-top: 15px;
+    margin-left: 250px;
+}
+.container-fluid .row {
+    justify-content: space-around;
+    /* margin: auto; */
+    /* background-color: red   ; */
+    overflow: hidden;
+}
+
+.container-fluid .row .selection {
+    padding: 10px;
+    border-radius: 5px;
+    height: 100px;
+    margin-top: 30px;
+}
+
+.container-fluid .row .selection .wrapper .icon i {
+    font-size: 55px;
+    padding: 10px;
+    color: #fff;
+}
+.option-home{
+    margin-right: 10px;
+    margin-right: 10px;
+}
+#student-selection {
+    background-image: linear-gradient(to bottom right, rgb(241, 137, 137), rgb(202, 11, 11));
+}
+
+#teacher-selection {
+    background-image: linear-gradient(to bottom right, rgb(169, 238, 255), rgb(13, 136, 145));
+}
+
+#class-selection {
+    background-image: linear-gradient(to bottom right, rgb(189, 253, 192), rgb(10, 136, 42));
+}
+
+#subject-selection {
+    background-image: linear-gradient(to bottom right, rgb(237, 203, 194), rgb(210, 76, 12));
+}
+
+.container-fluid .row .selection .wrapper .name {
+    margin: 10px;
+    color: #fff;
+}
+
+.container-tab .div-title h4 {
+    margin-top: 10px;
+    color: rgb(74, 99, 104);
+    margin-left: 5px;
+}
+
+.container-fluid .row .selection:hover {
+    margin-top: 20px;
+    transition: 0.2s;
+}
