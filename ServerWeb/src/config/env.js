@@ -33,4 +33,8 @@ const sequelize = new Sequelize(env.database, env.user, env.password, {
 sequelize.authenticate()
     .then(() => console.log("true"))
     .catch(err => console.log(err))
-module.exports = sequelize;
+const Op = sequelize.Op;
+export {
+        sequelize,
+        Op
+    }

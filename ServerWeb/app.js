@@ -6,9 +6,8 @@ import logger from 'morgan';
 
 import indexRouter from './src/routes/IndexRouter'
 import authRouter from './src/routes/AuthRouter'
-// import authMiddleware from './middlewares/AuthMiddleware'
-// import adminRouter from './routes/AdminRouter'
-// import appRouter from './routes/AppRouter'
+import authMiddleware from './src/middlewares/AuthMiddleware'
+import adminRouter from './src/routes/AdminRouter'
 
 const app = express();
 
@@ -26,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/admin', authRouter);
-// app.use('/admin', authMiddleware.requireAuth, adminRouter);
+app.use('/admin', authMiddleware.requireAuth, adminRouter);
 // app.use('/app', appRouter);
 
 

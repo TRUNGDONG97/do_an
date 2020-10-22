@@ -1,0 +1,43 @@
+.container-fluid
+    .div-logo
+        img(src='/images/img_logo_bk.png')
+        .dropdown
+            button#btn-drop.btn.dropdown-toggle(type='button' data-toggle='dropdown')
+                | admin
+            .dropdown-menu
+                button#changepass.dropdown-item(type='button' data-toggle='modal' data-target='#changePass')
+                    i.fas.fa-key
+                        | &nbsp; Đổi mật khẩu
+                button#logout.dropdown-item( type="button" onclick="logout()")
+                    i.fas.fa-sign-out-alt
+                        | &nbsp; Đăng xuất 
+
+    .sidebar
+        .tab-content
+            .tab-pane.active
+                nav.sidebar-nav
+                    ul.main-menu.metismenu
+                        li#tabHome.li-tab 
+                            a(href='/admin/home')  
+                                i.fas.fa-tachometer-alt 
+                                    | &nbsp; Tổng quan
+                        li#tabStudent.li-tab
+                            a(href='/admin/student')
+                                i.fas.fa-user-graduate
+                                    | &nbsp; Sinh viên
+                        li#tabTeacher.li-tab
+                            a(href='/admin/teacher')
+                                i.fas.fa-chalkboard-teacher
+                                    | &nbsp; Giáo viên
+                        li#tabClass.li-tab
+                            a(href='/admin/class') 
+                                i.fas.fa-house-user
+                                    | &nbsp; Lớp học
+                        li#tabSubject.li-tab
+                            a(href='/admin/subject') 
+                                i.fas.fa-book
+                                    | &nbsp; Môn học
+    
+//- include ../modals/ChangePassModal
+//- include ../modals/LoadingModal
+
