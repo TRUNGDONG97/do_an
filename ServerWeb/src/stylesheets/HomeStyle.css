@@ -33,11 +33,11 @@ body {
     margin-right: 10px;
 }
 #student-selection {
-    background-image: linear-gradient(to bottom right, rgb(241, 137, 137), rgb(202, 11, 11));
+    background-image: linear-gradient(to bottom right, rgb(128, 110, 182), rgb(12, 5, 112));
 }
 
 #teacher-selection {
-    background-image: linear-gradient(to bottom right, rgb(169, 238, 255), rgb(13, 136, 145));
+    background-image: linear-gradient(to bottom right, rgb(197, 146, 118), rgb(92, 45, 6));
 }
 
 #class-selection {
@@ -45,7 +45,7 @@ body {
 }
 
 #subject-selection {
-    background-image: linear-gradient(to bottom right, rgb(237, 203, 194), rgb(210, 76, 12));
+    background-image: linear-gradient(to bottom right, rgb(173, 120, 105), rgb(138, 50, 9));
 }
 
 .container-fluid .row .selection .wrapper .name {

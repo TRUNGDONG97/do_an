@@ -8,7 +8,7 @@ const login = async (req, res, next) => {
 };
 const logout = async (req, res, next) => {
   var token = req.signedCookies.token;
-  await UserModel.update(
+  await AdminModel.update(
     {
       token: null,
     },
