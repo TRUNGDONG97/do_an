@@ -23,14 +23,14 @@ const logout = async (req, res, next) => {
   res.cookie("username", "");
   res.redirect("login");
 };
-const postLogin = async (req, res, next) => {
+
+const postLogin = async (req, res, ) => {
   console.log(req.body)
   var user_name = req.body.username.trim();
   var password = md5(req.body.password.trim());
-  // console.log(md5('admin'))
   // console.log(req.body.password)
-  console.log(password,"oasasa")
-  console.log(user_name)
+  // console.log(password,"oasasa")
+  // console.log(user_name)
   // var hashPass = md5(123456)
   // console.log(hashPass)
   if (isEmpty(user_name)) {
@@ -60,7 +60,7 @@ const postLogin = async (req, res, next) => {
       // console.log()
       var timeNow = new Date().getTime();
       var token = crypto.AES.encrypt(timeNow.toString(), password).toString();
-      console.log(token);
+      // console.log(token);
       await AdminModel.update(
         {
           token,
@@ -75,7 +75,6 @@ const postLogin = async (req, res, next) => {
       // res.cookie('password', user[0].password, Constants.OPTION)
       res.cookie("username", user[0].username, Constants.OPTION);
       res.redirect("home");
-      console.log("sadasdas");
       return;
     } else {
       console.log("tk ko tồn tại");
