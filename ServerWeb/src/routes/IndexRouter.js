@@ -1,5 +1,5 @@
 import express from 'express'
-// import Other from '../api/WebApi/Other'
+import Other from '../api/WebApi/Other'
 // import Student from '../api/WebApi/Student'
 // import Teacher from '../api/WebApi/Teacher'
 // import Class from '../api/WebApi/Class'
@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
     res.redirect('admin/login')
     // res.render('IndexView');
 });
-// router.post('/user/changePass', Other.changePass)
+router.post('/user/changePass', Other.changePass)
 // router.get('/getCountStudent', Other.getCountStudent)
 // router.get('/getCountTeacher', Other.getCountTeacher)
 // router.get('/getCountClass', Other.getCountClass)

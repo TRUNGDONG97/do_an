@@ -5,7 +5,7 @@ html
   style
     include ../src/stylesheets/HomeStyle.css
   //- script
-    //- include ../javascripts/HomeScript.js
+  //-   include ../src/javascripts/HomeScript.js
   body
     include NavbarView
     .container-tab
@@ -13,20 +13,20 @@ html
         h4
           i.fas.fa-tachometer-alt
             |  &nbsp;  Tổng quan      
-      //- .container-fluid      
-      //-   .row(style="margin-right:20px")
-      //-     // Count item widget
-      //-     //- .row.col-md-6
-      //-     .col-md-4
-      //-       #student-selection.selection
-      //-         .wrapper.count-title.d-flex
-      //-           .icon
-      //-             i.fas.fa-user-graduate
-      //-           .name
-      //-             strong.text-uppercase Nhân viên 
-      //-             br
-      //-             span Số lượng : 
-      //-             //- p#numberStudent
+      .container-fluid      
+        .row(style="margin-right:20px")
+          // Count item widget
+          //- .row.col-md-6
+          .col-md-4
+            #student-selection.selection
+              .wrapper.count-title.d-flex
+                .icon
+                  i.fas.fa-user-graduate
+                .name
+                  strong.text-uppercase Nhân viên 
+                  br
+                  span Số lượng : 
+                  //- p#numberStudent
 
       //-     .col-md-4
       //-       #teacher-selection.selection
