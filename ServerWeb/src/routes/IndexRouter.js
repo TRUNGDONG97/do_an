@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
     // res.render('IndexView');
 });
 router.post('/user/changePass', Other.changePass)
-// router.get('/getCountStudent', Other.getCountStudent)
+router.get('/getCountEmployee', Other.getCountEmployee)
 // router.get('/getCountTeacher', Other.getCountTeacher)
 // router.get('/getCountClass', Other.getCountClass)
 // router.get('/getCountSubject', Other.getCountSubject)

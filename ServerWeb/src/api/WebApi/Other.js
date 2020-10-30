@@ -3,7 +3,7 @@ import sequelize from 'sequelize'
 import md5 from 'md5'
 import Constants from '../../util/contant'
 import AdminModel from '../../models/AdminModel'
-// import StudentModel from '../../models/StudentModel'
+import EmployeeModel from '../../models/EmployeeModel'
 // import ClassModel from '../../models/ClassModel'
 // import SubjectModel from '../../models/SubjectModel'
 // import TeacherModel from '../../models/TeacherModel'
@@ -11,6 +11,7 @@ import pug from 'pug'
 // import { getArrayPages, PageCount } from '../../constants/Funtions'
 import formidable from 'formidable'
 import fs from 'fs'
+import Employee from '../../models/EmployeeModel'
 const uploadFile = async(req, res, next) => {
     var form = new formidable.IncomingForm();
     form.maxFieldsSize = 20 * 1024 * 1024; // file size 10mb
@@ -68,11 +69,11 @@ const changePass = async(req, res, next) => {
         return;
     }
 }
-const getCountStudent = async(req, res, next) => {
+const getCountEmployee = async(req, res, next) => {
     try {
-        const countStudent = await StudentModel.count()
+        const countEmployee = await EmployeeModel.count()
         res.send({
-            countStudent
+            countEmployee
         })
         return;
     } catch (error) {
@@ -80,59 +81,59 @@ const getCountStudent = async(req, res, next) => {
         return;
     }
 }
-const getCountTeacher = async(req, res, next) => {
-    try {
-        const countTeacher = await TeacherModel.count({
-            where:{
-                is_active:1
-            }
-        })
-        res.send({
-            countTeacher
-        })
-        return;
-    } catch (error) {
-        res.status(404).send();
-        return;
-    }
-}
-const getCountClass = async(req, res, next) => {
-    try {
-        const countClass = await ClassModel.count({
-            where:{
-                is_active:1
-            }
-        })
-        res.send({
-            countClass
-        })
-        return;
-    } catch (error) {
-        res.status(404).send
-        return;
-    }
-}
-const getCountSubject = async(req, res, next) => {
-    try {
-        const countSubject = await SubjectModel.count({
-            where:{
-                is_active:1
-            }
-        })
-        res.send({
-            countSubject
-        })
-        return;
-    } catch (error) {
-        res.status(404).send
-        return;
-    }
-}
+// const getCountTeacher = async(req, res, next) => {
+//     try {
+//         const countTeacher = await TeacherModel.count({
+//             where:{
+//                 is_active:1
+//             }
+//         })
+//         res.send({
+//             countTeacher
+//         })
+//         return;
+//     } catch (error) {
+//         res.status(404).send();
+//         return;
+//     }
+// }
+// const getCountClass = async(req, res, next) => {
+//     try {
+//         const countClass = await ClassModel.count({
+//             where:{
+//                 is_active:1
+//             }
+//         })
+//         res.send({
+//             countClass
+//         })
+//         return;
+//     } catch (error) {
+//         res.status(404).send
+//         return;
+//     }
+// }
+// const getCountSubject = async(req, res, next) => {
+//     try {
+//         const countSubject = await SubjectModel.count({
+//             where:{
+//                 is_active:1
+//             }
+//         })
+//         res.send({
+//             countSubject
+//         })
+//         return;
+//     } catch (error) {
+//         res.status(404).send
+//         return;
+//     }
+// }
 export default {
     changePass,
-    getCountStudent,
-    getCountTeacher,
-    getCountClass,
-    getCountSubject,
-    uploadFile
+    getCountEmployee,
+    // getCountTeacher,
+    // getCountClass,
+    // getCountSubject,
+    // uploadFile
 }
