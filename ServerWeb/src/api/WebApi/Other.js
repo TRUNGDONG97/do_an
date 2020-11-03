@@ -72,6 +72,7 @@ const changePass = async(req, res, next) => {
 const getCountEmployee = async(req, res, next) => {
     try {
         const countEmployee = await EmployeeModel.count()
+        console.log(countEmployee)
         res.send({
             countEmployee
         })

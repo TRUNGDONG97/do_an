@@ -1,9 +1,6 @@
 import express from 'express'
 import Other from '../api/WebApi/Other'
-// import Student from '../api/WebApi/Student'
-// import Teacher from '../api/WebApi/Teacher'
-// import Class from '../api/WebApi/Class'
-// import Subject from '../api/WebApi/Subject'
+import EmployeeController from '../controllers/EmployeeController'
 
 const router = express.Router();
 
@@ -13,6 +10,7 @@ router.get('/', function(req, res, next) {
 });
 router.post('/user/changePass', Other.changePass)
 router.get('/getCountEmployee', Other.getCountEmployee)
+router.post('/searchEmployee',EmployeeController.searchEmployee)
 // router.get('/getCountTeacher', Other.getCountTeacher)
 // router.get('/getCountClass', Other.getCountClass)
 // router.get('/getCountSubject', Other.getCountSubject)

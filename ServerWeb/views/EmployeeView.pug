@@ -1,0 +1,17 @@
+doctype html
+html
+  include Layout
+  style
+    include ../src/stylesheets/EmployeeStyle.css
+  script
+    include ../src/javascripts/EmployeeScript.js
+  body
+    include NavbarView
+    .container-tab
+      .div-title
+        h4
+          i.fas.fa-user-graduate
+            |  &nbsp;  Nhân viên
+      .div-search
+      .container-fluid
+        #tableEmployee
