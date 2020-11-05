@@ -12,6 +12,7 @@
     "cookie-parser": "~1.4.4",
     "crypto-js": "^4.0.0",
     "debug": "~2.6.9",
+    "dropify": "^0.2.2",
     "exceljs": "^4.1.1",
     "express": "~4.16.1",
     "formidable": "^1.2.2",

@@ -11,6 +11,7 @@ router.get('/', function(req, res, next) {
 router.post('/user/changePass', Other.changePass)
 router.get('/getCountEmployee', Other.getCountEmployee)
 router.post('/searchEmployee',EmployeeController.searchEmployee)
+router.post('/addEmployee',EmployeeController.addEmployee)
 // router.get('/getCountTeacher', Other.getCountTeacher)
 // router.get('/getCountClass', Other.getCountClass)
 // router.get('/getCountSubject', Other.getCountSubject)

@@ -7,11 +7,35 @@ html
     include ../src/javascripts/EmployeeScript.js
   body
     include NavbarView
+    include ../src/modals/AddEmployeeModal
     .container-tab
       .div-title
         h4
           i.fas.fa-user-graduate
             |  &nbsp;  Nhân viên
       .div-search
+        .col-md-10.col-sm-10.col-10.offset-md-1
+          .row 
+            .col-md-6.col-sm-6.col-6
+              .row
+                label.col-md-5.col-sm-5.col-5(style='margin-top:6px') Nhập tên nhân viên:
+                .col-md-6.col-sm-6.col-6
+                  input#txtNameEmployee.form-control(type="text" placeholder="Nhập tên nhân viên")
+            .col-md-6.col-sm-6.col-6
+              .row
+                label.col-md-5.col-sm-5.col-5(style='margin-top:6px') Nhập số điện thoại :
+                .col-md-6.col-sm-6.col-6
+                  input#txtPhoneEmployee.form-control(type="number" placeholder="Nhập mã số điện thoại")  
+        .col-md-12.col-sm-12.col-12(style='margin-top:20px;')
+          .row.float-right(style='margin-right:20px;margin-bottom:20px;')
+            button#btnSearchEmployee.btn.btn-primary(type="button")
+              i.fas.fa-search
+                | &nbsp;  Tìm kiếm
+            button#addStudent.btn.btn-danger(type="button" data-toggle='modal' data-target='#addEmployeeModal')
+              i.fas.fa-user-plus
+                | &nbsp;  Thêm nhân viên
+            button#btnImport.btn.btn-success(data-target='#mdImport' data-toggle='modal')
+              i.fa.fa-upload
+              |  Import nhân viên
       .container-fluid
         #tableEmployee
