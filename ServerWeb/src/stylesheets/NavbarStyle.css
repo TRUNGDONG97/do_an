@@ -143,6 +143,13 @@ body {
     border-radius: 3px;
     width: 100%;
 }
+#txtEditBirthday{
+    padding: 6px;
+    border: 1px solid #ced4da;
+    font-family: 'Roboto', sans-seri;
+    border-radius: 3px;
+    width: 100%;
+}
 #paginateActive{
     background-color: #17a2b8;
     color: #fff;

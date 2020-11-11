@@ -24,11 +24,9 @@ table.table.table-bordered.table-hover
                     td #{item.gener==1?'Nam':'Nữ'}
                     td #{item.position==0?"Nhân viên":"Sếp"}
                     td
-                        //- button#detailStu.btn.btn-primary(type='button' onclick='detailStudent('+item.id+')')
-                        //-     i.fas.fa-info-circle
-                        button#editStu.btn.btn-success(type='button' onclick='editStudent('+item.id+')')
+                        button#editStu.btn.btn-success(type='button' onclick='editEmployee('+JSON.stringify(item)+')')
                             i.far.fa-edit 
-                        button#deleteStu.btn.btn-danger(type='button' title='Xóa Danh Mục' onclick='deleteStudent('+item.id+')')
+                        button#deleteStu.btn.btn-danger(type='button' title='Xóa Danh Mục' onclick='deleteEmployee('+item.id+')')
                             i.far.fa-trash-alt
 #paginateEmployee.row.float-right
     if pageCount>=1
