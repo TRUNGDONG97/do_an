@@ -37,7 +37,10 @@ html
                 | &nbsp;  Thêm nhân viên
             button#btnImport.btn.btn-success(data-target='#mdImport' data-toggle='modal')
               i.fa.fa-upload
-              |  Import nhân viên
+              |  Nhập nhân viên
+            button.btn.btn-secondary(type="button" onclick='exportFileEmployee()')
+              i.fas.fa-download
+              | &nbsp;  Xuất file exel
       #mdImport.modal.fade(tabindex='-1' role='dialog')
         .modal-dialog(role='document')
           .modal-content

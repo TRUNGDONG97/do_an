@@ -478,7 +478,11 @@ const importEmployee = () => {
     console.log("error", error);
   }
 };
+const exportFileEmployee = () => {
+  window.location.href = '/exportFileEmployee'
+  // alert(class_code)
 
+}
 function checkedPhone(phone) {
   var vnf_regex = /(03|07|08|09|01[2|6|8|9])+([0-9]{8})\b/g;
   if (!vnf_regex.test(phone) || phone.length != 10) {

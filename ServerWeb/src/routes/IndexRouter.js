@@ -1,6 +1,7 @@
 import express from 'express'
 import Other from '../api/WebApi/Other'
 import EmployeeController from '../controllers/EmployeeController'
+import Employee from '../models/EmployeeModel';
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.post('/addEmployee',EmployeeController.addEmployee)
 router.post('/saveEmployee',EmployeeController.saveEmployee)
 router.post('/deleteEmployee',EmployeeController.deleteEmployee)
 router.post('/importListEmployee', EmployeeController.importListEmployee)
+router.get('/exportFileEmployee',EmployeeController.exportFileEmployee)
 // router.get('/getCountClass', Other.getCountClass)
 // router.get('/getCountSubject', Other.getCountSubject)
 // router.post('/importListEmployee', Other.uploadFile)

@@ -6,6 +6,7 @@ import pug from "pug";
 import sequelize, { Op } from "sequelize";
 import md5 from "md5";
 import DateUtil from "../util/DateUtil";
+import excel from 'exceljs'
 const getEmployee = async (req, res, next) => {
   res.render("EmployeeView");
 };
@@ -207,7 +208,7 @@ const importListEmployee = async (req, res, next) => {
   try {
     const arrEmployee = JSON.parse(req.body.arrEmployee);
     // console.log(DateUtil.formatInputDate(arrEmployee[2].birthday),"arrEmployee")
-    console.log(arrEmployee[0],"arrEmployee")
+    console.log(arrEmployee[0], "arrEmployee")
     var listEmployeeError = [];
     for (let index = 0; index < arrEmployee.length; index++) {
       if (!arrEmployee[index].phone) {
@@ -271,6 +272,48 @@ const importListEmployee = async (req, res, next) => {
     return;
   }
 };
+
+
+const exportFileEmployee = async (req, res, next) => {
+  // console.log(class_code)
+  try {
+    const listEmployees = await EmployeeModel.findAll({ order: [["last_name", "ASC"]] })
+    for (let index = 0; index < listEmployees.length; index++) {
+      listEmployees[index].stt = index;
+      listEmployees[index].gener = listEmployees[index].gener == 1 ? "nam" : 'nữ';
+      listEmployees[index].position = listEmployees[index].position == 1 ? "sếp" : 'nhân viên';
+    }
+    let workbook = new excel.Workbook(); //creating workbook
+    let worksheet = workbook.addWorksheet('Employeee'); //creating worksheet
+
+    //  WorkSheet Header
+    worksheet.columns = [
+      { header: 'STT', key: 'stt', width: 10 },
+      { header: 'Họ ', key: 'first_name', width: 30 },
+      { header: 'Tên ', key: 'last_name', width: 30 },
+      { header: 'Số điện thoại ', key: 'phone', width: 20 },
+      { header: 'Ngày sinh', key: 'birthday', width: 20 },
+      { header: 'Ngày sinh', key: 'email', width: 30 },
+      { header: 'Giới tính', key: 'gener', width: 15 },
+      { header: 'Vị trí', key: 'position', width: 15 },
+    ];
+
+    // Add Array Rows
+    worksheet.addRows(listEmployees);
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=' + 'listEmployee.xlsx');
+    return workbook.xlsx.write(res)
+      .then(function () {
+        res.status(200).end();
+      });
+  } catch (error) {
+    console.log(error)
+    res.status(404).send()
+    return;
+  }
+
+}
 export default {
   getEmployee,
   searchEmployee,
@@ -278,4 +321,5 @@ export default {
   saveEmployee,
   deleteEmployee,
   importListEmployee,
+  exportFileEmployee
 };
