@@ -1,6 +1,6 @@
-// const ajaxGetCountEmployee =
 
 $(document).ready(function () {
+
   $("#tabHome a").css({
     "background-color": "#fff",
     color: "#078a23",

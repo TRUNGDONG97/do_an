@@ -1,48 +1,53 @@
-import Sequelize from 'sequelize'
-import { sequelize, Op } from '../config/env'
-const Employee= sequelize.define('employee', {
+import Sequelize from "sequelize";
+import { sequelize, Op } from "../config/env";
+const Employee = sequelize.define(
+  "employee",
+  {
     id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
     first_name: {
-        type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     last_name: {
-        type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     phone: {
-        type: Sequelize.STRING,
-        unique: 'compositeIndex'
+      type: Sequelize.STRING,
+      unique: "compositeIndex",
     },
     password: {
-        type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     birthday: {
-        type: Sequelize.DATE
+      type: Sequelize.DATE,
     },
     address: {
-        type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     email: {
-        type: Sequelize.STRING,
-        unique: 'compositeIndex'
+      type: Sequelize.STRING,
+      unique: "compositeIndex",
     },
     token: {
-        type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     gener: {
-        type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
     },
-    position:{
-        type:Sequelize.INTEGER
-    }
-
-   
-},{
+    position: {
+      type: Sequelize.INTEGER,
+    },
+    is_active: {
+      type: Sequelize.INTEGER,
+    },
+  },
+  {
     //
-    timestamps:false,   
-    freezeTableName: true ,
-})
-export default Employee
+    timestamps: false,
+    freezeTableName: true,
+  }
+);
+export default Employee;

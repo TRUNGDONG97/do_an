@@ -216,12 +216,12 @@ const addEmployee = async () => {
 };
 
 const editEmployee = (employee) => {
-  $("#editEmployeeModal").modal("show");
   $("#txtEditFirstName").val(employee.first_name);
   $("#txtEditLastName").val(employee.last_name);
   $("#txtEditPhone").val(employee.phone);
   $("#txtEditAddress").val(employee.address);
   $("#txtEditEmail").val(employee.email);
+  $("#editEmployeeModal").modal("show");
   if (employee.gener == 1) {
     $("#editSexMale").attr("checked", true);
   } else {

@@ -3,7 +3,7 @@
         img(src='/images/img_logo_bk.png')
         .dropdown
             button#btn-drop.btn.dropdown-toggle(type='button' data-toggle='dropdown')
-                | admin
+                p#nameLogin
             .dropdown-menu
                 button#changepass.dropdown-item(type='button' data-toggle='modal' data-target='#changePass')
                     i.fas.fa-key
@@ -25,7 +25,7 @@
                             a(href='/admin/employee')
                                 i.fas.fa-users
                                     | &nbsp; Nhân viên
-                        li#tabTeacher.li-tab
+                        li#tabAdmin.li-tab
                             a(href='/admin/admin')
                                 i.fas.fa-user-lock
                                     | &nbsp; Admin

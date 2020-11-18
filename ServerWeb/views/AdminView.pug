@@ -1,0 +1,18 @@
+doctype html
+html
+    include Layout
+    style
+        include ../src/stylesheets/AdminStyle.css
+    script
+        include ../src/javascripts/AdminScript.js
+    body
+        include NavbarView
+        include ../src/modals/AddAdminModal
+        //- include ../src/modals/EditEmployeeModal
+        .container-tab
+            .div-title
+                h4
+                    i.fas.fa-user-lock
+                        |  &nbsp;  Admin
+            .container-fluid
+                #tableAdmin

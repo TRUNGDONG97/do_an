@@ -2,33 +2,31 @@ table.table.table-bordered.table-hover
     thead
         tr
             th STT
-            th Họ và tên  
-            th Số điện thoại
-            th Ngày sinh
+            th Tài khoản 
             th Email
-            th Giới tính
-            th Vị trí
+            th Người thêm
+            th Ngày thêm
             th
-    tbody#tbodyTableEmployee
-        if employees.length <=0        
+               button.add.btn.btn-primary(type="button" data-toggle='modal' data-target='#addAdminModal')
+                    i.fas.fa-user-plus
+    tbody#tbodyTableAdmin
+        if admins.length <=0        
             tr
-                td(colspan='8' style='text-align: center;') Chưa có nhân viên nào.
+                td(colspan='8' style='text-align: center;') Chưa có admin nào.
         else
-            each item in employees
+            each item in admins
                 tr
                     td #{STT=STT+1}
-                    td #{item.first_name+" "+item.last_name}
-                    td #{item.phone}
-                    td #{item.birthday}
+                    td #{item.username}
                     td #{item.email}
-                    td #{item.gener==1?'Nam':'Nữ'}
-                    td #{item.position==0?"Nhân viên":"Sếp"}
+                    td #{item.admin_add}
+                    td #{item.create_date}
                     td
                         button.edit.btn.btn-success(type='button' onclick='editEmployee('+JSON.stringify(item)+')')
                             i.far.fa-edit 
                         button.delete.btn.btn-danger(type='button' title='Xóa Danh Mục' onclick='deleteEmployee('+item.id+')')
                             i.far.fa-trash-alt
-#paginateEmployee.row.float-right
+#paginateAdmin.row.float-right
     if pageCount>=1
         if  pages.prev>0
             button.btn.page-item(onclick='searchEmployee(1)')

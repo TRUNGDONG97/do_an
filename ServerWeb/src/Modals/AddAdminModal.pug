@@ -1,0 +1,30 @@
+//- script
+//-   include ../../node_modules/dropify/dist/js/dropify.js
+//- style
+//-   include ../../node_modules/dropify/dist/css/dropify.css
+#addAdminModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='addAdminTitle' aria-hidden='true')
+  .modal-dialog.modal-md
+    .modal-content(style='color: #007bff')
+      .modal-header(style='background-color: #d8061a')
+        h5.modal-title(style='color: white;')
+          i.fas.fa-user-plus(aria-hidden='false')
+          |   Thêm Admin
+        button.close(type='button' data-dismiss='modal' aria-label='Close' style='color: white;' )
+          span(aria-hidden='true') &times;
+      .modal-body(style='margin-bottom:20px;background-color: #f3f5f9;')
+        mixin propAdmin(id,title,type)
+          .row(style='margin-top:20px;')
+            label.col-md-4.col-sm-4.col-4(style='padding-top:6px;padding-right:10px;') #{title}:
+            .col-md-8.col-sm-8.col-8(style='margin-bottom:20px;')
+              input.form-control(type=type id=id maxlength="100") 
+        .col-md-12.col-sm-12.col-12
+          + propAdmin('txtAddUserName','Tài khoản','text')
+          + propAdmin('txtAddAdminEmail','Email','text')
+          + propAdmin('txtAddPassWord','Mật khẩu','password')
+          + propAdmin('txtPassWordComfirm','Nhập lại mật khẩu','password')
+      .modal-footer
+        button.btn.btn-secondary(type='button' data-dismiss='modal') Đóng
+        button.btn.btn-danger(type='button' onclick="addAdmin()") Thêm Admin 
+//- script
+//- include ../javascripts/CustomInputImageScript.js
+

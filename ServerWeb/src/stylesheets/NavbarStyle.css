@@ -166,3 +166,25 @@ body {
     margin-top: 5px;
     box-shadow: 0px 0px 1px;
 } */
+.edit {
+    background-color: #f3f5f9;
+    border-color: #f3f5f9;
+    color: #28a745;
+    padding: 0px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.delete {
+    background-color: #f3f5f9;
+    border-color: #f3f5f9;
+    color: red;
+    padding: 0px;
+    margin-left: 2px;
+}
+.add{
+    background-color: #f3f5f9;
+    border-color: #f3f5f9;
+    color: #4428a7; 
+    padding: 0px;
+}

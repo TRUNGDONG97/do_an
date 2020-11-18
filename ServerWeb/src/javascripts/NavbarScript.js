@@ -1,13 +1,7 @@
-// $(document).ready(function () {
-//     $('.datepicker').datepicker({
-//         weekStart: 1,
-//         daysOfWeekHighlighted: "6,0",
-//         autoclose: true,
-//         todayHighlight: true,
-//         orientation: "bottom auto",
-//     });
+// $( document ).ready(function() {
+//     console.log( "ready!" );
 // });
-
+// console.log(document.cookie);
 function logout() {
     window.location = '/admin/logout';
 }
