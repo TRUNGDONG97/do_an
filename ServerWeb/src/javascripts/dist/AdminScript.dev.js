@@ -92,18 +92,12 @@ var addAdmin = function addAdmin() {
   }
 
   $.ajax({
-    url: "/addEmployee",
+    url: "/addAdmin",
     type: "POST",
     data: {
-      first_name: first_name,
-      last_name: last_name,
-      phone: phone,
-      birthday: birthday,
-      address: address,
+      username: username,
       email: email,
-      gener: gener ? 0 : 1,
-      position: position // url_avatar: srcImg,
-
+      password: password
     },
     cache: false,
     timeout: 50000,
@@ -112,12 +106,11 @@ var addAdmin = function addAdmin() {
     }
   }).done(function (res) {
     console.log(res.result);
+    $("#modalLoad").modal("hide");
 
     if (res.result == 0) {
-      $("#modalLoad").modal("hide");
-      $("#txtAddPhone").val("");
       swal({
-        title: "Số điện thoại đã tồn tại",
+        title: "Tài khoản đã tồn tại",
         text: "",
         icon: "warning"
       });
@@ -125,8 +118,6 @@ var addAdmin = function addAdmin() {
     }
 
     if (res.result == 1) {
-      $("#modalLoad").modal("hide");
-      $("#txtAddEmail").val("");
       swal({
         title: "Email đã tồn tại",
         text: "",
@@ -135,22 +126,18 @@ var addAdmin = function addAdmin() {
       return;
     }
 
-    $("#addEmployeeModal").modal("hide");
-    $("#txtAddFirstName").val("");
-    $("#txtAddLastName").val("");
-    $("#txtAddPhone").val("");
-    $("#txtAddAddress").val("");
-    $("#txtAddEmail").val("");
+    $("#modalLoad").modal("hide");
+    $("#addAdminModal").modal("hide");
+    $("#txtAddUserName").val("");
+    $("#txtAddAdminEmail").val("");
+    $("#txtAddPassWord").val("");
+    $("#txtPassWordComfirm").val("");
     swal({
       title: "Thêm thành công",
       text: "",
       icon: "success"
-    }); // if (files.length > 0) {
-    //   uploadImage(fileData);
-    // }
-
-    searchEmployee(1);
-    $("#modalLoad").modal("hide");
+    });
+    searchAdmin(1);
     return;
   }).fail(function (jqXHR, textStatus, errorThrown) {
     // If
@@ -163,5 +150,67 @@ var addAdmin = function addAdmin() {
     }); // console.log(textStatus + ': ' + errorThrown);
 
     return;
+  });
+};
+
+var deleteAdmin = function deleteAdmin(id) {
+  if (!navigator.onLine) {
+    swal({
+      title: "Kiểm tra kết nối internet!",
+      text: "",
+      icon: "warning"
+    });
+    return;
+  }
+
+  swal({
+    title: "Bạn chắc chắn xóa chứ?",
+    text: "",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true
+  }).then(function (isConFirm) {
+    if (isConFirm) {
+      $.ajax({
+        url: "/deleteAdmin",
+        type: "POST",
+        data: {
+          id: id
+        },
+        cache: false,
+        timeout: 50000,
+        beforeSend: function beforeSend() {
+          $("#modalLoad").modal("show");
+        }
+      }).done(function (res) {
+        $("#modalLoad").modal("hide"); // console.log(res.result)
+
+        if (res.result == 1) {
+          swal({
+            title: "Xóa thành công!",
+            text: "",
+            icon: "success"
+          });
+          searchAdmin(1);
+        } else {
+          swal({
+            title: "Không tồn tại nhân viên này",
+            text: "",
+            icon: "warning"
+          });
+        }
+      }).fail(function (jqXHR, textStatus, errorThrown) {
+        // If fail
+        $("#modalLoad").modal("hide");
+        swal({
+          title: "Đã có lỗi xảy ra",
+          text: "",
+          icon: "warning",
+          dangerMode: true
+        }); // console.log(textStatus + ': ' + errorThrown);
+
+        return;
+      });
+    }
   });
 };

@@ -210,7 +210,7 @@ const addEmployee = async () => {
         icon: "warning",
         dangerMode: true,
       });
-      // console.log(textStatus + ': ' + errorThrown);
+      console.log(textStatus + ': ' + errorThrown);
       return;
     });
 };

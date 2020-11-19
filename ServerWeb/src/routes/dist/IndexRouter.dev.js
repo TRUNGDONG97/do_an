@@ -8,8 +8,6 @@ var _AdminController = _interopRequireDefault(require("../controllers/AdminContr
 
 var _EmployeeController = _interopRequireDefault(require("../controllers/EmployeeController"));
 
-var _EmployeeModel = _interopRequireDefault(require("../models/EmployeeModel"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var router = _express["default"].Router();
@@ -26,4 +24,7 @@ router.post("/deleteEmployee", _EmployeeController["default"].deleteEmployee);
 router.post("/importListEmployee", _EmployeeController["default"].importListEmployee);
 router.get("/exportFileEmployee", _EmployeeController["default"].exportFileEmployee);
 router.post("/searchAdmin", _AdminController["default"].searchAdmin);
+router.post("/addAdmin", _AdminController["default"].addAdmin);
+router.post("/deleteAdmin", _AdminController["default"].deleteAdmin);
+router.get("/getCountAdmin", _AdminController["default"].getCountAdmin);
 module.exports = router;

@@ -2,7 +2,6 @@ import express from "express";
 import Other from "../api/WebApi/Other";
 import AdminController from "../controllers/AdminController";
 import EmployeeController from "../controllers/EmployeeController";
-import Employee from "../models/EmployeeModel";
 
 const router = express.Router();
 
@@ -20,4 +19,7 @@ router.post("/importListEmployee", EmployeeController.importListEmployee);
 router.get("/exportFileEmployee", EmployeeController.exportFileEmployee);
 
 router.post("/searchAdmin", AdminController.searchAdmin);
+router.post("/addAdmin", AdminController.addAdmin);
+router.post("/deleteAdmin", AdminController.deleteAdmin);
+router.get("/getCountAdmin", AdminController.getCountAdmin);
 module.exports = router;

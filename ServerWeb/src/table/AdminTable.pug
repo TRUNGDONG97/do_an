@@ -22,16 +22,16 @@ table.table.table-bordered.table-hover
                     td #{item.admin_add}
                     td #{item.create_date}
                     td
-                        button.edit.btn.btn-success(type='button' onclick='editEmployee('+JSON.stringify(item)+')')
-                            i.far.fa-edit 
-                        button.delete.btn.btn-danger(type='button' title='Xóa Danh Mục' onclick='deleteEmployee('+item.id+')')
+                        //- button.edit.btn.btn-success(type='button' onclick='editAdmin('+JSON.stringify(item)+')')
+                        //-     i.far.fa-edit 
+                        button.delete.btn.btn-danger(type='button' title='Xóa Danh Mục' onclick='deleteAdmin('+item.id+')')
                             i.far.fa-trash-alt
-#paginateAdmin.row.float-right
+#paginateAdmin.row.float-right(style='margin-right:10px ')
     if pageCount>=1
         if  pages.prev>0
-            button.btn.page-item(onclick='searchEmployee(1)')
+            button.btn.page-item(onclick='searchAdmin(1)')
                 i.fas.fa-angle-double-left
-            button.btn.page-item(onclick='searchEmployee('+pages.prev+')')
+            button.btn.page-item(onclick='searchAdmin('+pages.prev+')')
                 i.fas.fa-chevron-left
         if pages
             each page in pages.pages
