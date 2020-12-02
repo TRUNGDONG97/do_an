@@ -63,6 +63,8 @@ const addEmployee = async (req, res, next) => {
     email,
     gener,
     position,
+    employee_code,
+    department
   } = req.body;
   try {
     const countPhone = await EmployeeModel.count({
@@ -85,6 +87,16 @@ const addEmployee = async (req, res, next) => {
       res.send({ result: 1 });
       return;
     }
+    const countEmployeeCode = await EmployeeModel.count({
+      where: {
+        employee_code,
+        is_active: 1,
+      },
+    });
+    if (countEmployeeCode > 0) {
+      res.send({ result: 2 });
+      return;
+    }
     const newEmployee = await EmployeeModel.create({
       first_name,
       last_name,
@@ -95,6 +107,8 @@ const addEmployee = async (req, res, next) => {
       email,
       gener,
       position,
+      department,
+      employee_code
     });
     // console.log
     res.send({
@@ -118,6 +132,8 @@ const saveEmployee = async (req, res, next) => {
     gener,
     position,
     idEmployee,
+    department,
+    employee_code
   } = req.body;
   try {
     const employee = await EmployeeModel.findAll({
@@ -150,10 +166,33 @@ const saveEmployee = async (req, res, next) => {
         return;
       }
     }
-    if (employee.length <= 0) {
+    if (employee.length > 0 && employee_code !== employee[0].employee_code){
+      const countEmployeeCode = await EmployeeModel.count({
+        where: {
+          employee_code,
+          is_active: 1,
+        },
+      });
+      if (countEmployeeCode > 0) {
+        res.send({ result: 2 });
+        return;
+      }
+    }
+      if (employee.length <= 0) {
+        res.send({ result: 3 });
+        return;
+      }
+    const countEmployeeCode = await EmployeeModel.count({
+      where: {
+        employee_code,
+        is_active: 1,
+      },
+    });
+    if (countEmployeeCode > 0) {
       res.send({ result: 2 });
       return;
     }
+
     const newEmployee = await EmployeeModel.update(
       {
         first_name,

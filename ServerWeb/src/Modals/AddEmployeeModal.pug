@@ -21,6 +21,7 @@ style
           .col-md-6.col-sm-6.col-6
             + propEmployee('txtAddFirstName','Họ và đệm','text')
             + propEmployee('txtAddLastName','Tên','text')
+            + propEmployee('txtEmployeeCode','Mã nhân viên','text')
             + propEmployee('txtAddPhone','Số điện thoại','number')
             .row(style='margin-top:20px;')
               label.col-md-4.col-sm-4.col-4(style='padding-right:10px') Ngày sinh:
@@ -29,6 +30,8 @@ style
           .col-md-6.col-sm-6.col-6
             + propEmployee('txtAddAddress','Địa chỉ','text')
             + propEmployee('txtAddEmail','Email','text')
+            + propEmployee('txtDepartment','Bộ phận','text')
+            + propEmployee('txtPosition','Vị trí','text')
             .row(style='margin-top:20px;')
               label.col-md-4.col-sm-4.col-4(style='padding-right:10px;') Giới tính:
               .col-md-8.col-sm-8.col-8
@@ -39,13 +42,6 @@ style
                   .form-check(style='margin-left:30px')
                     input#addSexFemale.form-check-input(type='radio' name='groupOfMaterialRadios' )
                     label.form-check-label(for='materialGroupExample2') Nữ
-            .row(style='margin-top:30px;margin-bottom:30px;')   
-              label.col-md-4.col-sm-4.col-4(style='padding-top:6px;padding-right:10px;') Vị trí:
-              .col-md-7.col-sm-7.col-7
-                select#addPosition.form-control(name='status' )
-                  option(value='') --Lựa chon--
-                  option(value='0') Nhân viên
-                  option(value='1') Sếp
             //- .row(style='margin-top:20px;')
             //-   label.col-md-4.col-sm-4.col-4(style='padding-top:6px;padding-right:10px;') Ảnh đại diện:
             //-   .col-md-8.col-sm-8.col-8
