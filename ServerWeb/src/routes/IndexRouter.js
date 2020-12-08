@@ -2,6 +2,7 @@ import express from "express";
 import Other from "../api/WebApi/Other";
 import AdminController from "../controllers/AdminController";
 import EmployeeController from "../controllers/EmployeeController";
+import MacAddressController from "../controllers/MacAddressController";
 
 const router = express.Router();
 
@@ -22,4 +23,7 @@ router.post("/searchAdmin", AdminController.searchAdmin);
 router.post("/addAdmin", AdminController.addAdmin);
 router.post("/deleteAdmin", AdminController.deleteAdmin);
 router.get("/getCountAdmin", AdminController.getCountAdmin);
+router.post("/saveAdmin", AdminController.saveAdmin);
+
+router.get("/getCountMac",MacAddressController.getCountMac)
 module.exports = router;

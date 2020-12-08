@@ -1,9 +1,8 @@
 table.table.table-bordered.table-hover
     thead
         tr
-            th STT
-            th Tài khoản 
-            th Email
+            th STT 
+            th Địa chỉ mac
             th Người thêm
             th Ngày thêm
             th
@@ -22,8 +21,8 @@ table.table.table-bordered.table-hover
                     td #{item.admin_add}
                     td #{item.create_date}
                     td
-                        button.edit.btn.btn-success(type='button' onclick='editAdmin('+JSON.stringify(item)+')')
-                            i.far.fa-edit 
+                        //- button.edit.btn.btn-success(type='button' onclick='editAdmin('+JSON.stringify(item)+')')
+                        //-     i.far.fa-edit 
                         button.delete.btn.btn-danger(type='button' title='Xóa Danh Mục' onclick='deleteAdmin('+item.id+')')
                             i.far.fa-trash-alt
 #paginateAdmin.row.float-right(style='margin-right:10px ')

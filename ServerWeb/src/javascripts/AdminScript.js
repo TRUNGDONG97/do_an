@@ -204,3 +204,100 @@ const deleteAdmin = (id) => {
     }
   });
 };
+const editAdmin = (admin) => {
+  $("#txtEditUserName").val(admin.username);
+  $("#idAdminEdit").val(admin.id);
+  $("#txtEditAdminEmail").val(admin.email);
+  $("#editAdminModal").modal("show");
+};
+const saveAdmin = () => {
+  if (!navigator.onLine) {
+    swal({
+      title: "Kiểm tra kết nối internet!",
+      text: "",
+      icon: "warning",
+    });
+    return;
+  }
+  var username = $.trim($("#txtEditUserName").val());
+  var email = $.trim($("#txtEditAdminEmail").val());
+  var id = $.trim($("#idAdminEdit").val());
+  if (!username || !email) {
+    swal({
+      title: "Bạn phải nhập đầy đủ thông tin",
+      text: "",
+      icon: "warning",
+    });
+  }
+  var email_regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  if (!email_regex.test(email)) {
+    swal({
+      title: "Email không hợp lệ",
+      text: "",
+      icon: "warning",
+    });
+    return;
+  }
+  $.ajax({
+    url: "/saveAdmin",
+    type: "POST",
+    data: {
+      id,
+      username,
+      email
+    },
+    cache: false,
+    timeout: 50000,
+    beforeSend: function () {
+      $("#modalLoad").modal("show");
+    },
+  })
+    .done(function (res) {
+      $("#modalLoad").modal("hide");
+      // console.log(res.result)
+      if (res.result == 0) {
+        swal({
+          title: "Tài khoản không tồn tại",
+          text: "",
+          icon: "warning",
+        });
+        return
+      }
+      if(res.result==1){
+        swal({
+          title: "Tên tài khoản đã tồn tại .",
+          text: "",
+          icon: "warning",
+        });
+        return
+      }
+      if(res.result==2){
+        swal({
+          title: "Email đã tồn tại .",
+          text: "",
+          icon: "warning",
+        });
+        return
+      }
+      searchAdmin(1)
+      $("#editAdminModal").modal("hide");
+      swal({
+        title: "Cập nhập thành công",
+        text: "",
+        icon: "success",
+      });
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) {
+      // If fail
+      $("#modalLoad").modal("hide");
+      $("#editAdminModal").modal("hide");
+      swal({
+        title: "Đã có lỗi xảy ra",
+        text: "",
+        icon: "warning",
+        dangerMode: true,
+      });
+      // console.log(textStatus + ': ' + errorThrown);
+      return;
+    });
+}

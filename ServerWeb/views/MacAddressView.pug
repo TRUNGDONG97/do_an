@@ -1,0 +1,18 @@
+doctype html
+html
+  include Layout
+  style
+    include ../src/stylesheets/MacStyle.css
+  script
+    include ../src/javascripts/MacScript.js
+  body
+    include NavbarView
+    //- include ../src/modals/AddEmployeeModal
+    //- include ../src/modals/EditEmployeeModal
+    .container-tab
+      .div-title
+        h4
+          i.fas.fa-address-book
+            |  &nbsp;  Địa chỉ mac
+      .div-search
+        #tableMacAddress

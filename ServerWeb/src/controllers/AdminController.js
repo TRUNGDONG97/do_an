@@ -7,7 +7,6 @@ import md5 from "md5";
 import DateUtil from "../util/DateUtil";
 import excel from "exceljs";
 import AdminModel from "../models/AdminModel";
-import { count } from "console";
 const getAdmin = async (req, res, next) => {
   res.render("AdminView");
 };
@@ -149,10 +148,75 @@ const deleteAdmin = async (req, res, next) => {
     return;
   }
 };
+const saveAdmin = async (req, res, next) => {
+  try {
+    const { username, email, id } = req.body;
+    console.log("email", email);
+    console.log("username", username);
+    const countAdmin = await AdminModel.findAll({
+      where: {
+        id,
+        is_active: 1,
+      },
+    });
+    if (countAdmin.length < 1) {
+      res.send({
+        result: 0, //Notfound
+      });
+      return;
+    }
+    if (username != countAdmin[0].username) {
+      const countUsername = await AdminModel.count({
+        where: {
+          is_active: 1,
+          username
+        }
+      })
+      if (countUsername > 0) {
+        res.send({
+          result: 1,
+        });
+        return;
+      }
+    }
+    if (email != countAdmin[0].email) {
+      const countEmail = await AdminModel.count({
+        where: {
+          is_active: 1,
+          email
+        }
+      })
+      if (countEmail > 0) {
+        res.send({
+          result: 2, //Notfound
+        });
+        return;
+      }
+    }
+
+    const newAdmin = await AdminModel.update(
+      {
+        email,
+        username
+      }, {
+      where: {
+        id
+      }
+    })
+    console.log("newAdmin", newAdmin);
+    res.send({
+      result: 3,
+    });
+  } catch (error) {
+    res.status(404).send();
+    return;
+  }
+}
 export default {
   getAdmin,
   searchAdmin,
   addAdmin,
   deleteAdmin,
-  getCountAdmin
+  getCountAdmin,
+  saveAdmin
 };
