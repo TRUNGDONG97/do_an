@@ -5,11 +5,6 @@ import EmployeeController from "../controllers/EmployeeController";
 import MacAddressController from "../controllers/MacAddressController";
 
 const router = express.Router();
-
-router.get("/", function (req, res, next) {
-  res.redirect("admin/login");
-  // res.render('IndexView');
-});
 router.post("/user/changePass", Other.changePass);
 router.get("/getCountEmployee", Other.getCountEmployee);
 router.post("/searchEmployee", EmployeeController.searchEmployee);
@@ -25,5 +20,12 @@ router.post("/deleteAdmin", AdminController.deleteAdmin);
 router.get("/getCountAdmin", AdminController.getCountAdmin);
 router.post("/saveAdmin", AdminController.saveAdmin);
 
-router.get("/getCountMac",MacAddressController.getCountMac)
+router.get("/getCountMac", MacAddressController.getCountMac)
+router.post("/getMacAddress", MacAddressController.getListMacAddress);
+
+router.get("/", function (req, res, next) {
+  res.redirect("admin/login");
+  // res.render('IndexView');
+});
+
 module.exports = router;

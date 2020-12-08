@@ -12,7 +12,11 @@ const getAdmin = async (req, res, next) => {
 };
 const getCountAdmin = async (req, res, next) => {
   try {
-    const countAdmin = await AdminModel.count();
+    const countAdmin = await AdminModel.count({
+      where:{
+        is_active:1
+      }
+    });
     console.log(countAdmin);
     res.send({
       countAdmin,

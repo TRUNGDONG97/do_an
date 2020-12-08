@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser("12312fdf"));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/",authMiddleware.requireAuth ,indexRouter);
+app.use("/" ,indexRouter);
 app.use("/admin", authRouter);
 app.use("/admin", authMiddleware.requireAuth, adminRouter);
 // app.use('/app', appRouter);
