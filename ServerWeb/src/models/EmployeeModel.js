@@ -1,5 +1,6 @@
 import Sequelize, { STRING } from "sequelize";
 import { sequelize, Op } from "../config/env";
+import TimekeepingModel from "./TimekeepingModel";
 const Employee = sequelize.define(
   "employee",
   {
@@ -56,4 +57,6 @@ const Employee = sequelize.define(
     freezeTableName: true,
   }
 );
+Employee.hasMany(TimekeepingModel, { foreignKey: 'id_employee', sourceKey: 'id' });
+TimekeepingModel.belongsTo(Employee, { foreignKey: 'id_employee', targetKey: 'id' });
 export default Employee;

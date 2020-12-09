@@ -3,6 +3,7 @@ import Other from "../api/WebApi/Other";
 import AdminController from "../controllers/AdminController";
 import EmployeeController from "../controllers/EmployeeController";
 import MacAddressController from "../controllers/MacAddressController";
+import TimeKeepingController from "../controllers/TimeKeepingController";
 
 const router = express.Router();
 router.post("/user/changePass", Other.changePass);
@@ -26,6 +27,8 @@ router.post("/addMacAddress",MacAddressController.addMacAddress);
 router.post("/deleteMac",MacAddressController.deleteMac);
 router.post("/editMacAddress",MacAddressController.editMacAddress)
 router.get("/getMacOnServer",MacAddressController.getMacOnServer)
+
+router.post("/seacheListTimekeeping",TimeKeepingController.seacheListTimekeeping)
 router.get("/", function (req, res, next) {
   res.redirect("admin/login");
   // res.render('IndexView');
