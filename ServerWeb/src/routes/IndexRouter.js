@@ -22,7 +22,10 @@ router.post("/saveAdmin", AdminController.saveAdmin);
 
 router.get("/getCountMac", MacAddressController.getCountMac)
 router.post("/getMacAddress", MacAddressController.getListMacAddress);
-
+router.post("/addMacAddress",MacAddressController.addMacAddress);
+router.post("/deleteMac",MacAddressController.deleteMac);
+router.post("/editMacAddress",MacAddressController.editMacAddress)
+router.get("/getMacOnServer",MacAddressController.getMacOnServer)
 router.get("/", function (req, res, next) {
   res.redirect("admin/login");
   // res.render('IndexView');
