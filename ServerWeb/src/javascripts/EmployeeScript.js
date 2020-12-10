@@ -258,7 +258,7 @@ const saveEmployee = () => {
   var address = $.trim($("#txtEditAddress").val());
   var email = $.trim($("#txtEditEmail").val());
   var gener = $("#editSexMale").prop("checked");
-  var position = $trim($("#txtEditPosition").val());
+  var position = $.trim($("#txtEditPosition").val());
   var employee_code = $.trim($("#txtEditEmployeeCode").val());
   var department = $.trim($("#txtEditDepartment").val())
   // console.log("gener",gener)
@@ -476,7 +476,7 @@ const importEmployee = () => {
           console.log(res.result, "res.result");
           if (res.listEmployeeError.length < 1) {
             swal({
-              title: "Xóa thành công!",
+              title: "Thêm thành công!",
               text: "",
               icon: "success",
             });
@@ -484,7 +484,7 @@ const importEmployee = () => {
           } else {
             swal({
               title:
-                "Một số nhân viên sau không thể thêm do không có số điện thoại. ",
+                "Một số nhân viên sau không thể thêm do không có mã nhân viên. ",
               text: "",
               icon: "warning",
               dangerMode: true,

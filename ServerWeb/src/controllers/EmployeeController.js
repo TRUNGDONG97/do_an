@@ -142,6 +142,12 @@ const saveEmployee = async (req, res, next) => {
         is_active: 1,
       },
     });
+    console.log("ádasdsa",idEmployee,employee.length);
+    if (employee.length <1) {
+      res.send({ result: 3 });
+      return;
+    }
+   
     if (employee.length > 0 && phone !== employee[0].phone) {
       const countPhone = await EmployeeModel.count({
         where: {
@@ -166,7 +172,7 @@ const saveEmployee = async (req, res, next) => {
         return;
       }
     }
-    if (employee.length > 0 && employee_code !== employee[0].employee_code){
+    if (employee.length > 0 && employee_code !== employee[0].employee_code) {
       const countEmployeeCode = await EmployeeModel.count({
         where: {
           employee_code,
@@ -177,20 +183,6 @@ const saveEmployee = async (req, res, next) => {
         res.send({ result: 2 });
         return;
       }
-    }
-      if (employee.length <= 0) {
-        res.send({ result: 3 });
-        return;
-      }
-    const countEmployeeCode = await EmployeeModel.count({
-      where: {
-        employee_code,
-        is_active: 1,
-      },
-    });
-    if (countEmployeeCode > 0) {
-      res.send({ result: 2 });
-      return;
     }
 
     const newEmployee = await EmployeeModel.update(
@@ -211,7 +203,7 @@ const saveEmployee = async (req, res, next) => {
       }
     );
     res.send({
-      result: 3,
+      result: 4,
     });
     return;
   } catch (error) {
@@ -263,19 +255,19 @@ const importListEmployee = async (req, res, next) => {
     console.log(arrEmployee[0], "arrEmployee");
     var listEmployeeError = [];
     for (let index = 0; index < arrEmployee.length; index++) {
-      if (!arrEmployee[index].phone) {
+      if (!arrEmployee[index].employee_code) {
         let nameEmployee =
           arrEmployee[index].first_name + arrEmployee[index].last_name;
         listEmployeeError.push(nameEmployee);
         continue;
       }
-      var countPhone = await EmployeeModel.count({
+      var countEmployeeCode = await EmployeeModel.count({
         where: {
-          phone: "0" + arrEmployee[index].phone.toString(),
+          employee_code: arrEmployee[index].employee_code.toString(),
           is_active: 1,
         },
       });
-      if (countPhone > 0) {
+      if (countEmployeeCode > 0) {
         await EmployeeModel.update(
           {
             first_name: arrEmployee[index].first_name,
@@ -287,11 +279,12 @@ const importListEmployee = async (req, res, next) => {
               : "",
             gener: arrEmployee[index].sex == "nam" ? 1 : 0,
             email: arrEmployee[index].email,
-            position: arrEmployee[index].position == "sếp" ? 1 : 0,
+            department: arrEmployee[index].department,
+            position: arrEmployee[index].position
           },
           {
             where: {
-              phone: "0" + arrEmployee[index].phone.toString(),
+              employee_code: arrEmployee[index].employee_code.toString(),
             },
           }
         );
@@ -310,7 +303,9 @@ const importListEmployee = async (req, res, next) => {
           phone: arrEmployee[index].phone
             ? "0" + arrEmployee[index].phone.toString()
             : "",
-          position: arrEmployee[index].position == "sếp" ? 1 : 0,
+          department: arrEmployee[index].department,
+          position: arrEmployee[index].position,
+          employee_code: arrEmployee[index].employee_code
         });
         console.log(2);
       }
@@ -340,9 +335,7 @@ const exportFileEmployee = async (req, res, next) => {
     for (let index = 0; index < listEmployees.length; index++) {
       listEmployees[index].stt = index;
       listEmployees[index].gener =
-        listEmployees[index].gener == 1 ? "nam" : "nữ";
-      listEmployees[index].position =
-        listEmployees[index].position == 1 ? "sếp" : "nhân viên";
+        listEmployees[index].gener == 1 ? "Nam" : "Nữ";
     }
     let workbook = new excel.Workbook(); //creating workbook
     let worksheet = workbook.addWorksheet("Employeee"); //creating worksheet
@@ -350,12 +343,14 @@ const exportFileEmployee = async (req, res, next) => {
     //  WorkSheet Header
     worksheet.columns = [
       { header: "STT", key: "stt", width: 10 },
+      { header: "Mã nhân viên ", key: "employee_code", width: 30 },
       { header: "Họ ", key: "first_name", width: 30 },
       { header: "Tên ", key: "last_name", width: 30 },
       { header: "Số điện thoại ", key: "phone", width: 20 },
       { header: "Ngày sinh", key: "birthday", width: 20 },
       { header: "Ngày sinh", key: "email", width: 30 },
       { header: "Giới tính", key: "gener", width: 15 },
+      { header: "Bộ phận", key: "department", width: 15 },
       { header: "Vị trí", key: "position", width: 15 },
     ];
 
