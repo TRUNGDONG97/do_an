@@ -27,7 +27,8 @@ body {
     max-width: 600px;
     height: 370px;
     border: 1px solid #9C9C9C;
-    background-color: #078a23;
+    /* màu login */
+    background-color: #0e8dd6;
 }
 
 #login .container #login-row #login-column #login-box #login-form {
@@ -41,7 +42,8 @@ body {
 }
 
 .btn-login {
-    color: #078a23;
+    /* màu btn login */
+    color: #0e8dd6;
     background-color: #fff;
     border-color: #fff;
     border-radius: 3px;
