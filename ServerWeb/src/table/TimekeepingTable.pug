@@ -1,0 +1,42 @@
+table.table.table-bordered.table-hover
+    thead
+        tr
+            th STT
+            th Mã nhân viên 
+            th Tên nhân viên
+            th Số ngày chấm công
+            th thời gian đi muộn
+            th
+    tbody#tbodyTableAdmin
+        if employees.length <=0        
+            tr
+                td(colspan='8' style='text-align: center;') Chưa có nhân viên  nào.
+        else
+            each item in employees
+                tr
+                    td #{STT=STT+1}
+                    td #{item.employee_code}
+                    td #{item.first_name+" "+item.last_name}
+                    td
+                    td
+                    td
+                        button.edit.btn.btn-primary(type='button' onclick='editAdmin('+JSON.stringify(item)+')')
+                            i.fas.fa-info-circle 
+#paginateAdmin.row.float-right(style='margin-right:10px ')
+    if pageCount>=1
+        if  pages.prev>0
+            button.btn.page-item(onclick='seacherListTimekeeping(1)')
+                i.fas.fa-angle-double-left
+            button.btn.page-item(onclick='seacherListTimekeeping('+pages.prev+')')
+                i.fas.fa-chevron-left
+        if pages
+            each page in pages.pages
+                if page==currentPage
+                    button#paginateActive.btn.page-item(onclick='seacherListTimekeeping('+page+')') #{page}
+                else
+                    button.btn.page-item(onclick='seacherListTimekeeping('+page+')') #{page}                    
+        if  pages.next <= pageCount
+            button.btn.page-item(onclick='seacherListTimekeeping('+pages.next+')')
+                i.fas.fa-chevron-right
+            button.btn.page-item(onclick='seacherListTimekeeping('+pageCount+')')
+                i.fas.fa-angle-double-right

@@ -76,15 +76,17 @@ const addEmployee = async () => {
   }
   var first_name = $.trim($("#txtAddFirstName").val());
   var last_name = $.trim($("#txtAddLastName").val());
+  var employee_code = $.trim($("#txtEmployeeCode").val());
   var phone = $.trim($("#txtAddPhone").val());
   var birthday = $.trim($("#txtAddBirthday").val());
   var address = $.trim($("#txtAddAddress").val());
   var email = $.trim($("#txtAddEmail").val());
   var gener = $("#addSexFemale").prop("checked");
-  var position = $("#addPosition").val();
-  console.log("gener", gener);
-  console.log("birthday", birthday);
-  console.log("position", position);
+  var position = $.trim($("#txtPosition").val());
+  var department = $.trim($("#txtDepartment").val());
+  console.log("employee_code", employee_code);
+  console.log("txtPosition", txtPosition);
+  console.log("txtDepartment", txtDepartment);
   //get file image
   // var fileUpload = $("#ImageStudent").get(0);
   // var files = fileUpload.files;
@@ -95,7 +97,9 @@ const addEmployee = async () => {
     !phone ||
     !birthday ||
     !address ||
-    !position
+    !position ||
+    !department ||
+    !employee_code
   ) {
     swal({
       title: "Chưa nhập đầy đủ thông tin",
@@ -151,6 +155,8 @@ const addEmployee = async () => {
       email,
       gener: gener ? 0 : 1,
       position,
+      employee_code,
+      department
       // url_avatar: srcImg,
     },
     cache: false,
@@ -177,6 +183,16 @@ const addEmployee = async () => {
         $("#txtAddEmail").val("");
         swal({
           title: "Email đã tồn tại",
+          text: "",
+          icon: "warning",
+        });
+        return;
+      }
+      if (res.result == 2) {
+        $("#modalLoad").modal("hide");
+        $("#txtEmployeeCode").val("");
+        swal({
+          title: "Mã nhân viên đã tồn tại",
           text: "",
           icon: "warning",
         });
@@ -227,7 +243,9 @@ const editEmployee = (employee) => {
   } else {
     $("#editSexFemale").attr("checked", true);
   }
-  $("#editPosition").val(employee.position);
+  $("#txtEditPosition").val(employee.position);
+  $("#txtEditEmployeeCode").val(employee.employee_code);
+  $("#txtEditDepartment").val(employee.department);
   $("#idEmployee").val(employee.id);
 };
 const saveEmployee = () => {
@@ -240,7 +258,9 @@ const saveEmployee = () => {
   var address = $.trim($("#txtEditAddress").val());
   var email = $.trim($("#txtEditEmail").val());
   var gener = $("#editSexMale").prop("checked");
-  var position = $("#editPosition").val();
+  var position = $trim($("#txtEditPosition").val());
+  var employee_code = $.trim($("#txtEditEmployeeCode").val());
+  var department = $.trim($("#txtEditDepartment").val())
   // console.log("gener",gener)
   // console.log("first_name",first_name)
   // console.log("last_name",last_name)
@@ -257,6 +277,8 @@ const saveEmployee = () => {
       gener: gener ? 1 : 0,
       position,
       idEmployee,
+      employee_code,
+      department
       // url_avatar: srcImg,
     },
     cache: false,
@@ -288,11 +310,21 @@ const saveEmployee = () => {
         });
         return;
       }
-      if (res.result == 1) {
+      if (res.result == 3) {
         $("#modalLoad").modal("hide");
         $("#txtAddEmail").val("");
         swal({
-          title: "Không có sinh viên này",
+          title: "Không có nhân viên này",
+          text: "",
+          icon: "warning",
+        });
+        return;
+      }
+      if (res.result == 2) {
+        $("#modalLoad").modal("hide");
+        $("#txtAddEmail").val("");
+        swal({
+          title: "Mã nhân viên đã có",
           text: "",
           icon: "warning",
         });

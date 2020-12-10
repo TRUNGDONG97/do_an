@@ -2,11 +2,13 @@ table.table.table-bordered.table-hover
     thead
         tr
             th STT
+            th Mã nhân viên
             th Họ và tên  
             th Số điện thoại
             th Ngày sinh
             th Email
             th Giới tính
+            th Bộ phận
             th Vị trí
             th
     tbody#tbodyTableEmployee
@@ -17,12 +19,14 @@ table.table.table-bordered.table-hover
             each item in employees
                 tr
                     td #{STT=STT+1}
-                    td #{item.first_name+" "+item.last_name}
+                    td #{item.employee_code}
+                    td #{item.first_name+" "+item.last_name}               
                     td #{item.phone}
                     td #{item.birthday}
                     td #{item.email}
                     td #{item.gener==1?'Nam':'Nữ'}
-                    td #{item.position==0?"Nhân viên":"Sếp"}
+                    td #{item.department}
+                    td #{item.position}
                     td
                         button.edit.btn.btn-success(type='button' onclick='editEmployee('+JSON.stringify(item)+')')
                             i.far.fa-edit 

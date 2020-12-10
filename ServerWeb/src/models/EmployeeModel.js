@@ -1,5 +1,6 @@
-import Sequelize from "sequelize";
+import Sequelize, { STRING } from "sequelize";
 import { sequelize, Op } from "../config/env";
+import TimekeepingModel from "./TimekeepingModel";
 const Employee = sequelize.define(
   "employee",
   {
@@ -38,11 +39,17 @@ const Employee = sequelize.define(
       type: Sequelize.INTEGER,
     },
     position: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
     },
     is_active: {
       type: Sequelize.INTEGER,
     },
+    employee_code: {
+      type: Sequelize.STRING
+    },
+    department: {
+      type: Sequelize.STRING
+    }
   },
   {
     //
@@ -50,4 +57,6 @@ const Employee = sequelize.define(
     freezeTableName: true,
   }
 );
+Employee.hasMany(TimekeepingModel, { foreignKey: 'id_employee', sourceKey: 'id' });
+TimekeepingModel.belongsTo(Employee, { foreignKey: 'id_employee', targetKey: 'id' });
 export default Employee;

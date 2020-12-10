@@ -22,8 +22,8 @@ table.table.table-bordered.table-hover
                     td #{item.admin_add}
                     td #{item.create_date}
                     td
-                        //- button.edit.btn.btn-success(type='button' onclick='editAdmin('+JSON.stringify(item)+')')
-                        //-     i.far.fa-edit 
+                        button.edit.btn.btn-success(type='button' onclick='editAdmin('+JSON.stringify(item)+')')
+                            i.far.fa-edit 
                         button.delete.btn.btn-danger(type='button' title='Xóa Danh Mục' onclick='deleteAdmin('+item.id+')')
                             i.far.fa-trash-alt
 #paginateAdmin.row.float-right(style='margin-right:10px ')
@@ -36,11 +36,11 @@ table.table.table-bordered.table-hover
         if pages
             each page in pages.pages
                 if page==currentPage
-                    button#paginateActive.btn.page-item(onclick='searchEmployee('+page+')') #{page}
+                    button#paginateActive.btn.page-item(onclick='searchAdmin('+page+')') #{page}
                 else
-                    button.btn.page-item(onclick='searchEmployee('+page+')') #{page}                    
+                    button.btn.page-item(onclick='searchAdmin('+page+')') #{page}                    
         if  pages.next <= pageCount
-            button.btn.page-item(onclick='searchEmployee('+pages.next+')')
+            button.btn.page-item(onclick='searchAdmin('+pages.next+')')
                 i.fas.fa-chevron-right
-            button.btn.page-item(onclick='searchEmployee('+pageCount+')')
+            button.btn.page-item(onclick='searchAdmin('+pageCount+')')
                 i.fas.fa-angle-double-right

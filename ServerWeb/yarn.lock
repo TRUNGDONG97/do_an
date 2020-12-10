@@ -61,6 +61,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.11.8.tgz#fe2012f2355e4ce08bca44aeb3abbb21cf88d33f"
   integrity sha512-KPcKqKm5UKDkaYPTuXSx8wEP7vE9GnuaXIZKijwRYcePpZFDVuy2a57LarFKiORbHOuTOOwYzxVxcUzsh2P2Pw==
 
+"@types/node@^14.14.6":
+  version "14.14.11"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.11.tgz#fc25a4248a5e8d0837019b1d170146d07334abe0"
+  integrity sha512-BJ97wAUuU3NUiUCp44xzUFquQEvnk1wu7q4CMEUYKJWjdkr0YWYDsm4RFtAvxYsNjLsKcrFt6RvK8r+mnzMbEQ==
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -2144,6 +2149,13 @@ get-value@^2.0.3, get-value@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
   integrity sha1-3BXKHGcjh8p2vTesCjlbogQqLCg=
+
+getmac@^5.17.0:
+  version "5.17.0"
+  resolved "https://registry.yarnpkg.com/getmac/-/getmac-5.17.0.tgz#046140a2e30e8b8f56486a1353fcae1950ac7c28"
+  integrity sha512-hupD+ZCHVFRaH1wBDPgIil6KWL5p5Z6kG71nAcafwq72QaMxw9bhR2LPBk3jlw3I2F3oELNkx6Fccwiuy5fv0w==
+  dependencies:
+    "@types/node" "^14.14.6"
 
 getpass@^0.1.1:
   version "0.1.7"
