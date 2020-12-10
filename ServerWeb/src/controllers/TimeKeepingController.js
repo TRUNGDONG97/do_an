@@ -18,19 +18,19 @@ const seacheListTimekeeping = async (req, res, next) => {
         // console.log("phoneEmployee", phoneEmployee);
         // console.log("nameEmployee", nameEmployee);
         const { count, rows } = await EmployeeModel.findAndCountAll({
-            // attributes: ['id', 'first_name', 'last_name', 'employee_code', 
-            //     [sequelize.fn('sum', sequelize.col('timekeeping.workday')), 'countWorkday'],
-            //     [sequelize.fn('sum', sequelize.col('timekeeping.time_late')), 'countTimeLate']],
-            // include: [{
-            //     model: TimekeepingModel,
-            //     attributes: [],
-            //     where: {
-            //         date_timekeeping: {
-            //             $between: ['2020-12-01', '2020-12-31']
-            //         }
-            //     },
-            //     required: false
-            // }],
+            // attributes: ['id', 'first_name', 'last_name', 'employee_code'],
+                // [sequelize.fn('sum', sequelize.col('timekeepings.workday')), 'countWorkday'],
+                // [sequelize.fn('sum', sequelize.col('timekeepings.time_late')), 'countTimeLate']],
+            include: [{
+                model: TimekeepingModel,
+                // attributes: [],
+                // where: {
+                //     date_timekeeping: {
+                //         $between: ['2020-12-01', '2020-12-31']
+                //     }
+                // },
+                // required: false
+            }],
             where: {
                 [Op.and]: [
                     sequelize.where(sequelize.fn("lower", sequelize.col("last_name")), {
@@ -50,6 +50,7 @@ const seacheListTimekeeping = async (req, res, next) => {
             limit: Constants.PER_PAGE,
             order: [["last_name", "ASC"]],
         });
+        console.log("rows",rows[0].timekeepings);
         const pageCount = PageCount(count);
 
         var urlTable = `${process.cwd()}/src/table/TimekeepingTable.pug`;
