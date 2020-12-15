@@ -28,7 +28,7 @@ router.post("/deleteMac",MacAddressController.deleteMac);
 router.post("/editMacAddress",MacAddressController.editMacAddress)
 router.get("/getMacOnServer",MacAddressController.getMacOnServer)
 
-router.post("/seacheListTimekeeping",TimeKeepingController.seacheListTimekeeping)
+router.post("/seacherListTimekeeping",TimeKeepingController.seacherListTimekeeping)
 router.get("/", function (req, res, next) {
   res.redirect("admin/login");
   // res.render('IndexView');

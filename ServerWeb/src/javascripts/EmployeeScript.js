@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  $("#tabEmployee a").css({ "background-color": "#fff", color: "#078a23" });
+  $("#tabEmployee a").css({ "background-color": "#fff", color: "#f02a2a" });
   searchEmployee(1);
   $("#btnSearchEmployee").click(function () {
     searchEmployee(1);
@@ -40,11 +40,11 @@ const searchEmployee = (currentPage) => {
     return;
   }
   var nameEmployee = $.trim($("#txtNameEmployee").val());
-  var phoneEmployee = $.trim($("#txtPhoneEmployee").val());
+  var employee_code = $.trim($("#txtEmployeeCode").val());
   $.ajax({
     url: "/searchEmployee",
     type: "POST",
-    data: { currentPage, phoneEmployee, nameEmployee },
+    data: { currentPage, employee_code, nameEmployee },
     cache: false,
     timeout: 50000,
   })

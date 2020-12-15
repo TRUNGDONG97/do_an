@@ -10,15 +10,15 @@ table.table.table-bordered.table-hover
     tbody#tbodyTableAdmin
         if employees.length <=0        
             tr
-                td(colspan='8' style='text-align: center;') Chưa có nhân viên  nào.
+                td(colspan='6' style='text-align: center;') Chưa có nhân viên  nào.
         else
             each item in employees
                 tr
                     td #{STT=STT+1}
                     td #{item.employee_code}
                     td #{item.first_name+" "+item.last_name}
-                    td 0
-                    td 0
+                    td #{item.get('countWorkday')?item.get('countWorkday'):0}
+                    td #{item.get('countTimeLate')?item.get('countTimeLate'):0}
                     td
                         button.edit.btn.btn-primary(type='button' onclick='editAdmin('+JSON.stringify(item)+')')
                             i.fas.fa-info-circle 

@@ -1,7 +1,7 @@
 $(document).ready(function () {
   $("#tabHome a").css({
     "background-color": "#fff",
-    color: "#078a23",
+    color: "#f02a2a",
   });
   $("#employee-selection").click(function () {
     window.location = "/admin/employee";

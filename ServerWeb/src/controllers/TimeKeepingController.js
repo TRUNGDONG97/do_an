@@ -12,24 +12,26 @@ import excel from "exceljs";
 const getTimekeeping = async (req, res, next) => {
     res.render('TimekeepingView');
 }
-const seacheListTimekeeping = async (req, res, next) => {
+const seacherListTimekeeping = async (req, res, next) => {
     try {
-        const { currentPage, employee_code, nameEmployee } = req.body;
-        // console.log("phoneEmployee", phoneEmployee);
-        // console.log("nameEmployee", nameEmployee);
-        const { count, rows } = await EmployeeModel.findAndCountAll({
-            // attributes: ['id', 'first_name', 'last_name', 'employee_code'],
-                // [sequelize.fn('sum', sequelize.col('timekeepings.workday')), 'countWorkday'],
-                // [sequelize.fn('sum', sequelize.col('timekeepings.time_late')), 'countTimeLate']],
+        const { currentPage, employee_code, nameEmployee , startDate, endDate} = req.body;
+        console.log("currentPage",currentPage);
+        console.log("startDate", startDate);
+        console.log("endDate", endDate);
+        // console.log("timekeeping", timekeepings[0].employee.id)
+        const employees = await EmployeeModel.findAll({
+            attributes: ['id', 'first_name', 'last_name', 'employee_code',
+            [sequelize.fn('sum', sequelize.col('timekeepings.workday')), 'countWorkday'],
+            [sequelize.fn('sum', sequelize.col('timekeepings.time_late')), 'countTimeLate']],
             include: [{
                 model: TimekeepingModel,
-                // attributes: [],
-                // where: {
-                //     date_timekeeping: {
-                //         $between: ['2020-12-01', '2020-12-31']
-                //     }
-                // },
-                // required: false
+                attributes: [],
+                where: {
+                    date_timekeeping: {
+                        [Op.between]: [startDate, endDate]
+                    }
+                },
+                required: false,
             }],
             where: {
                 [Op.and]: [
@@ -45,17 +47,20 @@ const seacheListTimekeeping = async (req, res, next) => {
                 ],
             },
             row: true,
-            // group: ['employee.id'],
+            group: ['employee.id'],
             offset: Constants.PER_PAGE * (currentPage - 1),
-            limit: Constants.PER_PAGE,
+            // limit: Constants.PER_PAGE,
             order: [["last_name", "ASC"]],
         });
-        console.log("rows",rows[0].timekeepings);
+        const count = employees.length
+
+        // console.log("rows", employees[7]);
         const pageCount = PageCount(count);
+        // console.log("pageCount", pageCount);
 
         var urlTable = `${process.cwd()}/src/table/TimekeepingTable.pug`;
         var htmlTable = await pug.renderFile(urlTable, {
-            employees: rows,
+            employees: employees,
             STT: (currentPage - 1) * Constants.PER_PAGE,
             currentPage,
             pageCount: pageCount,
@@ -73,5 +78,5 @@ const seacheListTimekeeping = async (req, res, next) => {
 }
 export default {
     getTimekeeping,
-    seacheListTimekeeping
+    seacherListTimekeeping
 }
