@@ -1,0 +1,77 @@
+doctype html
+html
+    include Layout
+    style
+        include ../src/stylesheets/TimekeepingStyle.css
+    script
+        include ../src/javascripts/DetailTimekeepingScript.js
+    body
+        include NavbarView
+        //- include ../src/modals/AddAdminModal
+        //- include ../src/modals/EditAdminModal
+        .container-tab
+            .div-title
+                h4#calender
+                    i.fas.fa-user-clock
+                        |  &nbsp;  Chi tiết chấm công nhân viên #{employee.first_name +" "+employee.last_name}  &nbsp;
+            .col-md-10.offset-md-2
+                .row(style='margin-top:10px;')
+                    .col-md-6
+                        .row
+                            label.col-md-5(style='padding-right:10px;') Tên nhân viên:
+                            .col-md-6.col-sm-6.col-6
+                                p #{employee.first_name +" "+employee.last_name}
+                        .row
+                            label.col-md-5(style='padding-right:10px;') Mã nhân viên:
+                            .col-md-6.col-sm-6.col-6
+                                p #{employee.employee_code}
+                        .row
+                            label.col-md-5(style='padding-right:10px;') Số điện thoại:
+                            .col-md-6.col-sm-6.col-6
+                                p #{employee.phone}
+                        .row
+                            label.col-md-5(style='padding-right:10px;')  Ngày sinh :
+                            .col-md-6.col-sm-6.col-6
+                                p #{employee.birthday}
+                    .col-md-6
+                        .row
+                            label.col-md-5.col-sm-5.col-5(style='padding-right:10px;') Email :
+                            .col-md-6.col-sm-6.col-6
+                                p #{employee.email}
+                        .row
+                            label.col-md-5.col-sm-5.col-5(style='padding-right:10px;') Giới tính:
+                            .col-md-6.col-sm-6.col-6
+                                p #{employee.gener=='1'?"Nam":"Nữ"}
+                        .row       
+                            label.col-md-5.col-sm-5.col-5(style='padding-right:10px;') Bộ phận:
+                            .col-md-6.col-sm-6.col-6
+                                p #{employee.department}
+                        .row
+                            label.col-md-5.col-sm-5.col-5(style='padding-right:10px;') Vị trí:
+                            .col-md-7.col-sm-7.col-7
+                               p #{employee.position}
+            input#idEmployee(type="hidden" value=employee.id)   
+            .div-search-detail-class.col-md-12(style='margin-top:30px')
+                .row(style='margin-left:10px')
+                    .row.col-md-8.col-sm-8.col-8
+                        .col-md-6.col-sm-6.col-6
+                            .row
+                                label.col-md-4.col-sm-4.col-4(style='margin-top:6px') Từ ngày :
+                                .col-md-6.col-sm-6.col-6
+                                    input.datepicker#dateStart(data-date-format='yyyy-mm-dd' )
+                                    .col-md-6.col-sm-6.col-6
+                        .col-md-6.col-sm-6.col-6
+                            .row
+                                label.col-md-4.col-sm-4.col-4(style='margin-top:6px') Đến ngày:
+                                .col-md-6.col-sm-6.col-6
+                                    input.datepicker#dateEnd(data-date-format='yyyy-mm-dd' )
+
+                    button#btnSearchInClass.btn.btn-primary(type="button" style='margin-left:20px' onclick='searchStudentInclass()')
+                        i.fas.fa-search
+                            | &nbsp;  Tìm kiếm
+                    button.btn.btn-success(type="button" onclick='exportFileTimekeeping()'   style='margin-left:20px;')
+                        i.fas.fa-download
+                            | &nbsp;  Export file exel
+            .container-fluid
+                #tableDetailClass
+                    //- include ../table/TableDetailClass.pug

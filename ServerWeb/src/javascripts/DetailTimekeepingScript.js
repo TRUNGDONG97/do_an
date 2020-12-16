@@ -1,11 +1,8 @@
 $(document).ready(function () {
-    $("#tabTimekeeping a").css({ "background-color": "#fff", color: "#f02a2a" });
-    // searchAdmin(1);
     var date = new Date();
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
-    $('h4').append(month + "/" + year)
-    seacherListTimekeeping(1)
+    $("#tabTimekeeping a").css({ "background-color": "#fff", color: "#f02a2a" });
     $(".datepicker").datepicker({
         weekStart: 1,
         daysOfWeekHighlighted: "6,0",
@@ -15,8 +12,9 @@ $(document).ready(function () {
     });
     $("#dateStart").datepicker("setDate", year + "-" + month + "-" + "01");
     $("#dateEnd").datepicker("setDate", new Date());
+    searchTimekeeping(1)
 });
-const seacherListTimekeeping = (currentPage) => {
+const searchTimekeeping = (currentPage) => {
     if (!navigator.onLine) {
         swal({
             title: "Kiểm tra kết nối internet!",
@@ -25,32 +23,29 @@ const seacherListTimekeeping = (currentPage) => {
         });
         return;
     }
-    var date = new Date();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-    var date1 = date.getDate();
-    var nameEmployee = $.trim($("#txtNameEmployee").val());
-    var employee_code = $.trim($("#txtCodeEmployee").val());
+    var currentDate = new Date();
+    var month = currentDate.getMonth() + 1;
+    var year = currentDate.getFullYear();
+    var date = currentDate.getDate();
+    var idEmployee = $.trim($("#idEmployee").val());
     var startDate = $.trim($("#dateStart").val());
     var endDate = $.trim($("#dateEnd").val());
-    console.log("startDate", startDate);
-    console.log("endDate", endDate);
     if (!startDate) {
         startDate = year + "-" + month + "-" + "01"
     }
     if (!endDate) {
-        endDate = year + "-" + month + "-" + date1
+        endDate = year + "-" + month + "-" + date
     }
     $.ajax({
-        url: "/seacherListTimekeeping",
+        url: "/seacherDetailTimekeeping",
         type: "POST",
-        data: { currentPage, nameEmployee, employee_code, startDate, endDate },
+        data: { currentPage, idEmployee, startDate, endDate },
         cache: false,
         timeout: 50000,
     })
         .done(function (res) {
             // console.log(res);
-            $("#tableTimekeeping").html(res.htmlTable);
+            $("#tableDetailClass").html(res.htmlTable);
             return;
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
@@ -66,7 +61,19 @@ const seacherListTimekeeping = (currentPage) => {
         });
 }
 
-const redirecDetailTimeKeeping = (item) => {
-    // console.log(item, "employee_code");
-    window.location.href = '/admin/timekeeping/detail?employee_code=' + item.employee_code;
+const exportFileTimekeeping = () => {
+    var id_employee = $.trim($("#idEmployee").val());
+    var currentDate = new Date();
+    var month = currentDate.getMonth() + 1;
+    var year = currentDate.getFullYear();
+    var date = currentDate.getDate();
+    var startDate = $.trim($("#dateStart").val());
+    var endDate = $.trim($("#dateEnd").val());
+    if (!startDate) {
+        startDate = year + "-" + month + "-" + "01"
+    }
+    if (!endDate) {
+        endDate = year + "-" + month + "-" + date
+    }
+    window.location.href = `/exportFileTimekeeping?idEmployee=${id_employee}&startDate=${startDate}&endDate=${endDate}`
 }

@@ -13,5 +13,5 @@ router.get('/employee',EmployeeController.getEmployee)
 router.get('/admin',AdminController.getAdmin)
 router.get('/mac',MacAddressController.getMacAddress)
 router.get('/timekeeping',TimeKeepingController.getTimekeeping)
-
+router.get('/timekeeping/detail',TimeKeepingController.detailTimekeeping)
 module.exports = router;
