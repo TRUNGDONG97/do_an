@@ -28,6 +28,9 @@ const Timekeeping = sequelize.define(
         },
         workday:{
             type:Sequelize.INTEGER
+        },
+        note:{
+            type:Sequelize.STRING
         }
     },
     {

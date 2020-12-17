@@ -6,7 +6,7 @@ table.table.table-bordered.table-hover
             th Thời gian checkin
             th Thời gian checkout
             th Thời gian đi muộn
-            th  Ngày công
+            th Ghi chú
             //- th
     tbody#tbodyTableAdmin
         if listTimekeeping.length <=0        
@@ -20,7 +20,7 @@ table.table.table-bordered.table-hover
                     td #{item.time_checkin}
                     td #{item.time_checkout}
                     td #{item.time_late}
-                    td #{item.workday}
+                    td #{item.note}
                 
 #paginateAdmin.row.float-right(style='margin-right:10px ')
     if pageCount>=1

@@ -1,212 +1,150 @@
-import TeacherModel from '../../models/TeacherModel'
-import ClassModel from '../../models/ClassModel'
-// import RoomModel from '../../models/RoomModel'
-import ScheduleClassModel from '../../models/ScheduleClassModel'
-import SubjectModel from '../../models/SubjectModel'
-import StudentModel from '../../models/StudentModel'
-import StudentClassModel from '../../models/StudentClassModel'
-import pug from 'pug'
-import { getArrayPages, PageCount } from '../../constants/Funtions'
-import { Op } from 'sequelize'
-import sequelize from 'sequelize'
-import md5 from 'md5';
-import crypto from 'crypto-js';
+import sequelize from "sequelize";
+import md5 from "md5";
+import crypto from "crypto-js";
+import EmployeeModel from "../../models/EmployeeModel";
 const login = async (req, res, next) => {
-    const { user, password, type, deviceID } = req.body;
-    // console.log(user);
-    // console.log(password);
-    // console.log(type);
+  const { user, password, deviceID } = req.body;
+  // console.log(user);
+  // console.log(password);
+  // console.log(type);
 
-    console.log(deviceID,'device_id')
-    if (user == '' || password == '' || (type != 1 && type != 2)) {
+  console.log(deviceID, "device_id");
+  if (user == "" || password == "") {
+    res.json({
+      status: 0,
+      code: 400,
+      message: "Kiểm tra dữ liệu đầu vào",
+      data: "",
+    });
+    return;
+  }
+  try {
+      const employee = await EmployeeModel.findAndCountAll({
+        
+        where: {
+          phone: user,
+          password: md5(password),
+          is_active:1
+        },
+      });
+      if (employee.count < 1) {
         res.json({
-            "status": 0,
-            "code": 400,
-            "message": "Kiểm tra dữ liệu đầu vào",
-            "data": ""
-        })
+          status: 0,
+          code: 513,
+          message: "Sai tài khoản hoặc mật khẩu",
+          data: "",
+        });
         return;
-    }
-    try {
-        if (type == 1) {
-            const student = await StudentModel.findAndCountAll({
-                attributes: ['id', 'first_name','last_name', 'phone', 'birthday', 'address', 'email', 'device_id', 'token', 'url_avatar', 'sex', 'mssv'],
-                where: {
-                    mssv: user,
-                    password: md5(password)
-                }
-            })
-            if (student.count < 1) {
-                res.json({
-                    "status": 0,
-                    "code": 513,
-                    "message": "Sai tài khoản hoặc mật khẩu",
-                    "data": ""
-                })
-                return;
-            } else {
-                var timeNow = new Date().getTime()
-                var token = crypto.AES.encrypt(timeNow.toString(), password).toString();
-                // console.log(token)
-                await StudentModel.update({
-                    token,
-                    device_id: deviceID
-                }, {
-                    where: {
-                        id: student.rows[0].id
-                    }
-                })
-                student.rows[0].token = token
-                student.rows[0].device_id = deviceID
-                student.rows[0].birthday= student.rows[0].birthday.toString().split("-").reverse().join("/")
-                res.json({
-                    "status": 1,
-                    "code": 200,
-                    "message": "",
-                    "data": student.rows[0]
-                })
-                return;
-            }
-        }
-        if (type == 2) {
-            const teacher = await TeacherModel.findAndCountAll({
-                attributes: ['id', 'name', 'phone', 'birthday', 'address', 'email', 'device_id', 'token', 'url_avatar', 'sex', 'status', 'salary'],
-                where: {
-                    phone: user,
-                    password: md5(password),
-                    status:[1,2]
-                }
-            })
-
-            // console.log(teacher.count)
-            if (teacher.count < 1) {
-                res.json({
-                    "status": 0,
-                    "code": 513,
-                    "message": "Sai tài khoản hoặc mật khẩu",
-                    "data": ""
-                })
-                return;
-            } else {
-                var timeNow = new Date().getTime()
-                var token = crypto.AES.encrypt(timeNow.toString(), password).toString();
-                // console.log(token)
-                await TeacherModel.update({
-                    token,
-                    device_id: deviceID
-                }, {
-                    where: {
-                        id: teacher.rows[0].id
-                    }
-                })
-                teacher.rows[0].token = token
-                teacher.rows[0].device_id = deviceID
-
-                res.json({
-                    "status": 1,
-                    "code": 200,
-                    "message": "",
-                    "data": teacher.rows[0]
-                })
-                return;
-            }
-        }
-    } catch (error) {
-        console.log(error)
+      } else {
+        var timeNow = new Date().getTime();
+        var token = crypto.AES.encrypt(
+          timeNow.toString(),
+          password + employee.rows[0].employee_code
+        ).toString();
+        // console.log(token)
+        await EmployeeModel.update(
+          {
+            token,
+            device_id: deviceID,
+          },
+          {
+            where: {
+              id: employee.rows[0].id,
+              is_active:1
+            },
+          }
+        );
+        employee.rows[0].token = token;
+        employee.rows[0].device_id = deviceID;
+        employee.rows[0].birthday = employee.rows[0].birthday
+          .toString()
+          .split("-")
+          .reverse()
+          .join("/");
         res.json({
-            "status": 0,
-            "code": 404,
-            "message": "Đã có lỗi xảy ra",
-            "data": error
-        })
+          status: 1,
+          code: 200,
+          message: "",
+          data: employee.rows[0],
+        });
         return;
-    }
-
-
-}
+      }
+    
+  } catch (error) {
+    console.log(error);
+    res.json({
+      status: 0,
+      code: 404,
+      message: "Đã có lỗi xảy ra",
+      data: error,
+    });
+    return;
+  }
+};
 const logout = async (req, res, next) => {
-    const { token } = req.headers
-    // console.log(token)
-    if(token==''){
-        res.json({
-            "status": 0,
-            "code": 404,
-            "message": 'thất bại',
-            "data": ""
-        })
-        return;
+  const { token } = req.headers;
+  // console.log(token)
+  if (token == "") {
+    res.json({
+      status: 0,
+      code: 404,
+      message: "thất bại",
+      data: "",
+    });
+    return;
+  }
+  try {
+    const teacher = await TeacherModel.findAndCountAll({
+      where: {
+        token,
+      },
+    });
+    if (teacher.count > 0) {
+      await TeacherModel.update(
+        {
+          token: null,
+          device_id: null,
+        },
+        {
+          where: {
+            id: teacher.rows[0].id,
+          },
+        }
+      );
+      res.json({
+        status: 1,
+        code: 200,
+        message: "thành công",
+        data: "",
+      });
+      return;
     }
-    try {
-        const teacher = await TeacherModel.findAndCountAll({
-            where: {
-                token
-            }
-        })
-        if (teacher.count > 0) {
-            await TeacherModel.update({
-                token: null,
-                device_id:null
-            }, {
-                where: {
-                    id: teacher.rows[0].id
-                }
-            })
-            res.json({
-                "status": 1,
-                "code": 200,
-                "message": 'thành công',
-                "data": ""
-            })
-            return;
-        }
-        const student = await StudentModel.findAndCountAll({
-            where: {
-                token
-            }
-        })
-        if (student.count > 0) {
-            await StudentModel.update({
-                token: null,
-                device_id:null
-            }, {
-                where: {
-                    id: student.rows[0].id
-                }
-            })
-            res.json({
-                "status": 1,
-                "code": 200,
-                "message": 'thành công',
-                "data": ""
-            })
-            return;
-        }
-        // if (teacher.count < 0 && student < 0){
-        res.json({
-            "status": 0,
-            "code": 403,
-            "message": 'Chưa đăng nhập',
-            "data": ""
-        })
-        return;
 
-    } catch (error) {
-        res.json({
-            "status": 0,
-            "code": 404,
-            "message": "Đã có lỗi xảy ra",
-            "data": ''
-        })
-        return;
-    }
-}
+    // if (teacher.count < 0 && student < 0){
+    res.json({
+      status: 0,
+      code: 403,
+      message: "Chưa đăng nhập",
+      data: "",
+    });
+    return;
+  } catch (error) {
+    res.json({
+      status: 0,
+      code: 404,
+      message: "Đã có lỗi xảy ra",
+      data: "",
+    });
+    return;
+  }
+};
 
 // const getListClass=async(req,res,next)=>{
 
 // }
 
 export default {
-    login,
-    logout,
-    // getListClass
-}
+  login,
+  logout,
+  // getListClass
+};

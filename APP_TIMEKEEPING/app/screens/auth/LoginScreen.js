@@ -44,6 +44,7 @@ export default class LoginScreen extends Component {
   }
 
   login = async () => {
+    // NavigationUtil.navigate(SCREEN_ROUTER.MAIN)
     if (
       this.state.username.trim().length == 0 ||
       this.state.password.trim().length == 0
@@ -95,11 +96,11 @@ export default class LoginScreen extends Component {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         {this.state.isLoading && <LoadingProgressBar />}
-        {/* <FastImage
+        <FastImage
           style={styles.img}
           resizeMode="contain"
-          source={R.images.logoWindSky}
-        /> */}
+          source={R.images.logo}
+        />
         <TextInput
           onSubmitEditing={() => {
             this.passwordInput.focus();
