@@ -24,15 +24,16 @@ DROP TABLE IF EXISTS `timekeeping`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `timekeeping` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `id_employee` int DEFAULT NULL,
+  `id_employee` int NOT NULL,
   `time_checkin` time DEFAULT NULL,
   `date_timekeeping` date DEFAULT NULL,
   `is_active` tinyint DEFAULT NULL,
   `time_late` int NOT NULL DEFAULT '0',
   `time_checkout` time DEFAULT NULL,
   `workday` int NOT NULL DEFAULT '0',
+  `note` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,6 +42,7 @@ CREATE TABLE `timekeeping` (
 
 LOCK TABLES `timekeeping` WRITE;
 /*!40000 ALTER TABLE `timekeeping` DISABLE KEYS */;
+INSERT INTO `timekeeping` VALUES (1,1,'08:30:00','2020-12-14',1,0,'17:45:00',1,NULL);
 /*!40000 ALTER TABLE `timekeeping` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-10 19:37:07
+-- Dump completed on 2020-12-17 23:51:43

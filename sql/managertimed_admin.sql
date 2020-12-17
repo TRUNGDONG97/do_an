@@ -42,7 +42,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (1,'admin','21232f297a57a5a743894a0e4a801fc3','tranglt1@gmail.com','Trung Đông',1,'U2FsdGVkX1+9ZDZYNBWWDXce/Q/rmG+B/B87/hfdno4=','admin','2020-11-17 22:15:57'),(2,'tranglt','09fc9d715576b282d3bacdd1ed0843c9','tranglt@gmail.com',NULL,1,NULL,'admin','2020-11-19 22:17:50'),(5,'thangnx','2d21619b6f23193984273ff272a0a76d','thangnx@gmail.com',NULL,0,NULL,'admin','2020-11-19 22:30:54');
+INSERT INTO `admin` VALUES (1,'admin','21232f297a57a5a743894a0e4a801fc3','tranglt1@gmail.com','Trung Đông',1,'U2FsdGVkX18BtQMxrWbTMRXJjbtPGQU43h7OCwHS4V4=','admin','2020-11-17 22:15:57'),(2,'tranglt','09fc9d715576b282d3bacdd1ed0843c9','tranglt@gmail.com',NULL,1,NULL,'admin','2020-11-19 22:17:50'),(5,'thangnx','2d21619b6f23193984273ff272a0a76d','thangnx@gmail.com',NULL,0,NULL,'admin','2020-11-19 22:30:54');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-10 19:37:06
+-- Dump completed on 2020-12-17 23:51:43
