@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  $("#tabAdmin a").css({ "background-color": "#fff", color: "#078a23" });
+  $("#tabAdmin a").css({ "background-color": "#fff", color: "#f02a2a" });
   searchAdmin(1);
 });
 const searchAdmin = (currentPage) => {

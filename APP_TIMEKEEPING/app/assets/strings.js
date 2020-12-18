@@ -1,9 +1,9 @@
 import i18 from '@i18';
-const strings = {
-
+        const strings = {
+            
         home: i18.t("home"),
         notification: i18.t("notification"),
-        user: i18.t("account"),
+        user: i18.t("user"),
         account: i18.t("account"),
         update_user_info: i18.t("update_user_info"),
         class: i18.t("class"),
@@ -39,23 +39,20 @@ const strings = {
         change_pass: i18.t("change_pass"),
         user_info: i18.t("user_info"),
         forum: i18.t("forum"),
-        study: i18.t("study"),
         propose_ideas: i18.t("propose_ideas"),
         exam: i18.t("exam"),
-        news: i18.t('news'),
-        create_post: i18.t('create_post'),
-        edit_post: i18.t('edit_post'),
+        news: i18.t("news"),
+        create_post: i18.t("create_post"),
+        edit_post: i18.t("edit_post"),
         like: i18.t("like"),
         commention: i18.t("commention"),
-        my_post: i18.t("my_post"),
         filter_post: i18.t("filter_post"),
         topic: i18.t("topic"),
         category: i18.t("category"),
         choose_category: i18.t("choose_category"),
         choose_class: i18.t("choose_class"),
-        see_more: i18.t("see_more"),
-
-
-}
-
-export default strings
+        see_more: i18.t("see_more")
+        }
+ 
+        export default strings
+        

@@ -12,7 +12,7 @@ const getEmployee = async (req, res, next) => {
 };
 const searchEmployee = async (req, res, next) => {
   try {
-    const { currentPage, phoneEmployee, nameEmployee } = req.body;
+    const { currentPage, employee_code, nameEmployee } = req.body;
     // console.log("phoneEmployee", phoneEmployee);
     // console.log("nameEmployee", nameEmployee);
     const { count, rows } = await EmployeeModel.findAndCountAll({
@@ -21,8 +21,8 @@ const searchEmployee = async (req, res, next) => {
           sequelize.where(sequelize.fn("lower", sequelize.col("last_name")), {
             [Op.like]: "%" + nameEmployee + "%",
           }),
-          sequelize.where(sequelize.fn("lower", sequelize.col("phone")), {
-            [Op.like]: "%" + phoneEmployee + "%",
+          sequelize.where(sequelize.fn("lower", sequelize.col("employee_code")), {
+            [Op.like]: "%" + employee_code + "%",
           }),
           {
             is_active: 1,

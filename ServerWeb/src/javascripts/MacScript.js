@@ -1,7 +1,7 @@
 $(document).ready(function () {
   $("#tabMac a").css({
     "background-color": "#fff",
-    color: "#078a23"
+    color: "#f02a2a"
   });
   getMacAddress(1);
   $("#btnAddMacOnServer").click(addMacOnServer);

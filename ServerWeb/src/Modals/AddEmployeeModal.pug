@@ -26,7 +26,7 @@ style
             .row(style='margin-top:20px;')
               label.col-md-4.col-sm-4.col-4(style='padding-right:10px') Ngày sinh:
               .col-md-8.col-sm-8.col-8
-                input#txtAddBirthday(data-date-format='yyyy-mm-dd')
+                input.datepicker#txtAddBirthday(data-date-format='yyyy-mm-dd')
           .col-md-6.col-sm-6.col-6
             + propEmployee('txtAddAddress','Địa chỉ','text')
             + propEmployee('txtAddEmail','Email','text')

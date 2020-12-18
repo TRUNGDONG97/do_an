@@ -38,15 +38,12 @@ export default class AuthLoadingScreen extends Component {
         return (
             <Block>
                 <Image
-                    source={'../../assets/images/img_splash.png'}
+                    source={R.images.img_splash}
                     style={{ width: '100%', height: '100%' }} 
                     resizeMode={'cover'} />
             </Block>
         )
     }
-
-
-
 }
 
 const mapStateToProps = (state) => ({

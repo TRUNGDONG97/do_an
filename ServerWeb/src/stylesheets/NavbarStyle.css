@@ -58,7 +58,7 @@ body {
 #btn-drop {
     margin-right: 100px;
     /* background-color: #fff !important; */
-    color: #rgb;
+    color: '#rgb';
     margin-top: 10px;
 }
 
@@ -92,7 +92,7 @@ body {
     margin-top: 10px;
     border-radius: 2px;
     text-decoration: none;
-    color:rgb(5, 5, 5);
+    color:rgb(252, 249, 249);
  
 }
 .container-fluid .div-logo .dropdown .dropdown-menu button{
@@ -138,20 +138,6 @@ body {
     color: rgb(74, 99, 104);
     margin-left: 5px;
 }
-#txtAddBirthday{
-    padding: 6px;
-    border: 1px solid #ced4da;
-    font-family: 'Roboto', sans-seri;
-    border-radius: 3px;
-    width: 100%;
-}
-#txtEditBirthday{
-    padding: 6px;
-    border: 1px solid #ced4da;
-    font-family: 'Roboto', sans-seri;
-    border-radius: 3px;
-    width: 100%;
-}
 #paginateActive{
     background-color: #17a2b8;
     color: #fff;
@@ -189,4 +175,11 @@ body {
     border-color: #f3f5f9;
     color: #4428a7; 
     padding: 0px;
+}
+.datepicker{
+    padding: 6px;
+    border: 1px solid #ced4da;
+    font-family: 'Roboto', sans-seri;
+    border-radius: 3px;
+    /* width: 100%; */
 }

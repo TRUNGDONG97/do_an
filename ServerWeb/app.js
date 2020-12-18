@@ -7,8 +7,8 @@ import logger from "morgan";
 import indexRouter from "./src/routes/IndexRouter";
 import authRouter from "./src/routes/AuthRouter";
 import authMiddleware from "./src/middlewares/AuthMiddleware";
-import adminRouter from "./src/routes/AdminRouter";
-
+import adminRouter from "./src/routes/AdminRouter"; 
+import AppRouter from "./src/routes/AppRouter";
 const app = express();
 
 // view engine setup
@@ -24,6 +24,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/" ,indexRouter);
 app.use("/admin", authRouter);
 app.use("/admin", authMiddleware.requireAuth, adminRouter);
+app.use("/app",  AppRouter);
 // app.use('/app', appRouter);
 
 // app.use('/api/teacher', teacher);

@@ -38,23 +38,18 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
     let iconName = 'basket';
     let iconSize = focused ? 25 : 20
     switch (routeName) {
-        case SCREEN_ROUTER.CLASS: {
-            iconName = "school";
-            return (
-                <Icon.MaterialIcons
-                    name={iconName}
-                    size={iconSize}
-                    color={tintColor}
-                    outline
-                />
-            );
-        }
-        case SCREEN_ROUTER.LIST_ABSENT: {
+        case SCREEN_ROUTER.HOME: {
             iconName = "earth";
             return (
                 <Icon.Fontisto name={iconName} size={iconSize} color={tintColor} outline />
             );
         }
+        // case SCREEN_ROUTER.LIST_ABSENT: {
+        //     iconName = "earth";
+        //     return (
+        //         <Icon.Fontisto name={iconName} size={iconSize} color={tintColor} outline />
+        //     );
+        // }
         case SCREEN_ROUTER.NOTIFICATION: {
             iconName = "bell"
             break
@@ -70,20 +65,20 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
 
 const Main = createBottomTabNavigator(
     {
-        [SCREEN_ROUTER.CLASS]: {
-            screen: ClassScreen,
+        [SCREEN_ROUTER.HOME]: {
+            screen: HomeScreen,
             title: R.strings.class,
             navigationOptions: {
                 tabBarLabel: R.strings.class,
             },
         },
-        [SCREEN_ROUTER.LIST_ABSENT]: {
-            screen: ListAbsentScreen,
-            title: 'Điểm danh',
-            navigationOptions: {
-                tabBarLabel: "Điểm danh",
-            },
-        },
+        // [SCREEN_ROUTER.LIST_ABSENT]: {
+        //     screen: ListAbsentScreen,
+        //     title: 'Điểm danh',
+        //     navigationOptions: {
+        //         tabBarLabel: "Điểm danh",
+        //     },
+        // },
         [SCREEN_ROUTER.NOTIFICATION]: {
             screen: NotificationScreen,
             title: R.strings.notification,
@@ -122,12 +117,13 @@ const Main = createBottomTabNavigator(
                 />
             );
         },
-        initialRouteName: SCREEN_ROUTER.CLASS
+        initialRouteName: SCREEN_ROUTER.HOME
     }
 )
 
 const MainStack = createStackNavigator({
     [SCREEN_ROUTER.MAIN]: Main,
+    [SCREEN_ROUTER.HOME]: HomeScreen,
     [SCREEN_ROUTER.STUDY]: StudyScreen,
     [SCREEN_ROUTER.CHANGE_PASSWORD]: ChangePassWordScreen,
     [SCREEN_ROUTER.CHANGE_USER_INFO]: ChangeUserInfo,

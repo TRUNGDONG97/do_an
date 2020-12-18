@@ -49,6 +49,9 @@ const Employee = sequelize.define(
     },
     department: {
       type: Sequelize.STRING
+    },
+    device_id:{
+      type:Sequelize.STRING
     }
   },
   {
