@@ -10,6 +10,7 @@ import DateUtil from "../util/DateUtil";
 import excel from "exceljs";
 import MacAdress from "../models/MacAddressModel";
 import getMAC, { isMAC } from 'getmac'
+var wifi = require('node-wifi');
 const getMacAddress = async (req, res, next) => {
     res.render('MacAddressView');
 }
@@ -198,11 +199,23 @@ const editMacAddress = async (req, res, next) => {
 }
 const getMacOnServer = async (req, res, next) => {
     try {
-        var macAddress = await getMAC()
-        res.send({
-            macAddress
+        wifi.init({
+            iface: null // network interface, choose a random wifi interface if set to null
+          });
+        wifi.getCurrentConnections((error, currentConnections) => {
+            if (error) {
+                res.status(404).send();
+                return;
+            } else {
+                console.log(currentConnections,"currentConnections");
+                res.send({
+                    macAddress:currentConnections[0].mac
+                });
+            }
         });
+       
     } catch (error) {
+        console.log("error",error);
         res.status(404).send();
         return;
     }
