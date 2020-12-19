@@ -9,6 +9,7 @@ const images = {
     ic_check: require("./images/ic_check.png"),
     ic_comments: require("./images/ic_comments.png"),
     ic_date: require("./images/ic_date.png"),
+    ic_empty_box: require("./images/ic_empty_box.png"),
     ic_facebook_like: require("./images/ic_facebook_like.png"),
     ic_female: require("./images/ic_female.png"),
     ic_home: require("./images/ic_home.png"),

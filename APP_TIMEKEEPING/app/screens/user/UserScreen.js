@@ -53,7 +53,7 @@ export class UserScreen extends Component {
                 <SafeAreaView style={theme.styles.containter}>
                     <BackgroundHeader />
                     <WindsHeader
-                        title={R.strings.user}
+                        title={"User"}
                     />
                     {this._renderBody()}
                 </SafeAreaView>
@@ -155,7 +155,7 @@ export class UserScreen extends Component {
                     </View>
                     <View style={styles._viewInfo}>
                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                            <Text style={[theme.fonts.bold16, { color: theme.colors.primaryText }]}>{R.strings.user_info}</Text>
+                            <Text style={[theme.fonts.bold16, { color: theme.colors.primaryText }]}>User Info</Text>
                             <TouchableOpacity
                                 onPress={() => NavigationUtil.navigate(SCREEN_ROUTER.CHANGE_USER_INFO)}
                             >
@@ -166,17 +166,17 @@ export class UserScreen extends Component {
                         </View>
 
                         {this._renderInfo('Email', UserInfoState.data.email)}
-                        {this._renderInfo('Mssv', UserInfoState.data.mssv)}
-                        {this._renderInfo('Ngày sinh', UserInfoState.data.birthday)}
+                        {this._renderInfo('Id ', UserInfoState.data.employee_code)}
+                        {this._renderInfo('Birthday', UserInfoState.data.birthday)}
                         {/* {this._renderInfo(R.strings.phone,  UserInfoState.data.phone)} */}
-                        {this._renderInfo(R.strings.address, UserInfoState.data.address)}
+                        {this._renderInfo("Address", UserInfoState.data.address)}
                     </View>
 
                     <View style={styles._viewInfo}>
-                        {this._renderOption(R.strings.change_pass, () => {
+                        {this._renderOption("Change password", () => {
                             NavigationUtil.navigate(SCREEN_ROUTER.CHANGE_PASSWORD)
                         })}
-                        {this._renderOption(R.strings.logout, () => {
+                        {this._renderOption("Log out", () => {
                             showConfirm('Thông báo', 'Bạn có chắc chắn muốn đăng xuất không?', this._logout)
                         })}
                     </View>

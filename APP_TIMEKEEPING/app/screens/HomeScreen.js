@@ -8,10 +8,14 @@ import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import LinearGradient from "react-native-linear-gradient";
+
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -27,19 +31,39 @@ export default class HomeScreen extends Component {
   }
   _renderInfoItem(title, text) {
     return (
-        <View style={{ flexDirection: "row", paddingHorizontal: 10, paddingVertical: 5, marginLeft: 20 }}>
-            <Text style={[theme.fonts.medium15, {
-                color: theme.colors.backgroundHeader,
-                width: 120
-            }]}>{title}</Text>
-            <Text style={[theme.fonts.medium15, {
-                color: theme.colors.backgroundHeader,
-                flex: 1,
-            }]}>:  {text}</Text>
-
-        </View>
-    )
-}
+      <View
+        style={{
+          flexDirection: "row",
+          paddingHorizontal: 10,
+          paddingVertical: 5,
+          marginLeft: 20
+        }}
+      >
+        <Text
+          style={[
+            theme.fonts.medium15,
+            {
+              color: theme.colors.backgroundHeader,
+              width: 120
+            }
+          ]}
+        >
+          {title}
+        </Text>
+        <Text
+          style={[
+            theme.fonts.medium15,
+            {
+              color: theme.colors.backgroundHeader,
+              flex: 1
+            }
+          ]}
+        >
+          : {text}
+        </Text>
+      </View>
+    );
+  }
   _renderRowTable(item, index) {
     return (
       <View
@@ -89,11 +113,76 @@ export default class HomeScreen extends Component {
           // alignItems: 'center'
         }}
       >
-          <View style={styles._viewUser}>
-                    {this._renderInfoItem('Thời gian muộn :',"10 phút")}
-                    {this._renderInfoItem('Số ngày công', "3 ngày ")}
-               
-                </View>
+        <View style={styles._viewUser}>
+          {this._renderInfoItem("Time late :", "10 phút")}
+          {this._renderInfoItem("Day", "3 ngày ")}
+        </View>
+        <View
+          style={{ flexDirection: "row", marginTop: 20, marginHorizontal: 20,justifyContent:"space-between" }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center"
+            }}
+          >
+            <Text>From :</Text>
+            <DatePicker
+              style={{ width: width * 0.3, marginLeft: 10 }}
+              date={this.state.startDate}
+              mode="date"
+              placeholder="select date"
+              format="YYYY-MM-DD"
+              showIcon={false}
+              //   minDate="2016-05-01"
+              //   maxDate="2016-06-01"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                // dateIcon: {
+                //   position: "absolute",
+                //   left: 0,
+                //   top: 4,
+                //   marginLeft: 0
+                // },
+                dateInput: {
+                  // marginLeft: 36
+                }
+                // ... You can check the source to find the other keys.
+              }}
+              onDateChange={date => {
+                this.setState({ startDate: date });
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text>To :</Text>
+            <DatePicker
+              style={{ width: width * 0.3, marginLeft: 10 }}
+              date={this.state.endDate}
+              mode="date"
+              placeholder="select date"
+              showIcon={false}
+              format="YYYY-MM-DD"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateInput: {
+                  // marginLeft: 36
+                }
+                // ... You can check the source to find the other keys.
+              }}
+              onDateChange={date => {
+                this.setState({ endDate: date });
+              }}
+            />
+          </View>
+        </View>
         <View
           style={{
             flexDirection: "row",
@@ -150,71 +239,6 @@ export default class HomeScreen extends Component {
           </TouchableOpacity>
         </View>
 
-        <View
-          style={{ flexDirection: "row", alignItems: "center", marginLeft: 20,marginTop:20 }}
-        >
-          <Text>Từ ngày :</Text>
-          <DatePicker
-            style={{ width: 200, marginLeft: 28 }}
-            date={this.state.startDate}
-            mode="date"
-            placeholder="select date"
-            format="YYYY-MM-DD"
-            //   minDate="2016-05-01"
-            //   maxDate="2016-06-01"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: "absolute",
-                left: 0,
-                top: 4,
-                marginLeft: 0
-              },
-              dateInput: {
-                marginLeft: 36
-              }
-              // ... You can check the source to find the other keys.
-            }}
-            onDateChange={date => {
-              this.setState({ startDate: date });
-            }}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginLeft: 20,
-            marginTop: 20
-          }}
-        >
-          <Text>Đến ngày :</Text>
-          <DatePicker
-            style={{ width: 200, marginLeft: 20 }}
-            date={this.state.endDate}
-            mode="date"
-            placeholder="select date"
-            format="YYYY-MM-DD"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: "absolute",
-                left: 0,
-                top: 4,
-                marginLeft: 0
-              },
-              dateInput: {
-                marginLeft: 36
-              }
-              // ... You can check the source to find the other keys.
-            }}
-            onDateChange={date => {
-              this.setState({ endDate: date });
-            }}
-          />
-        </View>
         <ScrollView
           contentContainerStyle={{
             width: 550,

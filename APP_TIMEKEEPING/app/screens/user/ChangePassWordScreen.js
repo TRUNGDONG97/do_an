@@ -20,7 +20,8 @@ import {
     FastImage, Icon,
     Content,
     Button,
-    LabelTextInput
+    LabelTextInput,
+    AppHeader
 } from '@component'
 import R from '@R'
 import theme from '@theme'
@@ -77,8 +78,7 @@ export class ChangePassWordScreen extends Component {
         return (
             <Block>
                 <SafeAreaView style={theme.styles.containter}>
-                    <BackgroundHeader />
-                    <WindsHeader title='Đổi mật khẩu' />
+                     <AppHeader title="Change Password" />
                     {this._renderBody()}
                 </SafeAreaView>
             </Block>
@@ -96,30 +96,30 @@ export class ChangePassWordScreen extends Component {
                     {/* {this.state.isLoading && <LoadingProgressBar />} */}
                     <LabelTextInput
                         secure={true}
-                        label="Mật khẩu cũ"
+                        label="Old password"
                         onChangeText={text => this.setState({ oldPass: text })}
                         // value={this.state.oldPass}
                         secureTextEntry={true}
-                        placeholder="Mật khẩu cũ"
+                        placeholder="Old password"
                     />
                     <LabelTextInput
                         secure={true}
-                        label="Mật khẩu mới"
+                        label="New password"
                         onChangeText={text => this.setState({ newPass: text })}
                         // value={this.state.newPass}
                         secureTextEntry={true}
-                        placeholder="Mật khẩu mới"
+                        placeholder="New password"
                     />
                     <LabelTextInput
                         secure={true}
-                        label="Xác nhận mật khẩu mới"
+                        label="Comfirm new password"
                         onChangeText={text => this.setState({ confirmPass: text })}
                         // value={this.state.confirmPass}
                         secureTextEntry={true}
-                        placeholder="Xác nhận mật khẩu mới"
+                        placeholder="Comfirm new password"
                     />
                     <Button
-                        title="Đổi mật khẩu"
+                        title="Change password"
                         onPress={() => {
                             // reactotron.log(this.state.oldPass);
                             // reactotron.log(this.state.newPass);

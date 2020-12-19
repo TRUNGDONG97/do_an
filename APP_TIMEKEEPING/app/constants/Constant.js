@@ -5,7 +5,6 @@ const SCREEN_ROUTER = {
   LOGIN: "Login",
   AUTH_LOADING: "AuthLoading",
   FORGOT_PASS: "ForgotPassword",
-  REGISTER: "Register",
   USER: 'User',
   CLASS: 'Class',
   NOTIFICATION: 'Notification',

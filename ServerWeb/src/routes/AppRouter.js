@@ -1,15 +1,14 @@
 import express from 'express'
 import Auth from '../api/AppApi/AuthApi'
-// import Student from '../api/AppApi/StudentApi'
-// import Teacher from '../api/AppApi/TeacherApi'
+import AppApi from '../api/AppApi/AppApi'
 const router = express.Router();
 router.post('/login', Auth.login)
 router.get('/logout', Auth.logout)
-
+router.get('/app/api/notification', AppApi.notification)
 // router.get('/student/getClass', Student.getClass)
-// router.get('/student/getUserInfo', Student.getUserInfo)
-// router.post('/student/changeUserInfo', Student.changeUserInfo)
-// router.post('/student/changePass', Student.changePass)
+router.get('/app/api/getUserInfo', AppApi.getUserInfo)
+router.post('/app/api/changeUserInfo', AppApi.changeUserInfo)
+router.post('/app/api/changePass', AppApi.changePass)
 // router.get('/student/getListAbsentClass', Student.ListAbsentClass)
 // router.get('/student/getDetaiClass', Student.DetailClass)
 // router.get('/student/notification', Student.notification)

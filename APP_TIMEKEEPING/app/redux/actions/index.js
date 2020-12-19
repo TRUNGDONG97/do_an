@@ -24,22 +24,14 @@ export const getUserInfo = () => ({
 //   typeLoading: typeLoading
 // });
 
-export const getListClassAction = () => ({
-  type: GET_LIST_CLASS,
-  payload: {}
-});
+
 
 export const getListNotifyAction = () => ({
   type: GET_LIST_NOTIFICATION,
   payload: { }
 });
 
-export const getListFeeAction = (dateTime) => ({
-  type: GET_LIST_FEE,
-  payload: {
-    dateTime: dateTime
-  }
-});
+
 export const updateUser = payload => ({
   type: UPDATE_USER,
   payload: payload

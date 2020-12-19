@@ -4,29 +4,21 @@ import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs'
 import AuthLoadingScreen from '../screens/auth/AuthLoadingScreen'
 import LoginScreen from '../screens/auth/LoginScreen'
-import RegisterScreen from '../screens/auth/RegisterScreen'
-// import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen'
 import HomeScreen from '@screen/HomeScreen'
 import UserScreen from '../screens/user/UserScreen'
 import ChangePassWordScreen from '@screen/user/ChangePassWordScreen'
-import ClassScreen from '@screen/class/ClassScreen'
-import StudyScreen from '@screen/study/StudyScreen'
 import NotificationScreen from '@screen/notification/NotificationScreen'
 import { SCREEN_ROUTER } from '@constant'
 import R from '@R';
 import theme from "@theme";
 import { Icon, ImageViewerScreen } from '@component'
 import ChangeUserInfo from '@screen/user/ChangeUserInfo'
-import ListAbsentScreen from '@screen/absent/ListAbsentScreen'
-import ClassDetailScreen from '@screen/class/ClassDetailScreen'
 import CameraScreen from '@screen/class/CameraScreen'
 
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
 const Auth = createStackNavigator({
     [SCREEN_ROUTER.LOGIN]: LoginScreen,
-    [SCREEN_ROUTER.REGISTER]: RegisterScreen,
-    // [SCREEN_ROUTER.FORGOT_PASS]: ForgotPasswordScreen
 }, {
     defaultNavigationOptions: {
         header: null
@@ -67,30 +59,23 @@ const Main = createBottomTabNavigator(
     {
         [SCREEN_ROUTER.HOME]: {
             screen: HomeScreen,
-            title: R.strings.class,
+            title: "Timekeeping",
             navigationOptions: {
-                tabBarLabel: R.strings.class,
+                tabBarLabel:"Timekeeping",
             },
         },
-        // [SCREEN_ROUTER.LIST_ABSENT]: {
-        //     screen: ListAbsentScreen,
-        //     title: 'Điểm danh',
-        //     navigationOptions: {
-        //         tabBarLabel: "Điểm danh",
-        //     },
-        // },
         [SCREEN_ROUTER.NOTIFICATION]: {
             screen: NotificationScreen,
-            title: R.strings.notification,
+            title:"Notification",
             navigationOptions: {
-                tabBarLabel: R.strings.notification,
+                tabBarLabel: "Notification",
             },
         },
         [SCREEN_ROUTER.USER]: {
             screen: UserScreen,
-            title: R.strings.user,
+            title: "User",
             navigationOptions: {
-                tabBarLabel: R.strings.user,
+                tabBarLabel: "User",
             },
         },
     },
@@ -124,10 +109,8 @@ const Main = createBottomTabNavigator(
 const MainStack = createStackNavigator({
     [SCREEN_ROUTER.MAIN]: Main,
     [SCREEN_ROUTER.HOME]: HomeScreen,
-    [SCREEN_ROUTER.STUDY]: StudyScreen,
     [SCREEN_ROUTER.CHANGE_PASSWORD]: ChangePassWordScreen,
     [SCREEN_ROUTER.CHANGE_USER_INFO]: ChangeUserInfo,
-    [SCREEN_ROUTER.DETAIL_CLASS]: ClassDetailScreen,
     [SCREEN_ROUTER.CAMERA]: CameraScreen,
 },
     {

@@ -35,9 +35,10 @@ class FlatListItem extends Component {
                 style={styles._vItem}
                 rippleDuration={800}
                 rippleSequential={true}
-                onPress={() => {
-                    NavigationUtil.navigate(SCREEN_ROUTER.DETAIL_CLASS,{class_id:item.class_id})
-                }}>
+                // onPress={() => {
+                //     NavigationUtil.navigate(SCREEN_ROUTER.DETAIL_CLASS,{class_id:item.class_id})
+                // }}
+                >
                 <Icon.Ionicons
                     name="md-notifications"
                     size={35}
@@ -74,7 +75,7 @@ class NotificationScreen extends Component {
     }
     _renderBody() {
         const { notificationState } = this.props
-        // reactotron.log('notificationState', notificationState)
+        // console.log('notificationState', notificationState)
         if (notificationState.isLoading) return <Loading />;
         if (notificationState.error)
             return (
@@ -111,7 +112,7 @@ class NotificationScreen extends Component {
             <Block>
                 <SafeAreaView style={theme.styles.containter}>
                     <BackgroundHeader />
-                    <WindsHeader title={R.strings.notification} />
+                    <WindsHeader title={"Notification"} />
                     {this._renderBody()}
                 </SafeAreaView>
             </Block>

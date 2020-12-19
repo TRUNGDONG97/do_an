@@ -41,15 +41,7 @@ export function* getListAbsent(action) {
   }
 }
 
-export function* getListClass() {
-  try {
-    const response = yield call(API.getListClass)
-    yield put({ type: GET_LIST_CLASS_SUCCESS, payload: response.data })
-  } catch (err) {
-    yield put({ type: GET_LIST_CLASS_FAIL, payload: err })
-    // alert(err)
-  }
-}
+
 
 
 export function* getListNotify() {
@@ -63,16 +55,7 @@ export function* getListNotify() {
   }
 }
 
-export function* getListFee(action) {
-  try {
-    const response = yield call(API.getListFee, action.payload)
-    yield put({ type: GET_LIST_FEE_SUCCESS, payload: response.data })
-    // alert(JSON.stringify(response))
-  } catch (err) {
-    yield put({ type: GET_LIST_FEE_FAIL, payload: err })
-    // alert(err)
-  }
-}
+
 export function* getUserInfo() {
   try {
     const response = yield call(API.getUserInfo)
@@ -110,9 +93,7 @@ export function* updateUser(action) {
 //   }
 // }
 export const watchListAbsent = takeEvery(GET_LIST_ABSENT, getListAbsent);
-export const watchGetListClass = takeEvery(GET_LIST_CLASS, getListClass);
 export const watchGetListNotify = takeEvery(GET_LIST_NOTIFICATION, getListNotify);
-export const watchGetListFee = takeEvery(GET_LIST_FEE, getListFee);
 export const watchGetUserInfo = takeEvery(GET_USER_INFOR, getUserInfo);
 export const watchUpdateUser = takeEvery(UPDATE_USER, updateUser);
 // export const watchGetDetailClass = takeEvery(GET_DETAIL_CLASS, getDetailClass);

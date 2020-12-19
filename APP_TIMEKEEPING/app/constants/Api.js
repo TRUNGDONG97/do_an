@@ -9,7 +9,7 @@ import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 function createAxios() {
   // AsyncStorage.setItem("token", '2323226DADAD') //full
   var axiosInstant = axios.create();
-  axiosInstant.defaults.baseURL = "http://cad154c78cf9.ngrok.io/app";
+  axiosInstant.defaults.baseURL = "http://9fe502bb1d3b.ngrok.io/app";
   axiosInstant.defaults.timeout = 20000;
   axiosInstant.defaults.headers = { "Content-Type": "application/json" };
 
@@ -90,23 +90,17 @@ export const getListClass = () => {
 
 //get User infor
 export const getUserInfo = () => {
-  return handleResult(getAxios.get("student/getUserInfo"));
+  return handleResult(getAxios.get("/app/api/getUserInfo"));
 };
 
-//get list fee
-export const getListFee = payload => {
-  return handleResult(getAxios.post("api/Service/GetListFee", payload));
-};
+
 
 // change pass
 export const changePass = payload => {
-  return handleResult(getAxios.post("student/changePass", payload));
+  return handleResult(getAxios.post("app/api/changePass", payload));
 };
 
-//get list bank
-export const getListBank = () => {
-  return handleResult(getAxios.get("api/Service/GetListBank"));
-};
+
 export const getDetailClass = class_id => {
   return handleResult(getAxios.get(`student/getDetaiClass?class_id=${class_id}`));
 };
@@ -117,30 +111,19 @@ export const getListAbsent = () => {
   );
 };
 
-//create review
-export const createReview = payLoad => {
-  return handleResult(getAxios.post("api/Service/CreateReview", payLoad));
-};
 
 //get notification
 export const getListNotification = () => {
   return handleResult(
-    getAxios.get("student/notification")
+    getAxios.get("/app/api/notification")
   );
 };
 
-export const registerAcc = payload => {
-  return handleResult(getAxios.post("api/Service/Register", payload));
-};
-
-export const delNotify = payload => {
-  return handleResult(getAxios.post("api/Service/DeleteNoti", payload));
-};
 export const updateUser = payload => {
-  return handleResult(getAxios.post(`student/changeUserInfo`, payload));
+  return handleResult(getAxios.post(`app/api/changeUserInfo`, payload));
 };
 export const absent = payload => {
-  return handleResult(getAxios.post(`student/absent`, payload));
+  return handleResult(getAxios.post(`app/api/absent`, payload));
 };
 export const uploadImage = payload => {
   return handleResult(getAxios.post(`student/uploadImage`, payload, {

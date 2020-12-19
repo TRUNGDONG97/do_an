@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, Image, ScrollView, RefreshControl } from "react-native";
 import theme from "@theme";
+import R from "@app/assets/R";
 
 class Empty extends Component {
   render() {
@@ -31,11 +32,11 @@ class Empty extends Component {
           }}
         >
           <Image
-            source={urlImage}
+            source={R.images.ic_empty_box}
             style={{
               resizeMode: "contain",
               width: theme.dimension.width / 3,
-              height: theme.dimension.width / 3
+              height: theme.dimension.width / 3,
             }}
           />
           <Text
