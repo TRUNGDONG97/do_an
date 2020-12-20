@@ -12,10 +12,10 @@ const Timekeeping = sequelize.define(
             type: Sequelize.INTEGER
         },
         time_checkin: {
-            type: Sequelize.TIME
+            type: Sequelize.INTEGER
         },
         time_checkout: {
-            type: Sequelize.TIME
+            type: Sequelize.INTEGER
         },
         date_timekeeping: {
             type: Sequelize.DATE
@@ -31,6 +31,9 @@ const Timekeeping = sequelize.define(
         },
         note:{
             type:Sequelize.STRING
+        },
+        status:{
+            type:Sequelize.INTEGER, //0  hoăc 1 chỉ trạng thái checkin hay chưa , nếu bằng 3 đã xin nghỉ
         }
     },
     {

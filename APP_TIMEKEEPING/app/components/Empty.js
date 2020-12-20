@@ -5,7 +5,7 @@ import R from "@app/assets/R";
 
 class Empty extends Component {
   render() {
-    const { title, description, urlImage, onRefresh, isRefresh } = this.props
+    const { title, description, urlImage, onRefresh, isRefresh,image } = this.props
 
     return (
       <ScrollView
@@ -31,14 +31,14 @@ class Empty extends Component {
             paddingHorizontal: "5%"
           }}
         >
-          <Image
+          {!!image&&<Image
             source={R.images.ic_empty_box}
             style={{
               resizeMode: "contain",
               width: theme.dimension.width / 3,
               height: theme.dimension.width / 3,
             }}
-          />
+          />}
           <Text
             style={[
               theme.fonts.bold16,
@@ -56,7 +56,7 @@ class Empty extends Component {
               {
                 marginTop: 10,
                 marginBottom: 10,
-                color: theme.colors.gray,
+                color: 'black',
                 textAlign: "center"
               }
             ]}

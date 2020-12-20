@@ -9,7 +9,7 @@ import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 function createAxios() {
   // AsyncStorage.setItem("token", '2323226DADAD') //full
   var axiosInstant = axios.create();
-  axiosInstant.defaults.baseURL = "http://9fe502bb1d3b.ngrok.io/app";
+  axiosInstant.defaults.baseURL = "http://e9bfd92d4fb7.ngrok.io/app";
   axiosInstant.defaults.timeout = 20000;
   axiosInstant.defaults.headers = { "Content-Type": "application/json" };
 
@@ -83,9 +83,7 @@ export const requestLogout = payload => {
 
 //get list class
 export const getListClass = () => {
-  return handleResult(
-    getAxios.get(`student/getClass`)
-  );
+  return handleResult(getAxios.get(`student/getClass`));
 };
 
 //get User infor
@@ -93,30 +91,28 @@ export const getUserInfo = () => {
   return handleResult(getAxios.get("/app/api/getUserInfo"));
 };
 
-
-
 // change pass
 export const changePass = payload => {
   return handleResult(getAxios.post("app/api/changePass", payload));
 };
 
-
-export const getDetailClass = class_id => {
-  return handleResult(getAxios.get(`student/getDetaiClass?class_id=${class_id}`));
+export const getListTimekeeping = (startDate, endDate) => {
+  console.log("startDate", startDate);
+  console.log("endDate", endDate);
+  return handleResult(
+    getAxios.get(
+      `/app/api/getListTimekeeping?startDate=${startDate}&endDate=${endDate}`
+    )
+  );
 };
 
 export const getListAbsent = () => {
-  return handleResult(
-    getAxios.get("student/getListAbsentClass")
-  );
+  return handleResult(getAxios.get("student/getListAbsentClass"));
 };
-
 
 //get notification
 export const getListNotification = () => {
-  return handleResult(
-    getAxios.get("/app/api/notification")
-  );
+  return handleResult(getAxios.get("/app/api/notification"));
 };
 
 export const updateUser = payload => {
@@ -126,11 +122,13 @@ export const absent = payload => {
   return handleResult(getAxios.post(`app/api/absent`, payload));
 };
 export const uploadImage = payload => {
-  return handleResult(getAxios.post(`student/uploadImage`, payload, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'multipart/form-data',
-    },
-    // onUploadProgress: callback,
-  }));
+  return handleResult(
+    getAxios.post(`student/uploadImage`, payload, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data"
+      }
+      // onUploadProgress: callback,
+    })
+  );
 };

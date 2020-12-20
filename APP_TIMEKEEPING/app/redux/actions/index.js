@@ -6,7 +6,8 @@ import {
   GET_USER_INFOR,
   UPDATE_USER,
   GET_CLASS,
-  GET_DETAIL_CLASS
+  GET_DETAIL_CLASS,
+  GET_LIST_TIMEKEEPING
 } from "./type";
 
 export const getUserInfo = () => ({
@@ -24,13 +25,10 @@ export const getUserInfo = () => ({
 //   typeLoading: typeLoading
 // });
 
-
-
 export const getListNotifyAction = () => ({
   type: GET_LIST_NOTIFICATION,
-  payload: { }
+  payload: {}
 });
-
 
 export const updateUser = payload => ({
   type: UPDATE_USER,
@@ -40,10 +38,10 @@ export const getListAbsent = () => ({
   type: GET_LIST_ABSENT,
   payload: {}
 });
-// export const getDetailClass = (class_id) => ({
-//   type: GET_DETAIL_CLASS,
-//   payload: {
-//     class_id
-//   }
-// });
-
+export const getListTimekeeping = (startDate, endDate) => ({
+  type: GET_LIST_TIMEKEEPING,
+  payload: {
+    startDate,
+    endDate
+  }
+});

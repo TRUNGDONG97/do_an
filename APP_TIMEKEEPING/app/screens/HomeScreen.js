@@ -1,5 +1,3 @@
-import { BackgroundHeader, Block, Empty, WindsHeader } from "@app/components";
-import { SCREEN_ROUTER } from "@app/constants/Constant";
 import theme from "@app/constants/Theme";
 import React, { Component } from "react";
 import {
@@ -9,11 +7,26 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Dimensions
+  Dimensions,
+  RefreshControl
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import LinearGradient from "react-native-linear-gradient";
-
+import { getListTimekeeping } from "@api";
+import {
+  AppHeader,
+  Block,
+  Button,
+  Empty,
+  Checkbox,
+  BackgroundHeader,
+  WindsHeader,
+  Icon,
+  Loading,
+  Error
+} from "@component";
+import { SCREEN_ROUTER } from "@app/constants/Constant";
+import reactotron from "reactotron-react-native";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 export default class HomeScreen extends Component {
@@ -24,11 +37,37 @@ export default class HomeScreen extends Component {
     var year = date.getFullYear();
     var date1 = date.getDate();
     this.state = {
-      data: [1, 2, 3],
+      dataFake: [1, 2, 3],
       startDate: year + "-" + month + "-" + "01",
-      endDate: year + "-" + month + "-" + date1
+      endDate: year + "-" + month + "-" + date1,
+      refreshing: false,
+      isLoading: true,
+      data: {},
+      error: null
     };
   }
+  componentDidMount() {
+    this.getListTimekeeping();
+  }
+  getListTimekeeping = async () => {
+    const { startDate, endDate } = this.state;
+
+    try {
+      this.setState({ isLoading: true });
+      const response = await getListTimekeeping(startDate, endDate);
+      reactotron.log("response", response);
+      this.setState({
+        isLoading: false,
+        error: false,
+        data: response
+      });
+    } catch (error) {
+      this.setState({
+        isLoading: false,
+        error: true
+      });
+    }
+  };
   _renderInfoItem(title, text) {
     return (
       <View
@@ -74,12 +113,7 @@ export default class HomeScreen extends Component {
               index % 2 ? theme.colors.backgroundBlueItem : theme.colors.white
           }
         ]}
-        onPress={() => {
-          // NavigationUtil.navigate(SCREEN_ROUTER.ABSENT_STUDENT, {
-          //     class_id: this.state.class_id,
-          //     student_id: item.id
-          // })
-        }}
+      
       >
         <View style={[styles.rowTable, { flex: 1 }]}>
           <Text style={theme.fonts.regular14}>{index + 1}</Text>
@@ -89,36 +123,36 @@ export default class HomeScreen extends Component {
             style={theme.fonts.regular14}
             // numberOfLines={2}
           >
-            2020-12-17
+            {item.date_timekeeping}
           </Text>
         </View>
         <View style={[styles.rowTable, { flex: 3 }]}>
-          <Text style={theme.fonts.regular14}>08:30:00</Text>
+          <Text style={theme.fonts.regular14}>{item.time_checkin}</Text>
         </View>
         <View style={[styles.rowTable, { flex: 3 }]}>
-          <Text style={theme.fonts.regular14}>17:30:00</Text>
+          <Text style={theme.fonts.regular14}>{item.time_checkout}</Text>
         </View>
         <View style={[styles.rowTable, { flex: 2 }]}>
-          <Text style={theme.fonts.regular14}>0</Text>
+          <Text style={theme.fonts.regular14}>{item.time_late}</Text>
         </View>
       </View>
     );
   }
-  _renderBody() {
+  _renderTop() {
+    const  {data}=this.state
     return (
-      <View
-        style={{
-          flex: 1
-          // justifyContent: 'center',
-          // alignItems: 'center'
-        }}
-      >
+      <View>
         <View style={styles._viewUser}>
-          {this._renderInfoItem("Time late :", "10 phút")}
-          {this._renderInfoItem("Day", "3 ngày ")}
+          {this._renderInfoItem("Time late :",data.data.countTimeLate +" minute")}
+          {this._renderInfoItem("Day",data.data.countWorkday+ " day ")}
         </View>
         <View
-          style={{ flexDirection: "row", marginTop: 20, marginHorizontal: 20,justifyContent:"space-between" }}
+          style={{
+            flexDirection: "row",
+            marginTop: 20,
+            marginHorizontal: 20,
+            justifyContent: "space-between"
+          }}
         >
           <View
             style={{
@@ -134,31 +168,18 @@ export default class HomeScreen extends Component {
               placeholder="select date"
               format="YYYY-MM-DD"
               showIcon={false}
-              //   minDate="2016-05-01"
-              //   maxDate="2016-06-01"
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
-              customStyles={{
-                // dateIcon: {
-                //   position: "absolute",
-                //   left: 0,
-                //   top: 4,
-                //   marginLeft: 0
-                // },
-                dateInput: {
-                  // marginLeft: 36
-                }
-                // ... You can check the source to find the other keys.
-              }}
               onDateChange={date => {
                 this.setState({ startDate: date });
+                this.getListTimekeeping()
               }}
             />
           </View>
           <View
             style={{
               flexDirection: "row",
-              alignItems: "center",
+              alignItems: "center"
             }}
           >
             <Text>To :</Text>
@@ -171,14 +192,9 @@ export default class HomeScreen extends Component {
               format="YYYY-MM-DD"
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
-              customStyles={{
-                dateInput: {
-                  // marginLeft: 36
-                }
-                // ... You can check the source to find the other keys.
-              }}
               onDateChange={date => {
                 this.setState({ endDate: date });
+                this.getListTimekeeping()
               }}
             />
           </View>
@@ -234,62 +250,100 @@ export default class HomeScreen extends Component {
               start={{ x: 0.7, y: 1 }} //transparent
               end={{ x: 0, y: 0.1 }}
             >
-              <Text style={styles.text}>Take leave</Text>
+              <Text style={styles.text}>Off work</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
+      </View>
+    );
+  }
+  _renderHeaderTable() {
+    return (
+      <View>
+        <View
+          style={[
+            styles._vColumn,
+            {
+              backgroundColor: theme.colors.backgroundBlue,
+              borderTopWidth: 0.5,
+              borderTopColor: theme.colors.gray,
+              marginTop: 10
+            }
+          ]}
+        >
+          <View style={[styles.rowTable, { flex: 1 }]}>
+            <Text style={theme.fonts.regular14} />
+          </View>
+          <View style={[styles.rowTable, { flex: 3 }]}>
+            <Text
+              style={theme.fonts.regular14}
+              // numberOfLines={2}
+            >
+              Date
+            </Text>
+          </View>
+          <View style={[styles.rowTable, { flex: 3 }]}>
+            <Text style={theme.fonts.regular14}>Time Checkin</Text>
+          </View>
+          <View style={[styles.rowTable, { flex: 3 }]}>
+            <Text style={theme.fonts.regular14}>Time Checkout</Text>
+          </View>
+          <View style={[styles.rowTable, { flex: 2 }]}>
+            <Text style={theme.fonts.regular14}>Time late</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
+  _renderBody() {
+    const { error, isLoading, data } = this.state;
+    reactotron.log("data",data)
+    if (error) {
+      return (
+        <Error
+          onPress={() => {
+            this.getListTimekeeping();
+          }}
+        />
+      );
+    }
+    if (isLoading) {
+      return <Loading />;
+    }
+    return (
+      <View
+        style={{
+          flex: 1
+        }}
+      >
+        {this._renderTop()}
 
         <ScrollView
           contentContainerStyle={{
             width: 550,
-            // flex: 1
-            // backgroundColor:'red'
             paddingBottom: 10,
             marginTop: 10
           }}
           horizontal
           showsHorizontalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={() => {
+                this.getListTimekeeping();
+              }}
+            />
+          }
         >
           <ScrollView
             style={{ paddingBottom: 20 }}
             showsVerticalScrollIndicator={false}
           >
-            <View
-              style={[
-                styles._vColumn,
-                {
-                  backgroundColor: theme.colors.backgroundBlue,
-                  borderTopWidth: 0.5,
-                  borderTopColor: theme.colors.gray,
-                  marginTop: 10
-                }
-              ]}
-            >
-              <View style={[styles.rowTable, { flex: 1 }]}>
-                <Text style={theme.fonts.regular14} />
-              </View>
-              <View style={[styles.rowTable, { flex: 3 }]}>
-                <Text
-                  style={theme.fonts.regular14}
-                  // numberOfLines={2}
-                >
-                  Date
-                </Text>
-              </View>
-              <View style={[styles.rowTable, { flex: 3 }]}>
-                <Text style={theme.fonts.regular14}>Time Checkin</Text>
-              </View>
-              <View style={[styles.rowTable, { flex: 3 }]}>
-                <Text style={theme.fonts.regular14}>Time Checkout</Text>
-              </View>
-              <View style={[styles.rowTable, { flex: 2 }]}>
-                <Text style={theme.fonts.regular14}>Time late</Text>
-              </View>
-            </View>
-            {this.state.data.length == 0 ? (
+            {this._renderHeaderTable()}
+            {this.state.data.data.timekeepings.length == 0 ? (
               <Empty description={"No Data"} />
             ) : (
-              this.state.data.map((item, index) => (
+              this.state.data.data.timekeepings.map((item, index) => (
                 <View key={index.toString()} style={{ width: "100%" }}>
                   {this._renderRowTable(item, index)}
                 </View>

@@ -1,0 +1,4 @@
+-kiểm tra checkin đúng h 
+-kiểm tra đã checkin chưa
+
+buổi chiều ngoài những trên thì check sáng đã check in và check out chưa , nếu chưa checkout sẽ ko cho check in

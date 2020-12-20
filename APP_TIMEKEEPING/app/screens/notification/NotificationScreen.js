@@ -85,7 +85,7 @@ class NotificationScreen extends Component {
                     }}
                 />
             );
-        if (notificationState.data.length == 0) return <Empty />
+        if (notificationState.data.length == 0) return <Empty image={true} />
         return (
             <FlatList
                 showsVerticalScrollIndicator={false}

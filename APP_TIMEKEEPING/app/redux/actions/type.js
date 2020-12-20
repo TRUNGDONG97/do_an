@@ -18,3 +18,7 @@ export const GET_USER_INFOR_FAIL = 'daotao/get_user_infor_fail';
 export const UPDATE_USER = 'daotao/update_user';
 export const UPDATE_USER_SUCCESS = 'daotao/update_user_success';
 export const UPDATE_USER_FAIL = 'daotao/update_user_fail';
+
+export const GET_LIST_TIMEKEEPING = 'daotao/get_list_timekeeping';
+export const GET_LIST_TIMEKEEPING_SUCCESS = 'daotao/get_list_timekeeping_success';
+export const GET_LIST_TIMEKEEPING_FAIL = 'daotao/get_list_timekeeping_fail';

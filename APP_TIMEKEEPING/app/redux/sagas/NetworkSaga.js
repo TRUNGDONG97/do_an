@@ -22,6 +22,9 @@ import {
   GET_DETAIL_CLASS,
   GET_DETAIL_CLASS_SUCCESS,
   GET_DETAIL_CLASS_FAIL,
+  GET_LIST_TIMEKEEPING,
+  GET_LIST_TIMEKEEPING_SUCCESS,
+  GET_LIST_TIMEKEEPING_FAIL,
 
 } from '../actions/type';
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
@@ -81,19 +84,19 @@ export function* updateUser(action) {
     }
   }
 }
-// export function* getDetailClass(action) {
-//   try {
-//     const response = yield call(API.getDetailClass,action.payload)
-//     // reactotron.log(response)
-//     yield put({ type: GET_DETAIL_CLASS_SUCCESS, payload: response.data })
-//     // alert(JSON.stringify(response))
-//   } catch (err) {
-//     yield put({ type: GET_DETAIL_CLASS_FAIL, payload: err })
-//     // alert(err)
-//   }
-// }
+export function* getListTimekeeping(action) {
+  try {
+    const response = yield call(API.getListTimekeeping,action.payload)
+    // reactotron.log(response)
+    yield put({ type: GET_LIST_TIMEKEEPING_SUCCESS, payload: response.data })
+    // alert(JSON.stringify(response))
+  } catch (err) {
+    yield put({ type: GET_LIST_TIMEKEEPING_FAIL, payload: err })
+    // alert(err)
+  }
+}
 export const watchListAbsent = takeEvery(GET_LIST_ABSENT, getListAbsent);
 export const watchGetListNotify = takeEvery(GET_LIST_NOTIFICATION, getListNotify);
 export const watchGetUserInfo = takeEvery(GET_USER_INFOR, getUserInfo);
 export const watchUpdateUser = takeEvery(UPDATE_USER, updateUser);
-// export const watchGetDetailClass = takeEvery(GET_DETAIL_CLASS, getDetailClass);
+export const watchGetListTimekeeping = takeEvery(GET_LIST_TIMEKEEPING, getListTimekeeping);
