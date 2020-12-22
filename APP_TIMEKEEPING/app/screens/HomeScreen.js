@@ -27,6 +27,9 @@ import {
 } from "@component";
 import { SCREEN_ROUTER } from "@app/constants/Constant";
 import reactotron from "reactotron-react-native";
+import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
+import NetInfo from "@react-native-community/netinfo";
+
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 export default class HomeScreen extends Component {
@@ -56,10 +59,14 @@ export default class HomeScreen extends Component {
       this.setState({ isLoading: true });
       const response = await getListTimekeeping(startDate, endDate);
       reactotron.log("response", response);
+      if (response.code == 200) {
+        this.setState({
+          data: response.data
+        });
+      }
       this.setState({
         isLoading: false,
-        error: false,
-        data: response
+        error: false
       });
     } catch (error) {
       this.setState({
@@ -68,6 +75,13 @@ export default class HomeScreen extends Component {
       });
     }
   };
+
+  
+  checkin = async () => {
+    var checkConnect= await NetInfo.fetch()
+    reactotron.log("checkConnect",checkConnect)
+  };
+  checkout = async () => {};
   _renderInfoItem(title, text) {
     return (
       <View
@@ -113,7 +127,6 @@ export default class HomeScreen extends Component {
               index % 2 ? theme.colors.backgroundBlueItem : theme.colors.white
           }
         ]}
-      
       >
         <View style={[styles.rowTable, { flex: 1 }]}>
           <Text style={theme.fonts.regular14}>{index + 1}</Text>
@@ -127,10 +140,18 @@ export default class HomeScreen extends Component {
           </Text>
         </View>
         <View style={[styles.rowTable, { flex: 3 }]}>
-          <Text style={theme.fonts.regular14}>{item.time_checkin}</Text>
+          <Text style={theme.fonts.regular14}>
+            {Math.floor(item.time_checkin / 60) +
+              ":" +
+              (item.time_checkin % 60)}
+          </Text>
         </View>
         <View style={[styles.rowTable, { flex: 3 }]}>
-          <Text style={theme.fonts.regular14}>{item.time_checkout}</Text>
+          <Text style={theme.fonts.regular14}>
+            {Math.floor(item.time_checkout / 60) +
+              ":" +
+              (item.time_checkout % 60)}
+          </Text>
         </View>
         <View style={[styles.rowTable, { flex: 2 }]}>
           <Text style={theme.fonts.regular14}>{item.time_late}</Text>
@@ -139,12 +160,12 @@ export default class HomeScreen extends Component {
     );
   }
   _renderTop() {
-    const  {data}=this.state
+    const { data } = this.state;
     return (
       <View>
         <View style={styles._viewUser}>
-          {this._renderInfoItem("Time late :",data.data.countTimeLate +" minute")}
-          {this._renderInfoItem("Day",data.data.countWorkday+ " day ")}
+          {this._renderInfoItem("Time late :", data.timeLate + " minute")}
+          {this._renderInfoItem("Day", data.dayWork + " day ")}
         </View>
         <View
           style={{
@@ -172,7 +193,7 @@ export default class HomeScreen extends Component {
               cancelBtnText="Cancel"
               onDateChange={date => {
                 this.setState({ startDate: date });
-                this.getListTimekeeping()
+                this.getListTimekeeping();
               }}
             />
           </View>
@@ -194,7 +215,7 @@ export default class HomeScreen extends Component {
               cancelBtnText="Cancel"
               onDateChange={date => {
                 this.setState({ endDate: date });
-                this.getListTimekeeping()
+                this.getListTimekeeping();
               }}
             />
           </View>
@@ -206,9 +227,9 @@ export default class HomeScreen extends Component {
           }}
         >
           <TouchableOpacity
-            style={{ flex: 1, marginHorizontal: 10, borderRadius: 5 }}
+            style={{ flex: 1, marginHorizontal: 20, borderRadius: 5 }}
             onPress={() => {
-              //   this.getLocationUser();
+              this.checkin();
               // reactotron.log(this.state.region)
             }}
           >
@@ -222,7 +243,7 @@ export default class HomeScreen extends Component {
             </LinearGradient>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flex: 1, marginHorizontal: 10, borderRadius: 5 }}
+            style={{ flex: 1, marginHorizontal: 20, borderRadius: 5 }}
             onPress={() => {
               //   this.getLocationUser();
               // reactotron.log(this.state.region)
@@ -235,22 +256,6 @@ export default class HomeScreen extends Component {
               end={{ x: 0, y: 0.1 }}
             >
               <Text style={styles.text}>Checkout</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flex: 1, marginHorizontal: 10, borderRadius: 5 }}
-            onPress={() => {
-              //   this.getLocationUser();
-              // reactotron.log(this.state.region)
-            }}
-          >
-            <LinearGradient
-              style={styles.bgButton}
-              colors={["#0E0771", "#7E6CB5"]}
-              start={{ x: 0.7, y: 1 }} //transparent
-              end={{ x: 0, y: 0.1 }}
-            >
-              <Text style={styles.text}>Off work</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -297,7 +302,7 @@ export default class HomeScreen extends Component {
   }
   _renderBody() {
     const { error, isLoading, data } = this.state;
-    reactotron.log("data",data)
+    reactotron.log("data", data);
     if (error) {
       return (
         <Error
@@ -340,10 +345,10 @@ export default class HomeScreen extends Component {
             showsVerticalScrollIndicator={false}
           >
             {this._renderHeaderTable()}
-            {this.state.data.data.timekeepings.length == 0 ? (
+            {data.listTimekeeping.length == 0 ? (
               <Empty description={"No Data"} />
             ) : (
-              this.state.data.data.timekeepings.map((item, index) => (
+              data.listTimekeeping.map((item, index) => (
                 <View key={index.toString()} style={{ width: "100%" }}>
                   {this._renderRowTable(item, index)}
                 </View>

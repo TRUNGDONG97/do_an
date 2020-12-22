@@ -22,7 +22,6 @@ import LinearGradient from 'react-native-linear-gradient'
 import { absent } from '@api'
 import Geolocation from '@react-native-community/geolocation';
 import { getListAbsent } from '@action'
-import wifi from 'react-native-android-wifi'
 export class ClassDetailScreen extends Component {
     constructor(props) {
         super(props);

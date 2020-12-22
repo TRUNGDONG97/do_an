@@ -6,7 +6,7 @@ table.table.table-bordered.table-hover
             th Thời gian checkin
             th Thời gian checkout
             th Thời gian đi muộn
-            th Ghi chú
+            th Trạng thái
             //- th
     tbody#tbodyTableAdmin
         if listTimekeeping.length <=0        
@@ -17,10 +17,10 @@ table.table.table-bordered.table-hover
                 tr
                     td #{STT=STT+1}
                     td #{item.date_timekeeping}
-                    td #{item.time_checkin}
-                    td #{item.time_checkout}
+                    td #{Math.floor(item.time_checkin/60)+":"+item.time_checkin%60}
+                    td #{Math.floor(item.time_checkout/60)+":"+item.time_checkout%60}
                     td #{item.time_late}
-                    td #{item.note}
+                    td #{item.status==0?"Chưa checkout":"Checkout thành công"}
                 
 #paginateAdmin.row.float-right(style='margin-right:10px ')
     if pageCount>=1

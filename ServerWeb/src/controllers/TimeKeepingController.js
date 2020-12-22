@@ -105,7 +105,6 @@ const seacherListTimekeeping = async (req, res, next) => {
 };
 const detailTimekeeping = async (req, res, next) => {
   const employee_code = req.query.employee_code;
-  console.log("employee_codeddd", employee_code);
   if (!employee_code) {
     res.redirect("/admin/timekeeping");
     return;
@@ -147,7 +146,7 @@ const seacherDetailTimekeeping = async (req, res, next) => {
       },
       offset: Constants.PER_PAGE * (currentPage - 1),
       limit: Constants.PER_PAGE,
-      order: [["date_timekeeping", "ASC"]],
+      order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
     });
 
     console.log("rows", rows);

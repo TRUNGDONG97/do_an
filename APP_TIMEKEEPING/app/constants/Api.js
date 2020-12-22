@@ -9,7 +9,7 @@ import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 function createAxios() {
   // AsyncStorage.setItem("token", '2323226DADAD') //full
   var axiosInstant = axios.create();
-  axiosInstant.defaults.baseURL = "http://e9bfd92d4fb7.ngrok.io/app";
+  axiosInstant.defaults.baseURL = "http://5a74ca4715f4.ngrok.io/app";
   axiosInstant.defaults.timeout = 20000;
   axiosInstant.defaults.headers = { "Content-Type": "application/json" };
 
@@ -118,8 +118,11 @@ export const getListNotification = () => {
 export const updateUser = payload => {
   return handleResult(getAxios.post(`app/api/changeUserInfo`, payload));
 };
-export const absent = payload => {
-  return handleResult(getAxios.post(`app/api/absent`, payload));
+export const checkin = payload => {
+  return handleResult(getAxios.post(`app/api/checkin`, payload));
+};
+export const checkout = payload => {
+  return handleResult(getAxios.post(`app/api/checkout`, payload));
 };
 export const uploadImage = payload => {
   return handleResult(

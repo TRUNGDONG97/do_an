@@ -1,4 +1,9 @@
--kiểm tra checkin đúng h 
--kiểm tra đã checkin chưa
-
-buổi chiều ngoài những trên thì check sáng đã check in và check out chưa , nếu chưa checkout sẽ ko cho check in
+luồng checkin
+	-kiểm tra checkin đúng h 
+	-kiểm tra đã checkin chưa
+	-buổi chiều ngoài những trên thì check sáng đã check in và check out chưa , nếu sáng chưa checkout sẽ ko cho check in
+luồng checkout
+	-kiểm tra checkout đúng h
+	-checkout buổi sáng kiểm tra checkin buổi sáng chưa
+	-checkout  buổi chiều kiểm tra sang checkin đã checkout chưa nếu chưa sẽ check out theo buổi sáng tính 1 ngày công,
+	nếu rồi kiểm tra buổi chiều checkin chưa nếu chưa checkout và tính nửa ngày.

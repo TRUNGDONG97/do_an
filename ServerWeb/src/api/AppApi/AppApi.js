@@ -3,6 +3,7 @@ import EmployeeModel from "../../models/EmployeeModel";
 import md5 from "md5";
 import sequelize, { Op } from "sequelize";
 import TimekeepingModel from "../../models/TimekeepingModel";
+import MacAddressModel from "../../models/MacAddressModel";
 import {
   checkTimeCheckinAfternoon,
   checkTimeCheckinMorning,
@@ -309,7 +310,7 @@ const getListTimekeeping = async (req, res, next) => {
       });
       return;
     }
-    const listTimekeepingOfEmployee = await EmployeeModel.findAll({
+    const TimeLateAndDay = await EmployeeModel.findAll({
       attributes: [
         [
           sequelize.fn("sum", sequelize.col("timekeepings.workday")),
@@ -327,8 +328,10 @@ const getListTimekeeping = async (req, res, next) => {
             date_timekeeping: {
               [Op.between]: [startDate, endDate],
             },
+            id_employee: employee.rows[0].id,
           },
           required: false,
+          // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
         },
       ],
       where: {
@@ -337,14 +340,27 @@ const getListTimekeeping = async (req, res, next) => {
       },
       row: true,
       group: ["employee.id"],
-      order: [["last_name", "ASC"]],
+      
     });
-    // console.log("listTimekeepingOfEmployee",listTimekeepingOfEmployee);
+    const listTimekeeping=await TimekeepingModel.findAll({
+      where:{
+        date_timekeeping: {
+          [Op.between]: [startDate, endDate],
+        },
+        id_employee: employee.rows[0].id,
+      },
+      order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
+    })
+    console.log("listTimekeepingOfEmployee",TimeLateAndDay[0].get('countTimeLate'));
     res.json({
       status: 1,
       code: 200,
       message: "Thành công",
-      data: listTimekeepingOfEmployee[0],
+      data: {
+        timeLate:TimeLateAndDay[0].get('countTimeLate'),
+        dayWork:TimeLateAndDay[0].get('countWorkday'),
+        listTimekeeping
+      },
     });
     return;
   } catch (error) {
@@ -360,6 +376,7 @@ const getListTimekeeping = async (req, res, next) => {
 };
 const checkin = async (req, res, next) => {
   const { token } = req.headers;
+  const { address_mac } = req.body;
   if (token == "") {
     res.json({
       status: 0,
@@ -385,29 +402,27 @@ const checkin = async (req, res, next) => {
       });
       return;
     }
-    //check xin nghỉ 
-    const countTimekeepingOffWork= await TimekeepingModel.count({
+    const countMacAddress = await MacAddressModel.findAll({
       where: {
-        date_timekeeping: getCurrentDate(),
+        address_mac,
         is_active: 1,
-        status:3,
-        id_employee:employee[0].id
       },
     });
-    if(countTimekeepingOffWork>0){
+    if (countMacAddress.length < 1) {
       res.json({
         status: 0,
         code: 403,
-        message: "Bạn đã xin nghỉ nên không thể checkin",
+        message: "Bạn không ở trong công ty",
         data: "",
       });
-      return;
     }
+    //check xin nghỉ
+    
     const timekeepingMorning = await TimekeepingModel.findAll({
       where: {
         date_timekeeping: getCurrentDate(),
         is_active: 1,
-        id_employee:employee[0].id,
+        id_employee: employee[0].id,
         time_checkin: {
           [Op.between]: [
             Contant.TIMEKEEPING.TIME_START_CHECKIN_MORNING,
@@ -439,6 +454,7 @@ const checkin = async (req, res, next) => {
         id_employee: employee[0].id,
         time_checkin: getCurrentTime(),
         time_late,
+        id_mac_address: countMacAddress[0].id,
       });
       // gửi thông báo về
       await NotificationModel.create({
@@ -484,7 +500,7 @@ const checkin = async (req, res, next) => {
         where: {
           date_timekeeping: getCurrentDate(),
           is_active: 1,
-          id_employee:employee[0].id,
+          id_employee: employee[0].id,
           time_checkin: {
             [Op.between]: [
               Contant.TIMEKEEPING.TIME_START_CHECKIN_AFTERNOON,
@@ -513,6 +529,7 @@ const checkin = async (req, res, next) => {
         id_employee: employee[0].id,
         time_checkin: getCurrentTime(),
         time_late,
+        id_mac_address: countMacAddress[0].id,
       });
       await NotificationModel.create({
         created_date: DateUtil.formatInputDate(new Date()),
@@ -561,6 +578,7 @@ const checkin = async (req, res, next) => {
 
 const checkout = async (req, res, next) => {
   const { token } = req.headers;
+  const { address_mac } = req.body;
   if (token == "") {
     res.json({
       status: 0,
@@ -586,28 +604,26 @@ const checkout = async (req, res, next) => {
       });
       return;
     }
-    const countTimekeepingOffWork= await TimekeepingModel.count({
+    const countMacAddress = await MacAddressModel.findAll({
       where: {
-        date_timekeeping: getCurrentDate(),
+        address_mac,
         is_active: 1,
-        status:3,
-        id_employee:employee[0].id
       },
     });
-    if(countTimekeepingOffWork>0){
+    if (countMacAddress.length < 1) {
       res.json({
         status: 0,
         code: 403,
-        message: "Bạn đã xin nghỉ nên không thể checkout",
+        message: "Bạn không ở trong công ty",
         data: "",
       });
-      return;
     }
+  
     const timekeepingMorning = await TimekeepingModel.findAll({
       where: {
         date_timekeeping: getCurrentDate(),
         is_active: 1,
-        id_employee:employee[0].id,
+        id_employee: employee[0].id,
         time_checkin: {
           [Op.between]: [
             Contant.TIMEKEEPING.TIME_START_CHECKIN_MORNING,
@@ -668,7 +684,7 @@ const checkout = async (req, res, next) => {
       where: {
         date_timekeeping: getCurrentDate(),
         is_active: 1,
-        id_employee:employee[0].id,
+        id_employee: employee[0].id,
         time_checkin: {
           [Op.between]: [
             Contant.TIMEKEEPING.TIME_START_CHECKIN_AFTERNOON,
@@ -731,16 +747,19 @@ const checkout = async (req, res, next) => {
         });
         return;
       }
-      if(timekeepingAfternoon.length>0){
-        await TimekeepingModel.update({
-          time_checkout: getCurrentTime(),
+      if (timekeepingAfternoon.length > 0) {
+        await TimekeepingModel.update(
+          {
+            time_checkout: getCurrentTime(),
             workday: 0.5,
             status: 1,
-        },{
-          where:{
-            id:timekeepingAfternoon[0].id
+          },
+          {
+            where: {
+              id: timekeepingAfternoon[0].id,
+            },
           }
-        })
+        );
       }
       await NotificationModel.create({
         created_date: DateUtil.formatInputDate(new Date()),
@@ -785,9 +804,7 @@ const checkout = async (req, res, next) => {
     return;
   }
 };
-const offWork=async(req,res,next)=>{
-  
-}
+
 export default {
   notification,
   getUserInfo,
@@ -796,5 +813,4 @@ export default {
   getListTimekeeping,
   checkin,
   checkout,
-  offWork
 };

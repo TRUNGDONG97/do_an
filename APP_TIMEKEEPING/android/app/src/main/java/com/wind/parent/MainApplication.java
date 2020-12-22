@@ -5,7 +5,6 @@ import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import org.reactnative.camera.RNCameraPackage;
-import com.devstepbcn.wifi.AndroidWifiPackage;
 import com.reactnativecommunity.geolocation.GeolocationPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.microsoft.codepush.react.CodePush;
