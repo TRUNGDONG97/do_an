@@ -16,29 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `notification`
+-- Table structure for table `checkout`
 --
 
-DROP TABLE IF EXISTS `notification`;
+DROP TABLE IF EXISTS `checkout`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `notification` (
+CREATE TABLE `checkout` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `content` varchar(255) DEFAULT NULL,
   `id_employee` int DEFAULT NULL,
-  `type` tinyint DEFAULT NULL,
-  `create_date` datetime DEFAULT NULL,
+  `id_checkin` int DEFAULT NULL,
+  `time_checkout` time DEFAULT NULL,
+  `date_checkout` date DEFAULT NULL,
+  `is_active` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `notification`
+-- Dumping data for table `checkout`
 --
 
-LOCK TABLES `notification` WRITE;
-/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
+LOCK TABLES `checkout` WRITE;
+/*!40000 ALTER TABLE `checkout` DISABLE KEYS */;
+/*!40000 ALTER TABLE `checkout` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-17 23:51:43
+-- Dump completed on 2020-12-22 22:30:24

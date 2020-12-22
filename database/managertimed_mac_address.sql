@@ -16,30 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `checkout`
+-- Table structure for table `mac_address`
 --
 
-DROP TABLE IF EXISTS `checkout`;
+DROP TABLE IF EXISTS `mac_address`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `checkout` (
+CREATE TABLE `mac_address` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `id_employee` int DEFAULT NULL,
-  `id_checkin` int DEFAULT NULL,
-  `time_checkout` time DEFAULT NULL,
-  `date_checkout` date DEFAULT NULL,
-  `is_active` tinyint DEFAULT NULL,
+  `address_mac` varchar(255) DEFAULT NULL,
+  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `admin_add` varchar(45) DEFAULT NULL,
+  `is_active` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `checkout`
+-- Dumping data for table `mac_address`
 --
 
-LOCK TABLES `checkout` WRITE;
-/*!40000 ALTER TABLE `checkout` DISABLE KEYS */;
-/*!40000 ALTER TABLE `checkout` ENABLE KEYS */;
+LOCK TABLES `mac_address` WRITE;
+/*!40000 ALTER TABLE `mac_address` DISABLE KEYS */;
+INSERT INTO `mac_address` VALUES (1,'ádsadsadasda','2020-12-09 19:55:05','admin',0),(2,'ádaskdsaksssdsakdhkasdđ','2020-12-09 20:18:39','admin',0),(3,'94:65:9c:8c:01:9f','2020-12-09 20:53:16','admin',1),(4,'68:ff:7b:d2:3e:0c','2020-12-19 09:24:17','admin',1);
+/*!40000 ALTER TABLE `mac_address` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-17 23:51:43
+-- Dump completed on 2020-12-22 22:30:23

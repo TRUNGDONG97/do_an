@@ -16,34 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `admin`
+-- Table structure for table `timekeeping`
 --
 
-DROP TABLE IF EXISTS `admin`;
+DROP TABLE IF EXISTS `timekeeping`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `admin` (
+CREATE TABLE `timekeeping` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
+  `id_employee` int NOT NULL,
+  `time_checkin` int NOT NULL DEFAULT '0',
+  `date_timekeeping` date DEFAULT NULL,
   `is_active` tinyint NOT NULL DEFAULT '1',
-  `token` varchar(255) DEFAULT NULL,
-  `admin_add` varchar(100) DEFAULT NULL,
-  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time_late` int NOT NULL DEFAULT '0',
+  `time_checkout` int NOT NULL DEFAULT '0',
+  `workday` float NOT NULL DEFAULT '0',
+  `note` varchar(255) DEFAULT NULL,
+  `status` int NOT NULL DEFAULT '0',
+  `id_mac_address` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `admin`
+-- Dumping data for table `timekeeping`
 --
 
-LOCK TABLES `admin` WRITE;
-/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (1,'admin','21232f297a57a5a743894a0e4a801fc3','tranglt1@gmail.com','Trung Đông',1,'U2FsdGVkX18BtQMxrWbTMRXJjbtPGQU43h7OCwHS4V4=','admin','2020-11-17 22:15:57'),(2,'tranglt','09fc9d715576b282d3bacdd1ed0843c9','tranglt@gmail.com',NULL,1,NULL,'admin','2020-11-19 22:17:50'),(5,'thangnx','2d21619b6f23193984273ff272a0a76d','thangnx@gmail.com',NULL,0,NULL,'admin','2020-11-19 22:30:54');
-/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
+LOCK TABLES `timekeeping` WRITE;
+/*!40000 ALTER TABLE `timekeeping` DISABLE KEYS */;
+INSERT INTO `timekeeping` VALUES (1,1,520,'2020-12-19',1,10,1060,1,NULL,1,1),(2,1,490,'2020-12-20',1,0,1100,1,NULL,1,1),(3,1,530,'2020-12-21',1,20,1050,1,NULL,1,1),(4,1,525,'2020-12-18',1,15,724,0.5,NULL,1,1),(5,1,820,'2020-12-17',1,10,1061,0.5,NULL,1,1);
+/*!40000 ALTER TABLE `timekeeping` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-17 23:51:43
+-- Dump completed on 2020-12-22 22:30:24

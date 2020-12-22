@@ -16,30 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `mac_address`
+-- Table structure for table `admin`
 --
 
-DROP TABLE IF EXISTS `mac_address`;
+DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `mac_address` (
+CREATE TABLE `admin` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `address_mac` varchar(255) DEFAULT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `is_active` tinyint NOT NULL DEFAULT '1',
+  `token` varchar(255) DEFAULT NULL,
+  `admin_add` varchar(100) DEFAULT NULL,
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `admin_add` varchar(45) DEFAULT NULL,
-  `is_active` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `mac_address`
+-- Dumping data for table `admin`
 --
 
-LOCK TABLES `mac_address` WRITE;
-/*!40000 ALTER TABLE `mac_address` DISABLE KEYS */;
-INSERT INTO `mac_address` VALUES (1,'ádsadsadasda','2020-12-09 19:55:05','admin',0),(2,'ádaskdsaksssdsakdhkasdđ','2020-12-09 20:18:39','admin',0),(3,'94:65:9c:8c:01:9f','2020-12-09 20:53:16','admin',1);
-/*!40000 ALTER TABLE `mac_address` ENABLE KEYS */;
+LOCK TABLES `admin` WRITE;
+/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES (1,'admin','21232f297a57a5a743894a0e4a801fc3','tranglt1@gmail.com','Trung Đông',1,'U2FsdGVkX19UhAchQnQFX9zHqWCYYKXxbONAbj+ZiQo=','admin','2020-11-17 22:15:57'),(2,'tranglt','09fc9d715576b282d3bacdd1ed0843c9','tranglt@gmail.com',NULL,1,NULL,'admin','2020-11-19 22:17:50'),(5,'thangnx','2d21619b6f23193984273ff272a0a76d','thangnx@gmail.com',NULL,0,NULL,'admin','2020-11-19 22:30:54');
+/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-17 23:51:42
+-- Dump completed on 2020-12-22 22:30:23
