@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import LinearGradient from "react-native-linear-gradient";
-import { getListTimekeeping } from "@api";
+import { getListTimekeeping,checkinTimekeeping  ,checkoutTimekeeping } from "@api";
 import {
   AppHeader,
   Block,
@@ -69,6 +69,7 @@ export default class HomeScreen extends Component {
         error: false
       });
     } catch (error) {
+      Toast.show('Đã có lỗi xảy ra', BACKGROUND_TOAST.FAIL);
       this.setState({
         isLoading: false,
         error: true
@@ -76,12 +77,43 @@ export default class HomeScreen extends Component {
     }
   };
 
-  
+
   checkin = async () => {
-    var checkConnect= await NetInfo.fetch()
-    reactotron.log("checkConnect",checkConnect)
+    var checkConnect = await NetInfo.fetch()
+    console.log("checkConnect", checkConnect.details.bssid)
+    if (!!checkConnect && checkConnect.isWifiEnabled && checkConnect.type == 'wifi' ) {
+      if(!checkConnect.details.bssid){
+        Toast.show('Bạn chưa lấy được địa chỉ mac', BACKGROUND_TOAST.FAIL);
+        return
+      }
+      try {
+        this.setState({
+          // isLoading: false,
+          error: false
+        });
+        const checkinsss=await checkinTimekeeping({address_mac:checkConnect.details.bssid})
+        console.log(checkinsss,"checkin");
+      } catch (error) {
+        console.log("error",error);
+        Toast.show('Đã có lỗi xảy ra', BACKGROUND_TOAST.FAIL);
+        // this.setState({
+        //   // isLoading: false,
+        //   error: true
+        // });
+      }
+    }else{
+      Toast.show('Bạn chưa kết nối wifi', BACKGROUND_TOAST.FAIL);
+    }
   };
-  checkout = async () => {};
+  checkout = async () => {
+    var checkConnect = await NetInfo.fetch()
+    console.log("checkConnect", checkConnect.details.bssid)
+    if (!!checkConnect && checkConnect.isWifiEnabled && checkConnect.type == 'wifi' && checkConnect.details.bssid) {
+
+    }else{
+      Toast.show('Đã có lỗi xảy ra', BACKGROUND_TOAST.FAIL);
+    }
+   };
   _renderInfoItem(title, text) {
     return (
       <View
@@ -134,7 +166,7 @@ export default class HomeScreen extends Component {
         <View style={[styles.rowTable, { flex: 3 }]}>
           <Text
             style={theme.fonts.regular14}
-            // numberOfLines={2}
+          // numberOfLines={2}
           >
             {item.date_timekeeping}
           </Text>
@@ -282,7 +314,7 @@ export default class HomeScreen extends Component {
           <View style={[styles.rowTable, { flex: 3 }]}>
             <Text
               style={theme.fonts.regular14}
-              // numberOfLines={2}
+            // numberOfLines={2}
             >
               Date
             </Text>
@@ -348,12 +380,12 @@ export default class HomeScreen extends Component {
             {data.listTimekeeping.length == 0 ? (
               <Empty description={"No Data"} />
             ) : (
-              data.listTimekeeping.map((item, index) => (
-                <View key={index.toString()} style={{ width: "100%" }}>
-                  {this._renderRowTable(item, index)}
-                </View>
-              ))
-            )}
+                data.listTimekeeping.map((item, index) => (
+                  <View key={index.toString()} style={{ width: "100%" }}>
+                    {this._renderRowTable(item, index)}
+                  </View>
+                ))
+              )}
           </ScrollView>
         </ScrollView>
       </View>
