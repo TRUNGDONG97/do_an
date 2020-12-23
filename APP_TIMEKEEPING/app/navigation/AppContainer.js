@@ -37,14 +37,14 @@ export class AppContainer extends Component {
 
     onOpened(openResult) {
         reactotron.log("Message: ", openResult.notification.payload.body);
-        reactotron.log("Data: ", openResult.notification.payload.additionalData.class_id);
+        reactotron.log("Data: ", openResult.notification.payload.additionalData);
         reactotron.log("isActive: ", openResult.notification.isAppInFocus);
         reactotron.log("openResult: ", openResult);
-        const class_id = openResult.notification.payload.additionalData.class_id;
+        // const class_id = openResult.notification.payload.additionalData.class_id;
         // const type=openResult.notification.payload.additionalData.type;
         // reactotron.log("class_id",openResult.notification.payload);
 
-        NavigationUtil.navigate(SCREEN_ROUTER.DETAIL_CLASS, { class_id: class_id });
+        // NavigationUtil.navigate(SCREEN_ROUTER.DETAIL_CLASS, { class_id: class_id });
 
 
         return;

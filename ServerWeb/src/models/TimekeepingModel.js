@@ -33,7 +33,7 @@ const Timekeeping = sequelize.define(
       type: Sequelize.STRING,
     },
     status: {
-      type: Sequelize.INTEGER, //0  hoăc 1 chỉ trạng thái checkin hay chưa 
+      type: Sequelize.INTEGER, //0  chưa check out 1 checkout rồi
     },
     id_mac_address: {
       type: Sequelize.INTEGER,

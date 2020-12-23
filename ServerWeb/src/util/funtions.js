@@ -165,7 +165,7 @@ module.exports.getCurrentTime = () => {
   var date = new Date();
   var hour = date.getHours();
   var minute = date.getMinutes();
-  return hour * 60 + minute+"00";
+  return hour * 60 + minute;
 };
 module.exports.getCurrentDate = () => {
   var date = new Date();

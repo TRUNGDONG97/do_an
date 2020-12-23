@@ -12,7 +12,11 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import LinearGradient from "react-native-linear-gradient";
-import { getListTimekeeping,checkinTimekeeping  ,checkoutTimekeeping } from "@api";
+import {
+  getListTimekeeping,
+  checkinTimekeeping,
+  checkoutTimekeeping
+} from "@api";
 import {
   AppHeader,
   Block,
@@ -29,6 +33,7 @@ import { SCREEN_ROUTER } from "@app/constants/Constant";
 import reactotron from "reactotron-react-native";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 import NetInfo from "@react-native-community/netinfo";
+import { LinesLoader } from "react-native-indicator";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -40,13 +45,16 @@ export default class HomeScreen extends Component {
     var year = date.getFullYear();
     var date1 = date.getDate();
     this.state = {
-      dataFake: [1, 2, 3],
       startDate: year + "-" + month + "-" + "01",
       endDate: year + "-" + month + "-" + date1,
       refreshing: false,
       isLoading: true,
-      data: {},
-      error: null
+      timeLate: 0,
+      dayWork: 0,
+      data: [],
+      error: null,
+      btnLoadingCheckout: false,
+      btnLoadingCheckin: false
     };
   }
   componentDidMount() {
@@ -61,7 +69,9 @@ export default class HomeScreen extends Component {
       reactotron.log("response", response);
       if (response.code == 200) {
         this.setState({
-          data: response.data
+          data: response.data.listTimekeeping,
+          dayWork: response.data.dayWork,
+          timeLate: response.data.timeLate
         });
       }
       this.setState({
@@ -69,7 +79,7 @@ export default class HomeScreen extends Component {
         error: false
       });
     } catch (error) {
-      Toast.show('Đã có lỗi xảy ra', BACKGROUND_TOAST.FAIL);
+      Toast.show("Đã có lỗi xảy ra", BACKGROUND_TOAST.FAIL);
       this.setState({
         isLoading: false,
         error: true
@@ -77,43 +87,109 @@ export default class HomeScreen extends Component {
     }
   };
 
-
   checkin = async () => {
-    var checkConnect = await NetInfo.fetch()
-    console.log("checkConnect", checkConnect.details.bssid)
-    if (!!checkConnect && checkConnect.isWifiEnabled && checkConnect.type == 'wifi' ) {
-      if(!checkConnect.details.bssid){
-        Toast.show('Bạn chưa lấy được địa chỉ mac', BACKGROUND_TOAST.FAIL);
-        return
+    var date = new Date();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var date1 = date.getDate();
+    this.setState({
+      btnLoadingCheckin: true
+    });
+    var checkConnect = await NetInfo.fetch();
+    console.log("checkConnect", checkConnect.details.bssid);
+    if (
+      !!checkConnect &&
+      checkConnect.isWifiEnabled &&
+      checkConnect.type == "wifi"
+    ) {
+      if (!checkConnect.details.bssid) {
+        Toast.show("Bạn chưa lấy được địa chỉ mac", BACKGROUND_TOAST.FAIL);
+        return;
       }
       try {
-        this.setState({
-          // isLoading: false,
-          error: false
+        const response = await checkinTimekeeping({
+          address_mac: checkConnect.details.bssid
         });
-        const checkinsss=await checkinTimekeeping({address_mac:checkConnect.details.bssid})
-        console.log(checkinsss,"checkin");
+        reactotron.log(response, "checkin");
+        if (response.code == 200) {
+          this.setState({
+            data: response.data.listTimekeeping,
+            dayWork: response.data.dayWork,
+            timeLate: response.data.timeLate,
+            startDate: year + "-" + month + "-" + "01",
+            endDate: year + "-" + month + "-" + date1
+          });
+        }
+        this.setState({
+          btnLoadingCheckin: false
+        });
       } catch (error) {
-        console.log("error",error);
-        Toast.show('Đã có lỗi xảy ra', BACKGROUND_TOAST.FAIL);
-        // this.setState({
-        //   // isLoading: false,
-        //   error: true
-        // });
+        console.log("error", error);
+        this.setState({
+          btnLoadingCheckin: false
+        });
       }
-    }else{
-      Toast.show('Bạn chưa kết nối wifi', BACKGROUND_TOAST.FAIL);
+    } else {
+      Toast.show("Bạn chưa kết nối wifi", BACKGROUND_TOAST.FAIL);
     }
   };
   checkout = async () => {
-    var checkConnect = await NetInfo.fetch()
-    console.log("checkConnect", checkConnect.details.bssid)
-    if (!!checkConnect && checkConnect.isWifiEnabled && checkConnect.type == 'wifi' && checkConnect.details.bssid) {
-
-    }else{
-      Toast.show('Đã có lỗi xảy ra', BACKGROUND_TOAST.FAIL);
+    var date = new Date();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var date1 = date.getDate();
+    this.setState({
+      btnLoadingCheckout: true
+    });
+    var checkConnect = await NetInfo.fetch();
+    console.log("checkConnect", checkConnect.details.bssid);
+    if (
+      !!checkConnect &&
+      checkConnect.isWifiEnabled &&
+      checkConnect.type == "wifi" &&
+      checkConnect.details.bssid
+    ) {
+      try {
+        this.setState({
+          error: false
+        });
+        const response = await checkoutTimekeeping({
+          address_mac: checkConnect.details.bssid
+        });
+        reactotron.log(response, "checkin");
+        if (response.code == 200) {
+          this.setState({
+            data: response.data.listTimekeeping,
+            dayWork: response.data.dayWork,
+            timeLate: response.data.timeLate,
+            startDate: year + "-" + month + "-" + "01",
+            endDate: year + "-" + month + "-" + date1
+          });
+        }
+        this.setState({
+          btnLoadingCheckout: false
+        });
+      } catch (error) {
+        console.log("error", error);
+        this.setState({
+          btnLoadingCheckout: false
+        });
+      }
+    } else {
+      Toast.show("Đã có lỗi xảy ra", BACKGROUND_TOAST.FAIL);
     }
-   };
+  };
+  converMinuteToTime = time => {
+    var hour = Math.floor(time / 60);
+    var minute = time % 60;
+    if (hour.toString().length == 1) {
+      hour = "0" + hour;
+    }
+    if (minute.toString().length == 1) {
+      minute = "0" + minute;
+    }
+    return hour + ":" + minute;
+  };
   _renderInfoItem(title, text) {
     return (
       <View
@@ -163,41 +239,49 @@ export default class HomeScreen extends Component {
         <View style={[styles.rowTable, { flex: 1 }]}>
           <Text style={theme.fonts.regular14}>{index + 1}</Text>
         </View>
-        <View style={[styles.rowTable, { flex: 3 }]}>
+        <View style={[styles.rowTable, { flex: 4 }]}>
           <Text
             style={theme.fonts.regular14}
-          // numberOfLines={2}
+            // numberOfLines={2}
           >
             {item.date_timekeeping}
           </Text>
         </View>
         <View style={[styles.rowTable, { flex: 3 }]}>
           <Text style={theme.fonts.regular14}>
-            {Math.floor(item.time_checkin / 60) +
-              ":" +
-              (item.time_checkin % 60)}
+            {this.converMinuteToTime(item.time_checkin)}
           </Text>
         </View>
         <View style={[styles.rowTable, { flex: 3 }]}>
           <Text style={theme.fonts.regular14}>
-            {Math.floor(item.time_checkout / 60) +
-              ":" +
-              (item.time_checkout % 60)}
+            {this.converMinuteToTime(item.time_checkout)}
           </Text>
         </View>
         <View style={[styles.rowTable, { flex: 2 }]}>
           <Text style={theme.fonts.regular14}>{item.time_late}</Text>
         </View>
+        <View style={[styles.rowTable, { flex: 2 }]}>
+          <Icon.Octicons
+            name="primitive-dot"
+            color={item.status == 1 ? theme.colors.green : theme.colors.red}
+            size={16}
+          />
+        </View>
       </View>
     );
   }
   _renderTop() {
-    const { data } = this.state;
+    const {
+      timeLate,
+      dayWork,
+      btnLoadingCheckin,
+      btnLoadingCheckout
+    } = this.state;
     return (
       <View>
         <View style={styles._viewUser}>
-          {this._renderInfoItem("Time late :", data.timeLate + " minute")}
-          {this._renderInfoItem("Day", data.dayWork + " day ")}
+          {this._renderInfoItem("Time late :", timeLate + " minute")}
+          {this._renderInfoItem("Day", dayWork + " day ")}
         </View>
         <View
           style={{
@@ -259,6 +343,7 @@ export default class HomeScreen extends Component {
           }}
         >
           <TouchableOpacity
+            disabled={btnLoadingCheckin}
             style={{ flex: 1, marginHorizontal: 20, borderRadius: 5 }}
             onPress={() => {
               this.checkin();
@@ -271,15 +356,18 @@ export default class HomeScreen extends Component {
               start={{ x: 0.7, y: 1 }} //transparent
               end={{ x: 0, y: 0.1 }}
             >
-              <Text style={styles.text}>Checkin</Text>
+              {btnLoadingCheckin ? (
+                <LinesLoader size={20} color="white" />
+              ) : (
+                <Text style={styles.text}>Checkin</Text>
+              )}
             </LinearGradient>
           </TouchableOpacity>
+
           <TouchableOpacity
+            disabled={btnLoadingCheckout}
             style={{ flex: 1, marginHorizontal: 20, borderRadius: 5 }}
-            onPress={() => {
-              //   this.getLocationUser();
-              // reactotron.log(this.state.region)
-            }}
+            onPress={this.checkout}
           >
             <LinearGradient
               style={styles.bgButton}
@@ -287,7 +375,11 @@ export default class HomeScreen extends Component {
               start={{ x: 0.7, y: 1 }} //transparent
               end={{ x: 0, y: 0.1 }}
             >
-              <Text style={styles.text}>Checkout</Text>
+              {btnLoadingCheckout ? (
+                <LinesLoader size={20} color="white" />
+              ) : (
+                <Text style={styles.text}>Checkout</Text>
+              )}
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -311,10 +403,10 @@ export default class HomeScreen extends Component {
           <View style={[styles.rowTable, { flex: 1 }]}>
             <Text style={theme.fonts.regular14} />
           </View>
-          <View style={[styles.rowTable, { flex: 3 }]}>
+          <View style={[styles.rowTable, { flex: 4 }]}>
             <Text
               style={theme.fonts.regular14}
-            // numberOfLines={2}
+              // numberOfLines={2}
             >
               Date
             </Text>
@@ -327,6 +419,9 @@ export default class HomeScreen extends Component {
           </View>
           <View style={[styles.rowTable, { flex: 2 }]}>
             <Text style={theme.fonts.regular14}>Time late</Text>
+          </View>
+          <View style={[styles.rowTable, { flex: 2 }]}>
+            <Text style={theme.fonts.regular14}>Status</Text>
           </View>
         </View>
       </View>
@@ -357,7 +452,7 @@ export default class HomeScreen extends Component {
 
         <ScrollView
           contentContainerStyle={{
-            width: 550,
+            width: 640,
             paddingBottom: 10,
             marginTop: 10
           }}
@@ -377,15 +472,15 @@ export default class HomeScreen extends Component {
             showsVerticalScrollIndicator={false}
           >
             {this._renderHeaderTable()}
-            {data.listTimekeeping.length == 0 ? (
+            {data.length == 0 ? (
               <Empty description={"No Data"} />
             ) : (
-                data.listTimekeeping.map((item, index) => (
-                  <View key={index.toString()} style={{ width: "100%" }}>
-                    {this._renderRowTable(item, index)}
-                  </View>
-                ))
-              )}
+              data.map((item, index) => (
+                <View key={index.toString()} style={{ width: "100%" }}>
+                  {this._renderRowTable(item, index)}
+                </View>
+              ))
+            )}
           </ScrollView>
         </ScrollView>
       </View>
