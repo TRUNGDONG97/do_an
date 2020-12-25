@@ -116,7 +116,7 @@ const checkin = async (req, res, next) => {
         time_late,
         id_mac_address: countMacAddress[0].id,
       });
-      // gửi thông báo về
+      // tạo thông báo ở database
       await NotificationModel.create({
         created_date: DateUtil.formatInputDate(new Date()),
         type: 1,
@@ -126,6 +126,7 @@ const checkin = async (req, res, next) => {
           DateUtil.formatShortDate(new Date()) +
           " thành công",
       });
+      //gửi thông báo về
       if (employee[0].device_id) {
         pushNotification(
           employee[0].device_id,
@@ -135,15 +136,16 @@ const checkin = async (req, res, next) => {
           {}
         );
       }
+      // lấy dữ liệu trả về
       let TimeLateAndDay = await EmployeeModel.findAll({
         attributes: [
           [
             sequelize.fn("sum", sequelize.col("timekeepings.workday")),
-            "countWorkday",
+            "countWorkday", // tổng ngày công
           ],
           [
             sequelize.fn("sum", sequelize.col("timekeepings.time_late")),
-            "countTimeLate",
+            "countTimeLate", //tổng thời gian đi muộn
           ],
         ],
         include: [
@@ -156,7 +158,6 @@ const checkin = async (req, res, next) => {
               id_employee: employee[0].id,
             },
             required: false,
-            // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
           },
         ],
         where: {
@@ -166,6 +167,7 @@ const checkin = async (req, res, next) => {
         row: true,
         group: ["employee.id"],
       });
+      // lấy về danh sách chấm công
       let listTimekeeping = await TimekeepingModel.findAll({
         where: {
           date_timekeeping: {
@@ -178,6 +180,7 @@ const checkin = async (req, res, next) => {
           ["time_checkin", "DESC"],
         ],
       });
+      // trả vè dữ liêu
       res.json({
         status: 1,
         code: 200,
@@ -192,6 +195,7 @@ const checkin = async (req, res, next) => {
     }
     //checkin buổi chiều
     if (checkTimeCheckinAfternoon(getCurrentTime())) {
+      
       if (timekeepingMorning.length > 0 && timekeepingMorning[0].status == 0) {
         res.json({
           status: 0,
@@ -330,10 +334,11 @@ const checkin = async (req, res, next) => {
     return;
   }
 };
-
+// checkout
 const checkout = async (req, res, next) => {
   const { token } = req.headers;
   const { address_mac } = req.body;
+
   var date = new Date();
   var month = date.getMonth() + 1;
   var year = date.getFullYear();
@@ -380,6 +385,8 @@ const checkout = async (req, res, next) => {
       });
     }
 
+//  tìm kiếm xem buổi sáng checkin hay chưa
+
     const timekeepingMorning = await TimekeepingModel.findAll({
       where: {
         date_timekeeping: getCurrentDate(),
@@ -393,6 +400,7 @@ const checkout = async (req, res, next) => {
         },
       },
     });
+   
     if (checkTimeCheckoutMorning(getCurrentTime())) {
       if (timekeepingMorning.length < 1) {
         res.json({
@@ -403,6 +411,7 @@ const checkout = async (req, res, next) => {
         });
         return;
       }
+      // cập nhập đã checkout
       await TimekeepingModel.update(
         {
           time_checkout: getCurrentTime(),
@@ -489,7 +498,8 @@ const checkout = async (req, res, next) => {
       return;
       
     }
-    const timekeepingAfternoon = await TimekeepingModel.findAll({
+     // tìm kiếm checkin buổi chiều
+     const timekeepingAfternoon = await TimekeepingModel.findAll({
       where: {
         date_timekeeping: getCurrentDate(),
         is_active: 1,

@@ -1,5 +1,5 @@
 <resources>
-	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">Tbs6yjPROHySdKuZMV5ioAB_j6PjqnLNkAP4q</string>
+	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">vFJXS3uQktcWKqbtt9DiDjm0BVbPJROy93TpA</string>
     <string name="app_name">Timekeeping</string>
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>

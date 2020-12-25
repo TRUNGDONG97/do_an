@@ -1,5 +1,4 @@
 codepush
-    appcenter codepush release-react -a letrungdong1997.bg-gmail.com/app_timekeeping -d Staging
+    appcenter codepush release-react -a lethitrang04121997-gmail.com/app_timekeeping -d Staging -m
 build app
-
     cd android && .\gradlew assembleRelease
