@@ -180,6 +180,7 @@ export class UserScreen extends Component {
                             showConfirm('Thông báo', 'Bạn có chắc chắn muốn đăng xuất không?', this._logout)
                         })}
                     </View>
+                    <Text>1.0.0(v1)</Text>
                 </ScrollView>
             </Block>
         )
