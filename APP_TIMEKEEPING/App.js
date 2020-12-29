@@ -65,10 +65,13 @@ class App extends Component {
   // onIds(device) {
   //   Reactotron.log('Device info: ', device);
   // }
-
+  
 }
 
-let codePushOptions = { checkFrequency: codePush.CheckFrequency.MANUAL };
+let codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+  installMode: codePush.InstallMode.ON_NEXT_RESUME,
+};
 
 
 

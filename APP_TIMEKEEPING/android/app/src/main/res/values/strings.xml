@@ -1,6 +1,6 @@
 <resources>
-	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">vFJXS3uQktcWKqbtt9DiDjm0BVbPJROy93TpA</string>
-    <string name="app_name">Timekeeping</string>
+	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">wE5ltbtMmk5bfTIhK_lcf5vEXql4PyTjATU9h</string>
+    <string name="app_name">Timekeeping</string> 
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
     <string name="facebook_app_id">2449712991815530</string>
