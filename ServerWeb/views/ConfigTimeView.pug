@@ -1,0 +1,58 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css')
+    style
+        include ../src/stylesheets/Navbarstyle.css
+    script
+        include ../src/javascripts/NavbarScript.js
+    link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.13.0/css/all.css', integrity='sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V', crossorigin='anonymous')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js') 
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js')
+    script(src='https://unpkg.com/sweetalert/dist/sweetalert.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.3/xlsx.full.min.js')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    meta(charset='utf-8')
+    script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.1/xlsx.full.min.js')
+    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css')
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+  style
+    include ../src/stylesheets/ConfigtimeStyle.css
+  script
+    include ../src/javascripts/ConfigTimeScript.js
+  body
+    include NavbarView
+    .container-tab
+      .div-title
+        h4
+          i.fas.fa-cog
+            |  &nbsp;  Cấu hình thời gian chấm công
+      mixin templateTime(id,title,type)
+        .row(style='margin-top:20px;')
+          label.col-md-7.col-sm-7.col-7(style='padding-top:6px;padding-right:10px;') #{title}:
+          .col-md-4.col-sm-4.col-4(style='margin-bottom:20px;')
+            input.form-control(type=type id=id) 
+      .row.float-right(style='margin-right:20px;margin-bottom:20px;')
+        button#updateTimeConfig.btn.btn-primary(type="button" style='margin-right:20px;'  onclick='updateTimeConfig()')
+          i.far.fa-save
+            | &nbsp;  Cập nhật
+      .row(style='margin-top:20px; margin-left:30px;')
+        label.col-md-3.col-sm-3.col-3(style='padding-top:6px;padding-right:10px;') Thời gian tối đa đi muộn:
+        .col-md-2.col-sm-2.col-2(style='margin-bottom:20px;')
+          input#max_time_late.form-control(type='number') 
+        p &nbsp; &nbsp; phút
+      .row(style='margin-left:30px;margin-bottom:300px;')
+        .col-md-6.col-sm-6.col-6
+          + templateTime('time_start_work_morning','Thời gian bắt đầu làm việc buổi sáng','text')
+          + templateTime('time_start_checkin_morning','Thời gian bắt đầu chấm công buổi sáng','text')
+          + templateTime('time_end_checkin_morning','Thời gian kết thúc chấm công buổi sáng','text')
+          + templateTime('time_start_checkout_morning','Thời gian bắt đầu chấm công buổi sáng','text')
+          + templateTime('time_end_checkout_morning','Thời gian kết thúc chấm công buổi sáng','text')
+        .col-md-6.col-sm-6.col-6
+          + templateTime('time_start_work_afternoon','Thời gian bắt đầu làm việc buổi chiều','text')
+          + templateTime('time_start_checkin_afternoon','Thời gian bắt đầu chấm công buổi chiều','text')
+          + templateTime('time_end_checkin_afternoon','Thời gian kết thúc chấm công buổi chiều','text')
+          + templateTime('time_start_checkout_afternoon','Thời gian bắt đầu chấm công buổi chiều','text')
+          + templateTime('time_end_checkout_afternoon','Thời gian kết thúc chấm công buổi chiều','text')

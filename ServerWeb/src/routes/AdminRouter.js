@@ -5,6 +5,7 @@ import AdminController from '../controllers/AdminController'
 import Admin from '../models/AdminModel';
 import MacAddressController from '../controllers/MacAddressController';
 import TimeKeepingController from "../controllers/TimeKeepingController";
+import ConfigTimeController from "../controllers/ConfigTimeController";
 import Other from "../api/WebApi/Other";
 const router = express.Router();
 
@@ -14,4 +15,5 @@ router.get('/admin',AdminController.getAdmin)
 router.get('/mac',MacAddressController.getMacAddress)
 router.get('/timekeeping',TimeKeepingController.getTimekeeping)
 router.get('/timekeeping/detail',TimeKeepingController.detailTimekeeping)
+router.get('/configTime',ConfigTimeController.renderConfigTime)
 module.exports = router;

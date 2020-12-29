@@ -4,7 +4,7 @@ import AdminController from "../controllers/AdminController";
 import EmployeeController from "../controllers/EmployeeController";
 import MacAddressController from "../controllers/MacAddressController";
 import TimeKeepingController from "../controllers/TimeKeepingController";
-
+import ConfigTimeController from '../controllers/ConfigTimeController';
 const router = express.Router();
 router.post("/user/changePass", Other.changePass);
 router.get("/getCountEmployee", Other.getCountEmployee);
@@ -31,6 +31,10 @@ router.get("/getMacOnServer",MacAddressController.getMacOnServer)
 router.post("/seacherListTimekeeping",TimeKeepingController.seacherListTimekeeping)
 router.post("/seacherDetailTimekeeping",TimeKeepingController.seacherDetailTimekeeping)
 router.get("/exportFileTimekeeping", TimeKeepingController.exportFileTimekeeping);
+
+
+router.get("/getConfigTime",ConfigTimeController.getConfigTime)
+router.post("/updateTimeConfig",ConfigTimeController.updateTimeConfig)
 // seacherDetailTimekeeping
 router.get("/", function (req, res, next) {
   res.redirect("admin/login");
