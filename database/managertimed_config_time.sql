@@ -16,34 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `admin`
+-- Table structure for table `config_time`
 --
 
-DROP TABLE IF EXISTS `admin`;
+DROP TABLE IF EXISTS `config_time`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `admin` (
+CREATE TABLE `config_time` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `is_active` tinyint NOT NULL DEFAULT '1',
-  `token` varchar(255) DEFAULT NULL,
-  `admin_add` varchar(100) DEFAULT NULL,
-  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time_start_work_morning` int NOT NULL DEFAULT '510',
+  `time_start_checkin_morning` int NOT NULL DEFAULT '300',
+  `time_end_checkin_morning` int NOT NULL DEFAULT '540',
+  `time_start_checkout_morning` int NOT NULL DEFAULT '690',
+  `time_end_checkout_morning` int NOT NULL DEFAULT '780',
+  `time_start_work_afternoon` int NOT NULL DEFAULT '810',
+  `time_start_checkin_afternoon` int NOT NULL DEFAULT '720',
+  `time_end_checkin_afternoon` int NOT NULL DEFAULT '840',
+  `time_start_checkout_afternoon` int NOT NULL DEFAULT '1020',
+  `time_end_checkout_afternoon` int NOT NULL DEFAULT '1410',
+  `max_time_late` int NOT NULL DEFAULT '100',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `admin`
+-- Dumping data for table `config_time`
 --
 
-LOCK TABLES `admin` WRITE;
-/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (1,'admin','21232f297a57a5a743894a0e4a801fc3','tranglt1@gmail.com','Trung Đông',1,'U2FsdGVkX19pjmDc1e1p7phLpr4Ym+JttV8N99A293g=','admin','2020-11-17 22:15:57'),(2,'tranglt','09fc9d715576b282d3bacdd1ed0843c9','tranglt@gmail.com',NULL,1,NULL,'admin','2020-11-19 22:17:50'),(5,'thangnx','2d21619b6f23193984273ff272a0a76d','thangnx@gmail.com',NULL,0,NULL,'admin','2020-11-19 22:30:54');
-/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
+LOCK TABLES `config_time` WRITE;
+/*!40000 ALTER TABLE `config_time` DISABLE KEYS */;
+INSERT INTO `config_time` VALUES (1,510,315,540,690,780,810,780,840,1020,1410,100);
+/*!40000 ALTER TABLE `config_time` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-31  8:06:36
+-- Dump completed on 2020-12-31  8:06:35
