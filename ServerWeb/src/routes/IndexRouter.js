@@ -3,7 +3,7 @@ import Other from "../api/WebApi/Other";
 import AdminController from "../controllers/AdminController";
 import EmployeeController from "../controllers/EmployeeController";
 import MacAddressController from "../controllers/MacAddressController";
-import TimeKeepingController from "../controllers/TimeKeepingController";
+import TimeKeepingMonthController from "../controllers/TimeKeepingMonthController";
 import ConfigTimeController from '../controllers/ConfigTimeController';
 const router = express.Router();
 router.post("/user/changePass", Other.changePass);
@@ -28,9 +28,9 @@ router.post("/deleteMac",MacAddressController.deleteMac);
 router.post("/editMacAddress",MacAddressController.editMacAddress)
 router.get("/getMacOnServer",MacAddressController.getMacOnServer)
 
-router.post("/seacherListTimekeeping",TimeKeepingController.seacherListTimekeeping)
-router.post("/seacherDetailTimekeeping",TimeKeepingController.seacherDetailTimekeeping)
-router.get("/exportFileTimekeeping", TimeKeepingController.exportFileTimekeeping);
+router.post("/seacherListTimekeeping",TimeKeepingMonthController.seacherListTimekeeping)
+router.post("/seacherDetailTimekeeping",TimeKeepingMonthController.seacherDetailTimekeeping)
+router.get("/exportFileTimekeeping", TimeKeepingMonthController.exportFileTimekeeping);
 
 
 router.get("/getConfigTime",ConfigTimeController.getConfigTime)

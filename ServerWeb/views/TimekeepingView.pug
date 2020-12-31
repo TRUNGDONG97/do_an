@@ -7,46 +7,15 @@ html
         include ../src/javascripts/TimekeepingScript.js
     body
         include NavbarView
-        //- include ../src/modals/AddAdminModal
-        //- include ../src/modals/EditAdminModal
         .container-tab
             .div-title
                 h4#calender
                     i.fas.fa-user-clock
-                        |  &nbsp;  Danh sách chấm công tháng  &nbsp;
-            .div-search
-                .col-md-10.col-sm-10.col-10.offset-md-1
-                    .row 
-                        .col-md-6.col-sm-6.col-6
-                            .row
-                                label.col-md-5.col-sm-5.col-5(style='margin-top:6px') Nhập tên nhân viên:
-                                .col-md-6.col-sm-6.col-6
-                                    input#txtNameEmployee.form-control(type="text" placeholder="Nhập tên nhân viên")
-                        .col-md-6.col-sm-6.col-6
-                            .row
-                                label.col-md-5.col-sm-5.col-5(style='margin-top:6px') Nhập mã nhân viên :
-                                .col-md-6.col-sm-6.col-6
-                                    input#txtCodeEmployee.form-control(type="text" placeholder="Nhập mã nhân viên")
-                .col-md-10.col-sm-10.col-10.offset-md-1(style='margin-top:20px;')
-                    .row 
-                        .col-md-6.col-sm-6.col-6
-                            .row
-                                label.col-md-5.col-sm-5.col-5(style='margin-top:6px') Từ ngày :
-                                .col-md-6.col-sm-6.col-6
-                                    input.datepicker#dateStart(data-date-format='yyyy-mm-dd' )
-                                    .col-md-6.col-sm-6.col-6
-                        .col-md-6.col-sm-6.col-6
-                            .row
-                                label.col-md-5.col-sm-5.col-5(style='margin-top:6px') Đến ngày:
-                                .col-md-6.col-sm-6.col-6
-                                    input.datepicker#dateEnd(data-date-format='yyyy-mm-dd' )
-            .col-md-12.col-sm-12.col-12(style='margin-top:20px;')
-            .row.float-right(style='margin-right:20px;margin-bottom:20px;')
-                button#btnSearchEmployee.btn.btn-primary(type="button" style='margin-right:20px;'  onclick='seacherListTimekeeping(1)')
-                    i.fas.fa-search
-                        | &nbsp;  Tìm kiếm
-                //- button.btn.btn-secondary(type="button" onclick='exportFileTimekeepingAllEmployee()')
-                //-     i.fas.fa-download
-                //-         | &nbsp;  Xuất file exel
-            .container-fluid
-                #tableTimekeeping
+                        |  &nbsp;  Danh sách chấm công   &nbsp;
+            .col-md-10.col-sm-10.col-10.offset-md-1( style='margin-top:50px;')
+                button#btnSearchEmployee.btn.btn-primary(type="button" style='margin-right:20px;'  onclick='redirectListTimekeepingMonth()')
+                    i.fas.fa-list
+                        | &nbsp;  Danh sách chấm công theo tháng
+                button#btnSearchEmployee.btn.btn-danger(type="button" style='margin-right:20px;'  onclick='redirectListTimekeepingDay(1)')
+                    i.fas.fa-list
+                        | &nbsp;  Danh sách chấm công theo ngày

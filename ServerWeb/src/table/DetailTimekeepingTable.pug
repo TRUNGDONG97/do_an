@@ -7,6 +7,7 @@ table.table.table-bordered.table-hover
             th Thời gian checkout
             th Thời gian đi muộn
             th Trạng thái
+            th Ghi chú
             //- th
     tbody#tbodyTableAdmin
         if listTimekeeping.length <=0        
@@ -21,6 +22,7 @@ table.table.table-bordered.table-hover
                     td #{Math.floor(item.time_checkout/60)+":"+item.time_checkout%60}
                     td #{item.time_late}
                     td #{item.status==0?"Chưa checkout":"Checkout thành công"}
+                    td #{item.note}
                 
 #paginateAdmin.row.float-right(style='margin-right:10px ')
     if pageCount>=1
