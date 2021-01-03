@@ -1,46 +1,50 @@
-table.table.table-bordered.table-hover
-    thead
-        tr
-            th STT
-            th Mã nhân viên
-            th Họ và tên  
-            th Ngày chấm công
-            th Thời gian checkin
-            th Thời gian checkout
-            th Thời gian đi muộn
-            th Trạng thái
-            th Ghi chú
-            th
-    tbody#tbodyTableEmployee
-        if employees.length <=0        
+.table-responsive
+    table.table.table-bordered.table-hover.table-striped 
+        thead
             tr
-                td(colspan='10' style='text-align: center;') Chưa có nhân viên nào.
-        else
-            each item in employees
+                th(scope='col') STT
+                th(scope='col') Mã nhân viên
+                th(scope='col') Họ và tên  
+                th(scope='col') Ngày chấm công
+                th(scope='col') Thời gian checkin
+                th(scope='col') Thời gian checkout
+                th(scope='col') Thời gian đi muộn
+                th(scope='col') Ngày công
+                th(scope='col') Ghi chú
+                th(scope='col') Trạng thái
+                //- th 
+        tbody#tbodyTableEmployee
+            if timekeeping.length <=0        
                 tr
-                    td #{STT=STT+1}
-                    td #{item.employee_code}
-                    td #{item.first_name+" "+item.last_name}
-                    td
-                        button.edit.btn.btn-success(type='button' onclick='editEmployee('+JSON.stringify(item)+')')
-                            i.far.fa-edit 
-                        button.delete.btn.btn-danger(type='button' title='Xóa Danh Mục' onclick='deleteEmployee('+item.id+')')
-                            i.far.fa-trash-alt
-#paginateEmployee.row.float-right
-    if pageCount>=1
-        if  pages.prev>0
-            button.btn.page-item(onclick='searchEmployee(1)')
-                i.fas.fa-angle-double-left
-            button.btn.page-item(onclick='searchEmployee('+pages.prev+')')
-                i.fas.fa-chevron-left
-        if pages
-            each page in pages.pages
-                if page==currentPage
-                    button#paginateActive.btn.page-item(onclick='searchEmployee('+page+')') #{page}
-                else
-                    button.btn.page-item(onclick='searchEmployee('+page+')') #{page}                    
-        if  pages.next <= pageCount
-            button.btn.page-item(onclick='searchEmployee('+pages.next+')')
-                i.fas.fa-chevron-right
-            button.btn.page-item(onclick='searchEmployee('+pageCount+')')
-                i.fas.fa-angle-double-right
+                    td(colspan='10' style='text-align: center;') Chưa có chấm công nào.
+            else
+                each item in timekeeping
+                    tr
+                        td #{STT=STT+1}
+                        td #{item.employee.employee_code}
+                        td #{item.employee.first_name+" "+item.employee.last_name}
+                        td #{item.date_timekeeping}
+                        td #{Math.floor(item.time_checkin/60)+":"+item.time_checkin%60}
+                        td #{Math.floor(item.time_checkout/60)+":"+item.time_checkout%60}
+                        td #{item.time_late}
+                        td #{item.workday}
+                        td #{item.note}
+                        td  #{item.type==1?"Đã xác nhận":"Chưa xác nhận"}
+    #paginateEmployee.row.float-right
+        if pageCount>=1
+            if  pages.prev>0
+                button.btn.page-item(onclick='searchEmployee(1)')
+                    i.fas.fa-angle-double-left
+                button.btn.page-item(onclick='searchEmployee('+pages.prev+')')
+                    i.fas.fa-chevron-left
+            if pages
+                each page in pages.pages
+                    if page==currentPage
+                        button#paginateActive.btn.page-item(onclick='searchEmployee('+page+')') #{page}
+                    else
+                        button.btn.page-item(onclick='searchEmployee('+page+')') #{page}                    
+            if  pages.next <= pageCount
+                button.btn.page-item(onclick='searchEmployee('+pages.next+')')
+                    i.fas.fa-chevron-right
+                button.btn.page-item(onclick='searchEmployee('+pageCount+')')
+                    i.fas.fa-angle-double-right

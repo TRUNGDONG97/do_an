@@ -13,7 +13,7 @@ const getEmployee = async (req, res, next) => {
 const searchEmployee = async (req, res, next) => {
   try {
     const { currentPage, employee_code, nameEmployee } = req.body;
-    // console.log("phoneEmployee", phoneEmployee);
+    console.log("employee_code", employee_code);
     // console.log("nameEmployee", nameEmployee);
     const { count, rows } = await EmployeeModel.findAndCountAll({
       where: {

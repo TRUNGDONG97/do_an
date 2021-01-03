@@ -20,11 +20,11 @@ table.table.table-bordered.table-hover
                     td #{STT=STT+1}
                     td #{item.employee_code}
                     td #{item.first_name+" "+item.last_name}
-                    td #{item.department}
-                    td #{item.position}
+                    td #{item.department==1?"Nhân sự":item.department==2?"Lập trình":"Kinh doanh"}
+                    td #{item.position==1?"Quản lý":"Nhân viên"}
                     td #{item.get('countWorkday')?item.get('countWorkday'):0}
                     td #{item.get('countTimeLate')?item.get('countTimeLate'):0}
-                    td 
+                    td #{item.money}
                     td
                         button.edit.btn.btn-primary(type='button' onclick='redirecDetailTimeKeeping('+JSON.stringify(item)+')')
                             i.fas.fa-info-circle

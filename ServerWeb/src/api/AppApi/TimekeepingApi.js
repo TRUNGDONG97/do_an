@@ -4,6 +4,7 @@ import md5 from "md5";
 import sequelize, { Op } from "sequelize";
 import TimekeepingModel from "../../models/TimekeepingModel";
 import MacAddressModel from "../../models/MacAddressModel";
+import ConfigtimeModel from "../../models/ConfigtimeModel";
 import {
   checkTimeCheckinAfternoon,
   checkTimeCheckinMorning,
@@ -103,11 +104,12 @@ const checkin = async (req, res, next) => {
         });
         return;
       }
+      const getConfigTime = await ConfigtimeModel.findAll();
       // tính thời gian đi muộn
       var time_late = 0;
-      if (getCurrentTime() > Contant.TIME_WORKING.TIME_START_WORKING_MORNING) {
+      if (getCurrentTime() > getConfigTime[0].time_start_work_morning) {
         time_late =
-          getCurrentTime() - Contant.TIME_WORKING.TIME_START_WORKING_MORNING;
+          getCurrentTime() -getConfigTime[0].time_start_work_morning;
       }
       //tạo chấm công
        await TimekeepingModel.create({
@@ -228,12 +230,13 @@ const checkin = async (req, res, next) => {
         });
         return;
       }
+      const getConfigTime = await ConfigtimeModel.findAll();
       var time_late = 0;
       if (
-        getCurrentTime() > Contant.TIME_WORKING.TIME_START_WORKING_AFTERNOON
+        getCurrentTime() > getConfigTime[0].time_start_work_afternoon
       ) {
         time_late =
-          getCurrentTime() - Contant.TIME_WORKING.TIME_START_WORKING_AFTERNOON;
+          getCurrentTime() -getConfigTime[0].time_start_work_afternoon;
       }
       await TimekeepingModel.create({
         id_employee: employee[0].id,
@@ -718,7 +721,11 @@ const checkout = async (req, res, next) => {
     return;
   }
 };
+const workoff=async(req,res)=>{
+  const {}=req.body
+}
 export default {
   checkin,
   checkout,
+  workoff
 };

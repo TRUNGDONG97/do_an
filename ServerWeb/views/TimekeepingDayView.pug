@@ -14,3 +14,32 @@ html
                 h4#calender
                     i.fas.fa-user-clock
                         |  &nbsp;  Danh sách chấm công ngày  &nbsp;
+            .div-search
+                .col-md-10.col-sm-10.col-10.offset-md-1
+                    .row 
+                        .col-md-6.col-sm-6.col-6
+                            .row
+                                label.col-md-5.col-sm-5.col-5(style='margin-top:6px') Nhập tên nhân viên:
+                                .col-md-6.col-sm-6.col-6
+                                    input#txtNameEmployee.form-control(type="text" placeholder="Nhập tên nhân viên")
+                        .col-md-6.col-sm-6.col-6
+                            .row
+                                label.col-md-5.col-sm-5.col-5(style='margin-top:6px') Nhập mã nhân viên :
+                                .col-md-6.col-sm-6.col-6
+                                    input#txtCodeEmployee.form-control(type="text" placeholder="Nhập mã nhân viên")
+                .col-md-10.col-sm-10.col-10.offset-md-1(style='margin-top:20px;')
+                    .row
+                        .col-md-4.col-sm-4.col-4
+                            .row
+                                label.col-md-5.col-sm-5.col-5(style='margin-top:6px') Ngày:
+                                .col-md-6.col-sm-6.col-6
+                                    input.datepicker#date(data-date-format='yyyy-mm-dd' )
+                        .col-md-3.col-sm-3.col-3.offset-md-1
+                            button#btnSearch.btn.btn-primary(type="button" style='margin-right:20px;'  onclick='searchTimekeeping(1)')
+                                i.fas.fa-search
+                                    | &nbsp;  Tìm kiếm
+                        .col-md-4.col-sm-4.col-4
+                            button#btnSearchEmployee.btn.btn-success(type="button" style='margin-right:20px;'  onclick='ConfirmTimekeeping()')
+                                i.far.fa-check-square
+                                    | &nbsp;  Xác nhận
+            #tableTimekeeping

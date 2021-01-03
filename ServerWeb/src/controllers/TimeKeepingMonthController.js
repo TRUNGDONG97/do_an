@@ -24,7 +24,7 @@ const seacherListTimekeeping = async (req, res, next) => {
     console.log("currentPage", currentPage);
     console.log("startDate", startDate);
     console.log("endDate", endDate);
-    // console.log("timekeeping", timekeepings[0].employee.id)
+    console.log("timekeeping", employee_code)
     const employees = await EmployeeModel.findAll({
       attributes: [
         "id",
@@ -82,11 +82,11 @@ const seacherListTimekeeping = async (req, res, next) => {
       if (employees[index].position == 1) {
         coefficient = 5;
       }
-      employees[index] = {
-        ...employees[index],
-        money: employees[index].time_late * coefficient,
-      };
+      employees[index].money = !!employees[index].get("countTimeLate")
+        ? employees[index].get("countTimeLate") * coefficient
+        : 0;
     }
+    console.log(employees[7].money);
     // console.log("rows", employees[7]);
     const pageCount = PageCount(count);
     // console.log("pageCount", pageCount);

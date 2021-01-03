@@ -5,6 +5,7 @@ import EmployeeController from "../controllers/EmployeeController";
 import MacAddressController from "../controllers/MacAddressController";
 import TimeKeepingMonthController from "../controllers/TimeKeepingMonthController";
 import ConfigTimeController from '../controllers/ConfigTimeController';
+import TimekeepingDayController from "../controllers/TimekeepingDayController";
 const router = express.Router();
 router.post("/user/changePass", Other.changePass);
 router.get("/getCountEmployee", Other.getCountEmployee);
@@ -35,6 +36,8 @@ router.get("/exportFileTimekeeping", TimeKeepingMonthController.exportFileTimeke
 
 router.get("/getConfigTime",ConfigTimeController.getConfigTime)
 router.post("/updateTimeConfig",ConfigTimeController.updateTimeConfig)
+
+router.post('/seacherListTimekeepingDay',TimekeepingDayController.searchTimekeeping)
 // seacherDetailTimekeeping
 router.get("/", function (req, res, next) {
   res.redirect("admin/login");

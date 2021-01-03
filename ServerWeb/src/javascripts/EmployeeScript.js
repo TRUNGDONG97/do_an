@@ -41,6 +41,7 @@ const searchEmployee = (currentPage) => {
   }
   var nameEmployee = $.trim($("#txtNameEmployee").val());
   var employee_code = $.trim($("#txtEmployeeCode").val());
+  console.log("employee_code",employee_code);
   $.ajax({
     url: "/searchEmployee",
     type: "POST",

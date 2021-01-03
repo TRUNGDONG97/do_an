@@ -1,5 +1,6 @@
 import Constants from "./contant";
 import request from "request";
+import ConfigtimeModel from "../models/ConfigtimeModel";
 // import distance from 'google-distance'
 module.exports.getArrayPages = function (req) {
   return function (pageCount, currentPage) {
@@ -68,8 +69,6 @@ module.exports.pushNotification = (device, message, data) => {
   );
 };
 
-
-
 module.exports.readFileExel = (fileUpload) => {
   var arrStudent = [];
   if (typeof FileReader != "undefined") {
@@ -99,48 +98,71 @@ module.exports.readFileExel = (fileUpload) => {
   return arrStudent;
 };
 
-module.exports.checkTimeCheckinMorning = (time) => {
+module.exports.checkTimeCheckinMorning = async (time) => {
   //time đơn vị phút
-  if (
-    time >= Constants.TIMEKEEPING.TIME_START_CHECKIN_MORNING &&
-    time <= Constants.TIMEKEEPING.TIME_END_CHECKIN_MORNING
-  ) {
-    return true;
-  } else {
+  try {
+    const getConfigTime = await ConfigtimeModel.findAll();
+    if (
+      time >= getConfigTime[0].time_start_checkin_morning &&
+      time <= getConfigTime[0].time_end_checkin_morning
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error checkTimeCheckinAfternoon", error);
     return false;
   }
 };
-module.exports.checkTimeCheckoutMorning = (time) => {
+module.exports.checkTimeCheckoutMorning = async (time) => {
   //time đơn vị phút
-
-  if (
-    time >= Constants.TIMEKEEPING.TIME_START_CHECKOUT_MORNING &&
-    time <= Constants.TIMEKEEPING.TIME_END_CHECKOUT_MORNING
-  ) {
-    return true;
-  } else {
+  try {
+    const getConfigTime = await ConfigtimeModel.findAll();
+    if (
+      time >= getConfigTime[0].time_start_checkout_morning &&
+      time <= getConfigTime[0].time_end_checkout_morning
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error checkTimeCheckinAfternoon", error);
     return false;
   }
 };
-module.exports.checkTimeCheckinAfternoon = (time) => {
+module.exports.checkTimeCheckinAfternoon = async (time) => {
   //time đơn vị phút
-  if (
-    time >= Constants.TIMEKEEPING.TIME_START_CHECKIN_AFTERNOON &&
-    time <= Constants.TIMEKEEPING.TIME_END_CHECKIN_AFTERNOON
-  ) {
-    return true;
-  } else {
+  try {
+    const getConfigTime = await ConfigtimeModel.findAll();
+    if (
+      time >= getConfigTime[0].time_start_checkin_afternoon &&
+      time <= getConfigTime[0].time_end_checkin_afternoon
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error checkTimeCheckinAfternoon", error);
     return false;
   }
 };
-module.exports.checkTimeCheckoutAfternoon = (time) => {
+module.exports.checkTimeCheckoutAfternoon = async (time) => {
   //time đơn vị phút
-  if (
-    time >= Constants.TIMEKEEPING.TIME_START_CHECKOUT_AFTERNOON &&
-    time <= Constants.TIMEKEEPING.TIME_END_CHECKOUT_AFTERNOON
-  ) {
-    return true;
-  } else {
+  try {
+    const getConfigTime = await ConfigtimeModel.findAll();
+    if (
+      time >= getConfigTime[0].time_start_checkout_afternoon &&
+      time <= getConfigTime[0].time_end_checkout_afternoon
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error checkTimeCheckinAfternoon", error);
     return false;
   }
 };
@@ -159,9 +181,9 @@ module.exports.getCurrentDate = () => {
   return year + "-" + month + "-" + dates;
 };
 module.exports.converMinuteToTime = (time) => {
-  var minute=time%60
-  if(minute.toString().length==1){
-    minute=  "0"+minute.toString()
+  var minute = time % 60;
+  if (minute.toString().length == 1) {
+    minute = "0" + minute.toString();
   }
   // console.log("Dsda", Math.floor(time / 60) + ":" + minute);
   return Math.floor(time / 60) + ":" + minute;
