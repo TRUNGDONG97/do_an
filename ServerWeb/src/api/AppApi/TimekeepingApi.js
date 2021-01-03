@@ -115,6 +115,7 @@ const checkin = async (req, res, next) => {
         time_checkin: getCurrentTime(),
         time_late,
         id_mac_address: countMacAddress[0].id,
+        date_timekeeping:getCurrentDate()
       });
       // tạo thông báo ở database
       await NotificationModel.create({

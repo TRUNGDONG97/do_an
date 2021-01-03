@@ -94,20 +94,20 @@ const logout = async (req, res, next) => {
     return;
   }
   try {
-    const teacher = await TeacherModel.findAndCountAll({
+    const employee = await EmployeeModel.findAndCountAll({
       where: {
         token,
       },
     });
-    if (teacher.count > 0) {
-      await TeacherModel.update(
+    if (employee.count > 0) {
+      await EmployeeModel.update(
         {
           token: null,
           device_id: null,
         },
         {
           where: {
-            id: teacher.rows[0].id,
+            id: employee.rows[0].id,
           },
         }
       );
@@ -129,6 +129,7 @@ const logout = async (req, res, next) => {
     });
     return;
   } catch (error) {
+     console.log(error)
     res.json({
       status: 0,
       code: 404,
