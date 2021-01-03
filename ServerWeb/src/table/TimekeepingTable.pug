@@ -8,6 +8,7 @@ table.table.table-bordered.table-hover
             th Vị trí
             th Số ngày chấm công
             th thời gian đi muộn
+            th Tiền phạt
             th
     tbody#tbodyTableAdmin
         if employees.length <=0        
@@ -23,6 +24,7 @@ table.table.table-bordered.table-hover
                     td #{item.position}
                     td #{item.get('countWorkday')?item.get('countWorkday'):0}
                     td #{item.get('countTimeLate')?item.get('countTimeLate'):0}
+                    td 
                     td
                         button.edit.btn.btn-primary(type='button' onclick='redirecDetailTimeKeeping('+JSON.stringify(item)+')')
                             i.fas.fa-info-circle

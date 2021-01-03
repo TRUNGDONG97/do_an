@@ -4,12 +4,12 @@ table.table.table-bordered.table-hover
             th STT
             th Mã nhân viên
             th Họ và tên  
-            th Số điện thoại
-            th Ngày sinh
-            th Email
-            th Giới tính
-            th Bộ phận
-            th Vị trí
+            th Ngày chấm công
+            th Thời gian checkin
+            th Thời gian checkout
+            th Thời gian đi muộn
+            th Trạng thái
+            th Ghi chú
             th
     tbody#tbodyTableEmployee
         if employees.length <=0        
@@ -20,13 +20,7 @@ table.table.table-bordered.table-hover
                 tr
                     td #{STT=STT+1}
                     td #{item.employee_code}
-                    td #{item.first_name+" "+item.last_name}               
-                    td #{item.phone}
-                    td #{item.birthday}
-                    td #{item.email}
-                    td #{item.gener==1?'Nam':'Nữ'}
-                    td #{item.department==1?"Nhân sự":item.department==2?"Lập trình":"Kinh doanh"}
-                    td #{item.position==1?"Sếp":"Nhân viên"}
+                    td #{item.first_name+" "+item.last_name}
                     td
                         button.edit.btn.btn-success(type='button' onclick='editEmployee('+JSON.stringify(item)+')')
                             i.far.fa-edit 

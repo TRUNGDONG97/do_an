@@ -29,7 +29,7 @@ CREATE TABLE `notification` (
   `type` tinyint DEFAULT NULL,
   `created_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +38,7 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+INSERT INTO `notification` VALUES (1,'Chấm công ngày 23/12/2020 thành công',1,1,'2020-12-23'),(2,'Chấm công ngày 23/12/2020 thành công',1,1,'2020-12-23'),(3,'Chấm công ngày 23/12/2020 thành công',1,1,'2020-12-23'),(4,'Chấm công ngày 23/12/2020 thành công',1,1,'2020-12-23'),(5,'Chấm công ngày 23/12/2020 thành công',1,1,'2020-12-23'),(6,'Checkout chiều ngày 23/12/2020 thành công',1,1,'2020-12-23'),(7,'Checkout chiều ngày 23/12/2020 thành công',1,1,'2020-12-23'),(8,'Chấm công ngày 23/12/2020 thành công',1,1,'2020-12-23'),(9,'Checkout chiều ngày 23/12/2020 thành công',1,1,'2020-12-23');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-22 22:30:24
+-- Dump completed on 2020-12-31  8:06:36

@@ -1,0 +1,16 @@
+doctype html
+html
+    include Layout
+    style
+        include ../src/stylesheets/TimekeepingMonthStyle.css
+    script
+        include ../src/javascripts/TimekeepingDayScript.js
+    body
+        include NavbarView
+        //- include ../src/modals/AddAdminModal
+        //- include ../src/modals/EditAdminModal
+        .container-tab
+            .div-title
+                h4#calender
+                    i.fas.fa-user-clock
+                        |  &nbsp;  Danh sách chấm công ngày  &nbsp;
