@@ -102,7 +102,7 @@ export default class HomeScreen extends Component {
       checkConnect.isWifiEnabled &&
       checkConnect.type == "wifi"
     ) {
-      if (!checkConnect.details.bssid) {
+      if (!checkConnect.details.bssid ||checkConnect.details.bssid=="02:00:00:00:00:00" ) {
         Toast.show("Bạn chưa lấy được địa chỉ mac", BACKGROUND_TOAST.FAIL);
         return;
       }
