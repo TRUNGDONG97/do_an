@@ -17,12 +17,6 @@ import {
 import Contant from "../../util/contant";
 import DateUtil from "../../util/DateUtil";
 const checkin = async (req, res, next) => {
-  var date = new Date();
-  var month = date.getMonth() + 1;
-  var year = date.getFullYear();
-  var date1 = date.getDate();
-  var startDate = year + "-" + month + "-" + "01";
-  var endDate = year + "-" + month + "-" + date1;
   try {
     const { token } = req.headers;
     const { address_mac } = req.body;
@@ -69,7 +63,8 @@ const checkin = async (req, res, next) => {
       });
       return;
     }
-
+    const getConfigTime = await ConfigtimeModel.findAll();
+    //lay cham cong buoi sang
     const timekeepingMorning = await TimekeepingModel.findAll({
       where: {
         date_timekeeping: getCurrentDate(),
@@ -77,21 +72,21 @@ const checkin = async (req, res, next) => {
         id_employee: employee[0].id,
         time_checkin: {
           [Op.between]: [
-            Contant.TIMEKEEPING.TIME_START_CHECKIN_MORNING,
-            Contant.TIMEKEEPING.TIME_END_CHECKIN_MORNING,
+            getConfigTime[0].time_start_checkin_morning,
+            getConfigTime[0].time_end_checkin_morning,
           ],
         },
       },
     });
-    console.log("getCurrentTime", getCurrentTime());
-    console.log(
-      "checkTimeCheckinMorning(getCurrentTime())",
-      checkTimeCheckinMorning(getCurrentTime())
-    );
-    console.log(
-      "checkTimeCheckinAfternoon(getCurrentTime())",
-      checkTimeCheckinAfternoon(getCurrentTime())
-    );
+    // console.log("getCurrentTime", getCurrentTime());
+    // console.log(
+    //   "checkTimeCheckinMorning(getCurrentTime())",
+    //   checkTimeCheckinMorning(getCurrentTime())
+    // );
+    // console.log(
+    //   "checkTimeCheckinAfternoon(getCurrentTime())",
+    //   checkTimeCheckinAfternoon(getCurrentTime())
+    // );
     //checkin buổi sáng
     if (checkTimeCheckinMorning(getCurrentTime())) {
       //check đã chấm công chưa
@@ -104,20 +99,18 @@ const checkin = async (req, res, next) => {
         });
         return;
       }
-      const getConfigTime = await ConfigtimeModel.findAll();
       // tính thời gian đi muộn
       var time_late = 0;
       if (getCurrentTime() > getConfigTime[0].time_start_work_morning) {
-        time_late =
-          getCurrentTime() -getConfigTime[0].time_start_work_morning;
+        time_late = getCurrentTime() - getConfigTime[0].time_start_work_morning;
       }
       //tạo chấm công
-       await TimekeepingModel.create({
+      await TimekeepingModel.create({
         id_employee: employee[0].id,
         time_checkin: getCurrentTime(),
         time_late,
         id_mac_address: countMacAddress[0].id,
-        date_timekeeping:getCurrentDate()
+        date_timekeeping: getCurrentDate(),
       });
       // tạo thông báo ở database
       await NotificationModel.create({
@@ -139,66 +132,18 @@ const checkin = async (req, res, next) => {
           {}
         );
       }
-      // lấy dữ liệu trả về
-      let TimeLateAndDay = await EmployeeModel.findAll({
-        attributes: [
-          [
-            sequelize.fn("sum", sequelize.col("timekeepings.workday")),
-            "countWorkday", // tổng ngày công
-          ],
-          [
-            sequelize.fn("sum", sequelize.col("timekeepings.time_late")),
-            "countTimeLate", //tổng thời gian đi muộn
-          ],
-        ],
-        include: [
-          {
-            model: TimekeepingModel,
-            where: {
-              date_timekeeping: {
-                [Op.between]: [startDate, endDate],
-              },
-              id_employee: employee[0].id,
-            },
-            required: false,
-          },
-        ],
-        where: {
-          is_active: 1,
-          id: employee[0].id,
-        },
-        row: true,
-        group: ["employee.id"],
-      });
-      // lấy về danh sách chấm công
-      let listTimekeeping = await TimekeepingModel.findAll({
-        where: {
-          date_timekeeping: {
-            [Op.between]: [startDate, endDate],
-          },
-          id_employee: employee[0].id,
-        },
-        order: [
-          ["date_timekeeping", "DESC"],
-          ["time_checkin", "DESC"],
-        ],
-      });
+
       // trả vè dữ liêu
       res.json({
         status: 1,
         code: 200,
         message: "Checkin thành công",
-        data: {
-          timeLate: TimeLateAndDay[0].get("countTimeLate"),
-          dayWork: TimeLateAndDay[0].get("countWorkday"),
-          listTimekeeping,
-        },
+        data: getDataTimekeeping(employee[0].id),
       });
       return;
     }
     //checkin buổi chiều
     if (checkTimeCheckinAfternoon(getCurrentTime())) {
-      
       if (timekeepingMorning.length > 0 && timekeepingMorning[0].status == 0) {
         res.json({
           status: 0,
@@ -216,8 +161,8 @@ const checkin = async (req, res, next) => {
           id_employee: employee[0].id,
           time_checkin: {
             [Op.between]: [
-              Contant.TIMEKEEPING.TIME_START_CHECKIN_AFTERNOON,
-              Contant.TIMEKEEPING.TIME_END_CHECKIN_AFTERNOON,
+              getConfigTime[0].time_start_checkin_afternoon,
+              getConfigTime[0].time_end_checkin_afternoon,
             ],
           },
         },
@@ -231,13 +176,10 @@ const checkin = async (req, res, next) => {
         });
         return;
       }
-      const getConfigTime = await ConfigtimeModel.findAll();
       var time_late = 0;
-      if (
-        getCurrentTime() > getConfigTime[0].time_start_work_afternoon
-      ) {
+      if (getCurrentTime() > getConfigTime[0].time_start_work_afternoon) {
         time_late =
-          getCurrentTime() -getConfigTime[0].time_start_work_afternoon;
+          getCurrentTime() - getConfigTime[0].time_start_work_afternoon;
       }
       await TimekeepingModel.create({
         id_employee: employee[0].id,
@@ -265,58 +207,11 @@ const checkin = async (req, res, next) => {
         );
       }
 
-      let TimeLateAndDay = await EmployeeModel.findAll({
-        attributes: [
-          [
-            sequelize.fn("sum", sequelize.col("timekeepings.workday")),
-            "countWorkday",
-          ],
-          [
-            sequelize.fn("sum", sequelize.col("timekeepings.time_late")),
-            "countTimeLate",
-          ],
-        ],
-        include: [
-          {
-            model: TimekeepingModel,
-            where: {
-              date_timekeeping: {
-                [Op.between]: [startDate, endDate],
-              },
-              id_employee: employee[0].id,
-            },
-            required: false,
-            // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
-          },
-        ],
-        where: {
-          is_active: 1,
-          id: employee[0].id,
-        },
-        row: true,
-        group: ["employee.id"],
-      });
-      let listTimekeeping = await TimekeepingModel.findAll({
-        where: {
-          date_timekeeping: {
-            [Op.between]: [startDate, endDate],
-          },
-          id_employee: employee[0].id,
-        },
-        order: [
-          ["date_timekeeping", "DESC"],
-          ["time_checkin", "DESC"],
-        ],
-      });
       res.json({
         status: 1,
         code: 200,
         message: "Checkin thành công",
-        data: {
-          timeLate: TimeLateAndDay[0].get("countTimeLate"),
-          dayWork: TimeLateAndDay[0].get("countWorkday"),
-          listTimekeeping,
-        },
+        data: getDataTimekeeping(employee[0].id),
       });
       return;
     }
@@ -343,12 +238,6 @@ const checkout = async (req, res, next) => {
   const { token } = req.headers;
   const { address_mac } = req.body;
 
-  var date = new Date();
-  var month = date.getMonth() + 1;
-  var year = date.getFullYear();
-  var date1 = date.getDate();
-  var startDate = year + "-" + month + "-" + "01";
-  var endDate = year + "-" + month + "-" + date1;
   if (token == "") {
     res.json({
       status: 0,
@@ -388,8 +277,8 @@ const checkout = async (req, res, next) => {
         data: "",
       });
     }
-
-//  tìm kiếm xem buổi sáng checkin hay chưa
+    const getConfigTime = await ConfigtimeModel.findAll();
+    //  tìm kiếm xem buổi sáng checkin hay chưa
 
     const timekeepingMorning = await TimekeepingModel.findAll({
       where: {
@@ -398,13 +287,13 @@ const checkout = async (req, res, next) => {
         id_employee: employee[0].id,
         time_checkin: {
           [Op.between]: [
-            Contant.TIMEKEEPING.TIME_START_CHECKIN_MORNING,
-            Contant.TIMEKEEPING.TIME_END_CHECKIN_MORNING,
+            getConfigTime[0].time_start_checkin_morning,
+            getConfigTime[0].time_end_checkin_morning,
           ],
         },
       },
     });
-   
+
     if (checkTimeCheckoutMorning(getCurrentTime())) {
       if (timekeepingMorning.length < 1) {
         res.json({
@@ -446,72 +335,25 @@ const checkout = async (req, res, next) => {
           {}
         );
       }
-      let TimeLateAndDay = await EmployeeModel.findAll({
-        attributes: [
-          [
-            sequelize.fn("sum", sequelize.col("timekeepings.workday")),
-            "countWorkday",
-          ],
-          [
-            sequelize.fn("sum", sequelize.col("timekeepings.time_late")),
-            "countTimeLate",
-          ],
-        ],
-        include: [
-          {
-            model: TimekeepingModel,
-            where: {
-              date_timekeeping: {
-                [Op.between]: [startDate, endDate],
-              },
-              id_employee: employee[0].id,
-            },
-            required: false,
-            // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
-          },
-        ],
-        where: {
-          is_active: 1,
-          id: employee[0].id,
-        },
-        row: true,
-        group: ["employee.id"],
-      });
-      let listTimekeeping = await TimekeepingModel.findAll({
-        where: {
-          date_timekeeping: {
-            [Op.between]: [startDate, endDate],
-          },
-          id_employee: employee[0].id,
-        },
-        order: [
-          ["date_timekeeping", "DESC"],
-          ["time_checkin", "DESC"],
-        ],
-      });
+
       res.json({
         status: 1,
         code: 200,
         message: "Bạn checkout thành công .",
-        data: {
-          timeLate: TimeLateAndDay[0].get("countTimeLate"),
-          dayWork: TimeLateAndDay[0].get("countWorkday"),
-          listTimekeeping,
-        },
+        data: getDataTimekeeping(employee[0].id),
       });
       return;
-      
     }
-     // tìm kiếm checkin buổi chiều
-     const timekeepingAfternoon = await TimekeepingModel.findAll({
+    // tìm kiếm checkin buổi chiều
+    const timekeepingAfternoon = await TimekeepingModel.findAll({
       where: {
         date_timekeeping: getCurrentDate(),
         is_active: 1,
         id_employee: employee[0].id,
         time_checkin: {
           [Op.between]: [
-            Contant.TIMEKEEPING.TIME_START_CHECKIN_AFTERNOON,
-            Contant.TIMEKEEPING.TIME_END_CHECKIN_AFTERNOON,
+            getConfigTime[0].time_start_checkout_afternoon,
+            getConfigTime[0].time_end_checkout_afternoon,
           ],
         },
       },
@@ -562,58 +404,12 @@ const checkout = async (req, res, next) => {
             {}
           );
         }
-        let TimeLateAndDay = await EmployeeModel.findAll({
-          attributes: [
-            [
-              sequelize.fn("sum", sequelize.col("timekeepings.workday")),
-              "countWorkday",
-            ],
-            [
-              sequelize.fn("sum", sequelize.col("timekeepings.time_late")),
-              "countTimeLate",
-            ],
-          ],
-          include: [
-            {
-              model: TimekeepingModel,
-              where: {
-                date_timekeeping: {
-                  [Op.between]: [startDate, endDate],
-                },
-                id_employee: employee[0].id,
-              },
-              required: false,
-              // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
-            },
-          ],
-          where: {
-            is_active: 1,
-            id: employee[0].id,
-          },
-          row: true,
-          group: ["employee.id"],
-        });
-        let listTimekeeping = await TimekeepingModel.findAll({
-          where: {
-            date_timekeeping: {
-              [Op.between]: [startDate, endDate],
-            },
-            id_employee: employee[0].id,
-          },
-          order: [
-            ["date_timekeeping", "DESC"],
-            ["time_checkin", "DESC"],
-          ],
-        });
+
         res.json({
           status: 1,
           code: 200,
           message: "Bạn checkout thành công .",
-          data: {
-            timeLate: TimeLateAndDay[0].get("countTimeLate"),
-            dayWork: TimeLateAndDay[0].get("countWorkday"),
-            listTimekeeping,
-          },
+          data: getDataTimekeeping(employee[0].id),
         });
         return;
       }
@@ -649,61 +445,14 @@ const checkout = async (req, res, next) => {
           {}
         );
       }
-      let TimeLateAndDay = await EmployeeModel.findAll({
-        attributes: [
-          [
-            sequelize.fn("sum", sequelize.col("timekeepings.workday")),
-            "countWorkday",
-          ],
-          [
-            sequelize.fn("sum", sequelize.col("timekeepings.time_late")),
-            "countTimeLate",
-          ],
-        ],
-        include: [
-          {
-            model: TimekeepingModel,
-            where: {
-              date_timekeeping: {
-                [Op.between]: [startDate, endDate],
-              },
-              id_employee: employee[0].id,
-            },
-            required: false,
-            // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
-          },
-        ],
-        where: {
-          is_active: 1,
-          id: employee[0].id,
-        },
-        row: true,
-        group: ["employee.id"],
-      });
-      let listTimekeeping = await TimekeepingModel.findAll({
-        where: {
-          date_timekeeping: {
-            [Op.between]: [startDate, endDate],
-          },
-          id_employee: employee[0].id,
-        },
-        order: [
-          ["date_timekeeping", "DESC"],
-          ["time_checkin", "DESC"],
-        ],
-      });
+
       res.json({
         status: 1,
         code: 200,
         message: "Bạn checkout thành công .",
-        data: {
-          timeLate: TimeLateAndDay[0].get("countTimeLate"),
-          dayWork: TimeLateAndDay[0].get("countWorkday"),
-          listTimekeeping,
-        },
+        data: getDataTimekeeping(employee[0].id),
       });
       return;
-      
     }
     res.json({
       status: 0,
@@ -722,11 +471,221 @@ const checkout = async (req, res, next) => {
     return;
   }
 };
-const workoff=async(req,res)=>{
-  const {}=req.body
-}
+const workoff = async (req, res) => {
+  const { token } = req.headers;
+  const { status, date, note } = req.body;
+  if (token == "") {
+    res.json({
+      status: 0,
+      code: 404,
+      message: "thất bại",
+      data: "",
+    });
+    return;
+  }
+  const employee = await EmployeeModel.findAll({
+    where: {
+      token,
+      is_active: 1,
+    },
+  });
+  if (employee.length < 1) {
+    res.json({
+      status: 0,
+      code: 404,
+      message: "Chưa đăng nhập",
+      data: "",
+    });
+    return;
+  }
+  const getConfigTime = await ConfigtimeModel.findAll();
+  // xin nghỉ buổi sáng ngày
+  if (status == 2) {
+    const timekeepingMorning = await TimekeepingModel.findAll({
+      where: {
+        date_timekeeping: date,
+        is_active: 1,
+        id_employee: employee[0].id,
+        status: [0, 1,2,4],
+        time_checkin: {
+          [Op.between]: [
+            getConfigTime[0].time_start_checkin_morning,
+            getConfigTime[0].time_end_checkin_morning,
+          ],
+        },
+      },
+    });
+    if (timekeepingMorning.length > 0) {
+      res.json({
+        status: 0,
+        code: 404,
+        message: "Bạn đã chấm công hoặc xin nghỉ rồi nên không thể xin nghỉ",
+        data: "",
+      });
+      return;
+    }
+    await TimekeepingModel.create({
+      id_employee: employee[0].id,
+      date_timekeeping: date,
+      time_checkin: 0,
+      time_checkout: 0,
+      time_late: 0,
+      status: 2,
+      workday: 0,
+      note,
+    });
+
+    res.json({
+      status: 1,
+      code: 200,
+      message: `Bạn xin nghỉ sáng ngày ${date}  thành công .`,
+      data: getDataTimekeeping(employee[0].id),
+    });
+    return;
+  }
+   // xin nghỉ buổi chiểu ngày
+   if (status == 3) {
+    const timekeepingAfternoon = await TimekeepingModel.findAll({
+      where: {
+        date_timekeeping: date,
+        is_active: 1,
+        id_employee: employee[0].id,
+        status: [0, 1,3,4],
+        time_checkin: {
+          [Op.between]: [
+            getConfigTime[0].time_start_checkin_afternoon,
+            getConfigTime[0].time_end_checkin_afternoon,
+          ],
+        },
+      },
+    });
+    if (timekeepingAfternoon.length > 0) {
+      res.json({
+        status: 0,
+        code: 404,
+        message: "Bạn đã chấm công hoặc đã xin nghỉ nên không thê xin nghỉ",
+        data: "",
+      });
+      return;
+    }
+    await TimekeepingModel.create({
+      id_employee: employee[0].id,
+      date_timekeeping: date,
+      time_checkin: 0,
+      time_checkout: 0,
+      time_late: 0,
+      status: 3,
+      workday: 0,
+      note,
+    });
+
+    res.json({
+      status: 1,
+      code: 200,
+      message:  `Bạn xin nghỉ chiều ngày ${date}  thành công .`,
+      data: getDataTimekeeping(employee[0].id),
+    });
+    return;
+  }
+  // xin nghỉ cả ngày
+  if (status == 3) {
+    const timekeepingDay = await TimekeepingModel.findAll({
+      where: {
+        date_timekeeping: date,
+        is_active: 1,
+        id_employee: employee[0].id,
+        status: [0, 1,2,3,4],
+      },
+    });
+    if (timekeepingDay.length > 0) {
+      res.json({
+        status: 0,
+        code: 404,
+        message: "Bạn đã chấm công hoặc đã xin nghỉ nên không thê xin nghỉ",
+        data: "",
+      });
+      return;
+    }
+    await TimekeepingModel.create({
+      id_employee: employee[0].id,
+      date_timekeeping: date,
+      time_checkin: 0,
+      time_checkout: 0,
+      time_late: 0,
+      status: 4,
+      workday: 0,
+      note,
+    });
+
+    res.json({
+      status: 1,
+      code: 200,
+      message:  `Bạn xin nghỉ  ngày ${date}  thành công .`,
+      data: getDataTimekeeping(employee[0].id),
+    });
+    return;
+  }
+};
+
+const getDataTimekeeping = async (id_employee) => {
+  var date = new Date();
+  var month = date.getMonth() + 1;
+  var year = date.getFullYear();
+  var date1 = date.getDate();
+  var startDate = year + "-" + month + "-" + "01";
+  var endDate = year + "-" + month + "-" + date1;
+  let TimeLateAndDay = await EmployeeModel.findAll({
+    attributes: [
+      [
+        sequelize.fn("sum", sequelize.col("timekeepings.workday")),
+        "countWorkday",
+      ],
+      [
+        sequelize.fn("sum", sequelize.col("timekeepings.time_late")),
+        "countTimeLate",
+      ],
+    ],
+    include: [
+      {
+        model: TimekeepingModel,
+        where: {
+          date_timekeeping: {
+            [Op.between]: [startDate, endDate],
+          },
+          id_employee,
+        },
+        required: false,
+        // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
+      },
+    ],
+    where: {
+      is_active: 1,
+      id: id_employee,
+    },
+    row: true,
+    group: ["employee.id"],
+  });
+  let listTimekeeping = await TimekeepingModel.findAll({
+    where: {
+      date_timekeeping: {
+        [Op.between]: [startDate, endDate],
+      },
+      id_employee: id_employee,
+    },
+    order: [
+      ["date_timekeeping", "DESC"],
+      ["time_checkin", "DESC"],
+    ],
+  });
+  var data = {
+    timeLate: TimeLateAndDay[0].get("countTimeLate"),
+    dayWork: TimeLateAndDay[0].get("countWorkday"),
+    listTimekeeping,
+  };
+  return data;
+};
 export default {
   checkin,
   checkout,
-  workoff
+  workoff,
 };
