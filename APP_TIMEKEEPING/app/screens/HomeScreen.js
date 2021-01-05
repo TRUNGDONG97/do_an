@@ -8,14 +8,16 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
-  RefreshControl
+  RefreshControl,
+  TextInput
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import LinearGradient from "react-native-linear-gradient";
 import {
   getListTimekeeping,
   checkinTimekeeping,
-  checkoutTimekeeping
+  checkoutTimekeeping,
+  workOffTimekeeping
 } from "@api";
 import {
   AppHeader,
@@ -34,6 +36,8 @@ import reactotron from "reactotron-react-native";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 import NetInfo from "@react-native-community/netinfo";
 import { LinesLoader } from "react-native-indicator";
+import Modal from "react-native-modal";
+import { Dropdown } from "react-native-material-dropdown";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -42,11 +46,13 @@ export default class HomeScreen extends Component {
     super(props);
     var date = new Date();
     var month = date.getMonth() + 1;
+    var month1 = month.length == 1 ? "0" + month : month;
     var year = date.getFullYear();
     var date1 = date.getDate();
+    var date2 = date1.length == 1 ? "0" + date1 : date1;
     this.state = {
-      startDate: year + "-" + month + "-" + "01",
-      endDate: year + "-" + month + "-" + date1,
+      startDate: year + "-" + month1 + "-" + "01",
+      endDate: year + "-" + month1 + "-" + date2,
       refreshing: false,
       isLoading: true,
       timeLate: 0,
@@ -54,9 +60,15 @@ export default class HomeScreen extends Component {
       data: [],
       error: null,
       btnLoadingCheckout: false,
-      btnLoadingCheckin: false
+      btnLoadingCheckin: false,
+      isVisible: false,
+      dayOff: year + "-" + month1 + "-" + date2,
+      status: 4,
+      note: "",
+      btnLoadingWorkOff: false
     };
   }
+
   componentDidMount() {
     this.getListTimekeeping();
   }
@@ -102,7 +114,13 @@ export default class HomeScreen extends Component {
       checkConnect.isWifiEnabled &&
       checkConnect.type == "wifi"
     ) {
-      if (!checkConnect.details.bssid ||checkConnect.details.bssid=="02:00:00:00:00:00" ) {
+      if (
+        !checkConnect.details.bssid ||
+        checkConnect.details.bssid == "02:00:00:00:00:00"
+      ) {
+        this.setState({
+          btnLoadingCheckin: false
+        });
         Toast.show("Bạn chưa lấy được địa chỉ mac", BACKGROUND_TOAST.FAIL);
         return;
       }
@@ -130,6 +148,9 @@ export default class HomeScreen extends Component {
         });
       }
     } else {
+      this.setState({
+        btnLoadingCheckin: true
+      });
       Toast.show("Bạn chưa kết nối wifi", BACKGROUND_TOAST.FAIL);
     }
   };
@@ -176,8 +197,49 @@ export default class HomeScreen extends Component {
         });
       }
     } else {
+      this.setState({
+        btnLoadingCheckout: false
+      });
       Toast.show("Đã có lỗi xảy ra", BACKGROUND_TOAST.FAIL);
     }
+  };
+  workOff = async () => {
+    const { note, dayOff, status } = this.state;
+    try {
+      this.setState({
+        error: false,
+        btnLoadingWorkOff: true
+      });
+      reactotron.log(dayOff, note, status);
+      const response = await workOffTimekeeping({
+        note,
+        status,
+        date: dayOff
+      });
+      reactotron.log(response, "workOff");
+      if (response.code == 200) {
+        this.setState({
+          data: response.data.listTimekeeping,
+          dayWork: response.data.dayWork,
+          timeLate: response.data.timeLate,
+          startDate: year + "-" + month + "-" + "01",
+          endDate: year + "-" + month + "-" + date1
+        });
+      }
+      this.setState({
+        btnLoadingWorkOff: false
+        // isVisible:false
+      });
+    } catch (error) {
+      console.log("error", error);
+      this.setState({
+        btnLoadingWorkOff: false
+        // isVisible:false
+      });
+    }
+    this.setState({
+      isVisible: false
+    });
   };
   converMinuteToTime = time => {
     var hour = Math.floor(time / 60);
@@ -280,8 +342,11 @@ export default class HomeScreen extends Component {
     return (
       <View>
         <View style={styles._viewUser}>
-          {this._renderInfoItem("Time late :", timeLate + " minute")}
-          {this._renderInfoItem("Day", dayWork + " day ")}
+          {this._renderInfoItem(
+            "Time late :",
+            timeLate ? timeLate + " minute" : 0 + " minute"
+          )}
+          {this._renderInfoItem("Day", dayWork ? dayWork+ " day " : 0 + " day ")}
         </View>
         <View
           style={{
@@ -344,10 +409,9 @@ export default class HomeScreen extends Component {
         >
           <TouchableOpacity
             disabled={btnLoadingCheckin}
-            style={{ flex: 1, marginHorizontal: 20, borderRadius: 5 }}
+            style={{ flex: 1, marginHorizontal: 10, borderRadius: 5 }}
             onPress={() => {
               this.checkin();
-              // reactotron.log(this.state.region)
             }}
           >
             <LinearGradient
@@ -359,14 +423,14 @@ export default class HomeScreen extends Component {
               {btnLoadingCheckin ? (
                 <LinesLoader size={20} color="white" />
               ) : (
-                <Text style={styles.text}>Checkin</Text>
+                <Text style={styles.text}>Check in</Text>
               )}
             </LinearGradient>
           </TouchableOpacity>
 
           <TouchableOpacity
             disabled={btnLoadingCheckout}
-            style={{ flex: 1, marginHorizontal: 20, borderRadius: 5 }}
+            style={{ flex: 1, marginHorizontal: 10, borderRadius: 5 }}
             onPress={this.checkout}
           >
             <LinearGradient
@@ -378,8 +442,23 @@ export default class HomeScreen extends Component {
               {btnLoadingCheckout ? (
                 <LinesLoader size={20} color="white" />
               ) : (
-                <Text style={styles.text}>Checkout</Text>
+                <Text style={styles.text}>Check out</Text>
               )}
+            </LinearGradient>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ flex: 1, marginHorizontal: 10, borderRadius: 5 }}
+            onPress={() => {
+              this.handleVisible();
+            }}
+          >
+            <LinearGradient
+              style={styles.bgButton}
+              colors={["#ff740d", "#F7D358"]}
+              start={{ x: 0.7, y: 1 }} //transparent
+              end={{ x: 0, y: 0.1 }}
+            >
+                <Text style={styles.text}>Work Off</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -429,7 +508,7 @@ export default class HomeScreen extends Component {
   }
   _renderBody() {
     const { error, isLoading, data } = this.state;
-    reactotron.log("data", data);
+    // reactotron.log("data", data);
     if (error) {
       return (
         <Error
@@ -472,7 +551,7 @@ export default class HomeScreen extends Component {
             showsVerticalScrollIndicator={false}
           >
             {this._renderHeaderTable()}
-            {data.length == 0 ? (
+            {!data||data.length == 0 ? (
               <Empty description={"No Data"} />
             ) : (
               data.map((item, index) => (
@@ -486,6 +565,119 @@ export default class HomeScreen extends Component {
       </View>
     );
   }
+
+  handleVisible = () => {
+    this.setState({ isVisible: !this.state.isVisible });
+  };
+  choseTypeDayOff = text => {
+    this.setState({
+      status: text == "Morning" ? 2 : text == "Afternoon" ? 3 : 4
+    });
+  };
+  renderModal() {
+    const { isVisible, btnLoadingWorkOff } = this.state;
+    let data = [
+      {
+        id: 2,
+        value: "Morning"
+      },
+      {
+        id: 3,
+        value: "Afternoon"
+      },
+      {
+        id: 4,
+        value: "All Day"
+      }
+    ];
+    return (
+      <Modal
+        style={{ justifyContent: "center", alignContent: "center" }}
+        hasBackdrop
+        onBackdropPress={this.handleVisible}
+        isVisible={isVisible}
+      >
+        <View
+          style={{
+            backgroundColor: "white",
+            paddingHorizontal: 30,
+            paddingVertical: 40,
+            borderRadius: 5
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}
+          >
+            <Text>Day off :</Text>
+            <DatePicker
+              style={{ width: width * 0.3, marginLeft: 10 }}
+              date={this.state.dayOff}
+              mode="date"
+              placeholder="select date"
+              showIcon={false}
+              format="YYYY-MM-DD"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              onDateChange={date => {
+                this.setState({ dayOff: date });
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "baseline",
+              justifyContent: "space-between"
+            }}
+          >
+            <Text style={{ flex: 1 }}>Time Day Off:</Text>
+            <Dropdown
+              value={"All Day"}
+              data={data}
+              // dropdownPosition={-3}
+              containerStyle={{ flex: 2, marginLeft: 20 }}
+              onChangeText={this.choseTypeDayOff}
+            />
+          </View>
+          <TextInput
+            style={{
+              marginHorizontal: 10,
+              borderRadius: 3,
+              height: 70,
+              marginTop: 40,
+              borderWidth: 0.5,
+              borderColor: "black",
+              fontSize: 14,
+              paddingHorizontal: 10
+            }}
+          />
+          <TouchableOpacity
+            style={{
+              marginTop: 50,
+              height: 43,
+              width: theme.dimension.width * 0.3,
+              backgroundColor: theme.colors.line,
+              alignSelf: "center",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 3
+            }}
+            onPress={this.workOff}
+          >
+            {btnLoadingWorkOff ? (
+              <LinesLoader size={20} color="white" />
+            ) : (
+              <Text style={styles.text}> Work off</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    );
+  }
   render() {
     return (
       <Block>
@@ -493,6 +685,7 @@ export default class HomeScreen extends Component {
           <BackgroundHeader />
           <WindsHeader title="List Timekeeping" />
           {this._renderBody()}
+          {this.renderModal()}
         </SafeAreaView>
       </Block>
     );
@@ -554,7 +747,10 @@ const styles = StyleSheet.create({
   bgButton: {
     marginTop: 20,
     height: 43,
-    width: theme.dimension.width
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 3,
+    flexDirection: "row"
   },
   _vDiemDanh: {
     flex: 1,
@@ -576,12 +772,5 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold"
-  },
-  bgButton: {
-    height: 43,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 3,
-    flexDirection: "row"
   }
 });

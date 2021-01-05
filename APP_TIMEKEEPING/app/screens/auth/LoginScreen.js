@@ -59,7 +59,6 @@ export default class LoginScreen extends Component {
         user: this.state.username,
         password: this.state.password,
         deviceID: this.state.deviceID,
-        type: 1
       });
       // reactotron.log(response)
       this.setState(
@@ -70,6 +69,7 @@ export default class LoginScreen extends Component {
           data: response.data
         },
         () => {
+          AsyncStorage.setItem("position",response.data.position)
           AsyncStorage.setItem("token", response.data.token, () =>
             NavigationUtil.navigate(SCREEN_ROUTER.MAIN)
           );

@@ -269,7 +269,7 @@ const changePass = async (req, res, next) => {
     });
     return;
   } catch (error) {
-    console.log(error);
+    console.log(error,"dsđs");
     res.json({
       status: 0,
       code: 404,
@@ -351,7 +351,6 @@ const getListTimekeeping = async (req, res, next) => {
       },
       order: [["date_timekeeping", "DESC"], ["time_checkin", "DESC"]],
     })
-    console.log("listTimekeepingOfEmployee", TimeLateAndDay[0].get('countTimeLate'));
     res.json({
       status: 1,
       code: 200,

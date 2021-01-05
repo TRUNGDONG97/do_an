@@ -39,7 +39,7 @@ const Employee = sequelize.define(
       type: Sequelize.INTEGER,
     },
     position: {
-      type: Sequelize.INTEGER, //1 nhân sự 2 coder 3 kinh doanh
+      type: Sequelize.INTEGER, //1 xếp 0 nhân viên
     },
     is_active: {
       type: Sequelize.INTEGER,
@@ -48,7 +48,7 @@ const Employee = sequelize.define(
       type: Sequelize.STRING
     },
     department: {
-      type: Sequelize.INTEGER //1 xếp 2 nhân viên
+      type: Sequelize.INTEGER  //1 nhân sự 2 coder 3 kinh doanh
     },
     device_id:{
       type:Sequelize.STRING

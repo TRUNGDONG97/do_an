@@ -12,4 +12,5 @@ router.post('/app/api/changePass', AppApi.changePass)
 router.get('/app/api/getListTimekeeping', AppApi.getListTimekeeping)
 router.post('/app/api/checkin', TimekeepingApi.checkin)
 router.post('/app/api/checkout', TimekeepingApi.checkout)
+router.post('/app/api/workoff', TimekeepingApi.workoff)
 module.exports = router;    

@@ -64,12 +64,14 @@ const checkin = async (req, res, next) => {
       return;
     }
     const getConfigTime = await ConfigtimeModel.findAll();
+
     //lay cham cong buoi sang
     const timekeepingMorning = await TimekeepingModel.findAll({
       where: {
         date_timekeeping: getCurrentDate(),
         is_active: 1,
         id_employee: employee[0].id,
+        status: [0, 1],
         time_checkin: {
           [Op.between]: [
             getConfigTime[0].time_start_checkin_morning,
@@ -89,6 +91,24 @@ const checkin = async (req, res, next) => {
     // );
     //checkin buổi sáng
     if (checkTimeCheckinMorning(getCurrentTime())) {
+      // check xin nghỉ buổi sáng hay ngày hôm đó chưa
+      const getWorkOff = await TimekeepingModel.findAll({
+        where: {
+          date_timekeeping: getCurrentDate(),
+          is_active: 1,
+          id_employee: employee[0].id,
+          status: [2, 4],
+        },
+      });
+      if (getWorkOff.length > 0) {
+        res.json({
+          status: 0,
+          code: 404,
+          message: "Bạn đã xin nghỉ rồi nên không thể checkin",
+          data: "",
+        });
+        return;
+      }
       //check đã chấm công chưa
       if (timekeepingMorning.length > 0) {
         res.json({
@@ -122,6 +142,7 @@ const checkin = async (req, res, next) => {
           DateUtil.formatShortDate(new Date()) +
           " thành công",
       });
+
       //gửi thông báo về
       if (employee[0].device_id) {
         pushNotification(
@@ -144,6 +165,23 @@ const checkin = async (req, res, next) => {
     }
     //checkin buổi chiều
     if (checkTimeCheckinAfternoon(getCurrentTime())) {
+      const getWorkOffApternoon = await TimekeepingModel.findAll({
+        where: {
+          date_timekeeping: getCurrentDate(),
+          is_active: 1,
+          id_employee: employee[0].id,
+          status: [3, 4],
+        },
+      });
+      if (getWorkOffApternoon.length > 0) {
+        res.json({
+          status: 0,
+          code: 404,
+          message: "Bạn đã xin nghỉ rồi nên không thể checkin",
+          data: "",
+        });
+        return;
+      }
       if (timekeepingMorning.length > 0 && timekeepingMorning[0].status == 0) {
         res.json({
           status: 0,
@@ -159,6 +197,7 @@ const checkin = async (req, res, next) => {
           date_timekeeping: getCurrentDate(),
           is_active: 1,
           id_employee: employee[0].id,
+          status: [0, 1],
           time_checkin: {
             [Op.between]: [
               getConfigTime[0].time_start_checkin_afternoon,
@@ -472,156 +511,167 @@ const checkout = async (req, res, next) => {
   }
 };
 const workoff = async (req, res) => {
-  const { token } = req.headers;
-  const { status, date, note } = req.body;
-  if (token == "") {
+  try {
+    const { token } = req.headers;
+    const { status, date, note } = req.body;
+    if (token == "") {
+      res.json({
+        status: 0,
+        code: 404,
+        message: "thất bại",
+        data: "",
+      });
+      return;
+    }
+    const employee = await EmployeeModel.findAll({
+      where: {
+        token,
+        is_active: 1,
+      },
+    });
+    if (employee.length < 1) {
+      res.json({
+        status: 0,
+        code: 404,
+        message: "Chưa đăng nhập",
+        data: "",
+      });
+      return;
+    }
+    const getConfigTime = await ConfigtimeModel.findAll();
+    // xin nghỉ buổi sáng ngày
+    if (status == 2) {
+      const timekeepingMorning = await TimekeepingModel.findAll({
+        where: {
+          date_timekeeping: date,
+          is_active: 1,
+          id_employee: employee[0].id,
+          status: [0, 1, 2, 4],
+          time_checkin: {
+            [Op.between]: [
+              getConfigTime[0].time_start_checkin_morning,
+              getConfigTime[0].time_end_checkin_morning,
+            ],
+          },
+        },
+      });
+      if (timekeepingMorning.length > 0) {
+        res.json({
+          status: 0,
+          code: 404,
+          message: "Bạn đã chấm công hoặc xin nghỉ rồi nên không thể xin nghỉ",
+          data: "",
+        });
+        return;
+      }
+      await TimekeepingModel.create({
+        id_employee: employee[0].id,
+        date_timekeeping: date,
+        time_checkin: 0,
+        time_checkout: 0,
+        time_late: 0,
+        status: 2,
+        workday: 0,
+        note,
+      });
+      console.log(`Bạn xin nghỉ sáng ngày ${date}  thành công .`);
+      res.json({
+        status: 1,
+        code: 200,
+        message: `Bạn xin nghỉ sáng ngày ${date}  thành công .`,
+        data: getDataTimekeeping(employee[0].id),
+      });
+      return;
+    }
+    // xin nghỉ buổi chiểu ngày
+    if (status == 3) {
+      const timekeepingAfternoon = await TimekeepingModel.findAll({
+        where: {
+          date_timekeeping: date,
+          is_active: 1,
+          id_employee: employee[0].id,
+          status: [0, 1, 3, 4],
+          time_checkin: {
+            [Op.between]: [
+              getConfigTime[0].time_start_checkin_afternoon,
+              getConfigTime[0].time_end_checkin_afternoon,
+            ],
+          },
+        },
+      });
+      if (timekeepingAfternoon.length > 0) {
+        res.json({
+          status: 0,
+          code: 404,
+          message: "Bạn đã chấm công hoặc đã xin nghỉ nên không thê xin nghỉ",
+          data: "",
+        });
+        return;
+      }
+      await TimekeepingModel.create({
+        id_employee: employee[0].id,
+        date_timekeeping: date,
+        time_checkin: 0,
+        time_checkout: 0,
+        time_late: 0,
+        status: 3,
+        workday: 0,
+        note,
+      });
+      console.log(`Bạn xin nghỉ chiều ngày ${date}  thành công .`);
+      res.json({
+        status: 1,
+        code: 200,
+        message: `Bạn xin nghỉ chiều ngày ${date}  thành công .`,
+        data: getDataTimekeeping(employee[0].id),
+      });
+      return;
+    }
+    // xin nghỉ cả ngày
+    if (status == 3) {
+      const timekeepingDay = await TimekeepingModel.findAll({
+        where: {
+          date_timekeeping: date,
+          is_active: 1,
+          id_employee: employee[0].id,
+          status: [0, 1, 2, 3, 4],
+        },
+      });
+      if (timekeepingDay.length > 0) {
+        res.json({
+          status: 0,
+          code: 404,
+          message: "Bạn đã chấm công hoặc đã xin nghỉ nên không thê xin nghỉ",
+          data: "",
+        });
+        return;
+      }
+      await TimekeepingModel.create({
+        id_employee: employee[0].id,
+        date_timekeeping: date,
+        time_checkin: 0,
+        time_checkout: 0,
+        time_late: 0,
+        status: 4,
+        workday: 0,
+        note,
+      });
+      console.log(`Bạn xin nghỉ  ngày ${date}  thành công .`);
+      res.json({
+        status: 1,
+        code: 200,
+        message: `Bạn xin nghỉ  ngày ${date}  thành công .`,
+        data: getDataTimekeeping(employee[0].id),
+      });
+      return;
+    }
+  } catch (error) {
+    console.log("error", error);
     res.json({
       status: 0,
       code: 404,
-      message: "thất bại",
+      message: "Đã có lỗi xảy ra",
       data: "",
-    });
-    return;
-  }
-  const employee = await EmployeeModel.findAll({
-    where: {
-      token,
-      is_active: 1,
-    },
-  });
-  if (employee.length < 1) {
-    res.json({
-      status: 0,
-      code: 404,
-      message: "Chưa đăng nhập",
-      data: "",
-    });
-    return;
-  }
-  const getConfigTime = await ConfigtimeModel.findAll();
-  // xin nghỉ buổi sáng ngày
-  if (status == 2) {
-    const timekeepingMorning = await TimekeepingModel.findAll({
-      where: {
-        date_timekeeping: date,
-        is_active: 1,
-        id_employee: employee[0].id,
-        status: [0, 1,2,4],
-        time_checkin: {
-          [Op.between]: [
-            getConfigTime[0].time_start_checkin_morning,
-            getConfigTime[0].time_end_checkin_morning,
-          ],
-        },
-      },
-    });
-    if (timekeepingMorning.length > 0) {
-      res.json({
-        status: 0,
-        code: 404,
-        message: "Bạn đã chấm công hoặc xin nghỉ rồi nên không thể xin nghỉ",
-        data: "",
-      });
-      return;
-    }
-    await TimekeepingModel.create({
-      id_employee: employee[0].id,
-      date_timekeeping: date,
-      time_checkin: 0,
-      time_checkout: 0,
-      time_late: 0,
-      status: 2,
-      workday: 0,
-      note,
-    });
-
-    res.json({
-      status: 1,
-      code: 200,
-      message: `Bạn xin nghỉ sáng ngày ${date}  thành công .`,
-      data: getDataTimekeeping(employee[0].id),
-    });
-    return;
-  }
-   // xin nghỉ buổi chiểu ngày
-   if (status == 3) {
-    const timekeepingAfternoon = await TimekeepingModel.findAll({
-      where: {
-        date_timekeeping: date,
-        is_active: 1,
-        id_employee: employee[0].id,
-        status: [0, 1,3,4],
-        time_checkin: {
-          [Op.between]: [
-            getConfigTime[0].time_start_checkin_afternoon,
-            getConfigTime[0].time_end_checkin_afternoon,
-          ],
-        },
-      },
-    });
-    if (timekeepingAfternoon.length > 0) {
-      res.json({
-        status: 0,
-        code: 404,
-        message: "Bạn đã chấm công hoặc đã xin nghỉ nên không thê xin nghỉ",
-        data: "",
-      });
-      return;
-    }
-    await TimekeepingModel.create({
-      id_employee: employee[0].id,
-      date_timekeeping: date,
-      time_checkin: 0,
-      time_checkout: 0,
-      time_late: 0,
-      status: 3,
-      workday: 0,
-      note,
-    });
-
-    res.json({
-      status: 1,
-      code: 200,
-      message:  `Bạn xin nghỉ chiều ngày ${date}  thành công .`,
-      data: getDataTimekeeping(employee[0].id),
-    });
-    return;
-  }
-  // xin nghỉ cả ngày
-  if (status == 3) {
-    const timekeepingDay = await TimekeepingModel.findAll({
-      where: {
-        date_timekeeping: date,
-        is_active: 1,
-        id_employee: employee[0].id,
-        status: [0, 1,2,3,4],
-      },
-    });
-    if (timekeepingDay.length > 0) {
-      res.json({
-        status: 0,
-        code: 404,
-        message: "Bạn đã chấm công hoặc đã xin nghỉ nên không thê xin nghỉ",
-        data: "",
-      });
-      return;
-    }
-    await TimekeepingModel.create({
-      id_employee: employee[0].id,
-      date_timekeeping: date,
-      time_checkin: 0,
-      time_checkout: 0,
-      time_late: 0,
-      status: 4,
-      workday: 0,
-      note,
-    });
-
-    res.json({
-      status: 1,
-      code: 200,
-      message:  `Bạn xin nghỉ  ngày ${date}  thành công .`,
-      data: getDataTimekeeping(employee[0].id),
     });
     return;
   }
