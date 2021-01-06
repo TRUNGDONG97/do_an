@@ -36,12 +36,12 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
                 <Icon.Fontisto name={iconName} size={iconSize} color={tintColor} outline />
             );
         }
-        // case SCREEN_ROUTER.LIST_ABSENT: {
-        //     iconName = "earth";
-        //     return (
-        //         <Icon.Fontisto name={iconName} size={iconSize} color={tintColor} outline />
-        //     );
-        // }
+        case SCREEN_ROUTER.TIMEKEEPING_EMPLOYEE: {
+            iconName = "team";
+            return (
+                <Icon.AntDesign name={iconName} size={iconSize} color={tintColor} outline />
+            );
+        }
         case SCREEN_ROUTER.NOTIFICATION: {
             iconName = "bell"
             break
@@ -62,6 +62,13 @@ const Main = createBottomTabNavigator(
             title: "Timekeeping",
             navigationOptions: {
                 tabBarLabel:"Timekeeping",
+            },
+        },
+        [SCREEN_ROUTER.TIMEKEEPING_EMPLOYEE]: {
+            screen: TimekeepingEmployee,
+            title:"Employee",
+            navigationOptions: {
+                tabBarLabel: "Employee",
             },
         },
         [SCREEN_ROUTER.NOTIFICATION]: {

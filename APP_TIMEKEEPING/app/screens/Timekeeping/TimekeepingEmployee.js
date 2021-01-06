@@ -95,8 +95,8 @@ export default class TimekeepingEmployee extends Component {
     return (
       <Block>
         <SafeAreaView style={theme.styles.containter}>
-        
-          <AppHeader title="List Timekeeping Employee" />
+        <BackgroundHeader />
+          <WindsHeader title="List Timekeeping" />
           {this._renderBody()}
         </SafeAreaView>
       </Block>
@@ -124,12 +124,13 @@ export default class TimekeepingEmployee extends Component {
             flexDirection: "row",
             alignItems: "center",
             marginHorizontal: 30,
-            marginTop: 20
+            marginTop: 120
           }}
         >
-          <Text>Day off :</Text>
+          <Text >Day :</Text>
           <DatePicker
             style={{ width: width * 0.3, marginLeft: 10 }}
+            customStyles={{color:theme.colors.white}}
             date={this.state.dateGet}
             mode="date"
             placeholder="select date"
