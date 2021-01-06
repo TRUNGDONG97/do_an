@@ -13,7 +13,6 @@ import {
     KeyboardAvoidingView
 } from 'react-native'
 import { connect } from 'react-redux'
-import { getListClass } from '@app/redux/actions'
 import {
     Block, WindsHeader,
     BackgroundHeader, Loading,

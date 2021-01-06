@@ -13,7 +13,6 @@ import DropdownAlert from 'react-native-dropdownalert';
 // import OneSignal from 'react-native-onesignal'; // Import package from node modules
 import { Provider } from "react-redux";
 import Reactotron from 'reactotron-react-native';
-import AppNavigator from './app/navigation/AppNavigator';
 import NavigationUtil from './app/navigation/NavigationUtil';
 import store from "./app/redux/store";
 import AppContainer from './app/navigation/AppContainer'
@@ -24,9 +23,6 @@ class App extends Component {
     return (
       <Provider store={store}>
         <AppContainer/>
-        {/* <AppNavigator
-          ref={navigatorRef => NavigationUtil.setTopLevelNavigator(navigatorRef)}
-        /> */}
         <DropdownAlert
           ref={alertRef => DropdownAlertUtil.setTopDropdownAlert(alertRef)}
           onTap={DropdownAlertUtil.onTap}

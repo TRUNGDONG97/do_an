@@ -13,7 +13,9 @@ const SCREEN_ROUTER = {
   CHANGE_USER_INFO:'ChangeUserInfo',
   LIST_ABSENT:'list_absent',
   DETAIL_CLASS:'detail_class',
-  CAMERA:'camera_screen'
+  CAMERA:'camera_screen',
+  TIMEKEEPING_EMPLOYEE:"timekeeping_employee",
+  TIMEKEEPING_OF_EMPLOYEE:"timekeeping_of_employee"
 };
 const LIKE_STATE = {
   LIKE: 1,

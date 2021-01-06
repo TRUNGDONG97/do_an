@@ -2,6 +2,7 @@ import express from 'express'
 import Auth from '../api/AppApi/AuthApi'
 import AppApi from '../api/AppApi/AppApi'
 import TimekeepingApi from '../api/AppApi/TimekeepingApi';
+import GetListTimekeeping from '../api/AppApi/GetListTimekeeping';
 const router = express.Router();
 router.post('/login', Auth.login)
 router.get('/logout', Auth.logout)
@@ -13,4 +14,7 @@ router.get('/app/api/getListTimekeeping', AppApi.getListTimekeeping)
 router.post('/app/api/checkin', TimekeepingApi.checkin)
 router.post('/app/api/checkout', TimekeepingApi.checkout)
 router.post('/app/api/workoff', TimekeepingApi.workoff)
+router.get('/app/api/getListTimekeepingDayEmployee', GetListTimekeeping.getListTimekeepingDayEmployee)
+router.get('/app/api/getListTimekeepingMonthEmployee', GetListTimekeeping.getListTimekeepingMonthEmployee)
+// 
 module.exports = router;    

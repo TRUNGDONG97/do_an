@@ -81,10 +81,7 @@ export const requestLogout = payload => {
   return handleResult(getAxios.get("logout"));
 };
 
-//get list class
-export const getListClass = () => {
-  return handleResult(getAxios.get(`student/getClass`));
-};
+
 
 //get User infor
 export const getUserInfo = () => {
@@ -127,6 +124,22 @@ export const checkoutTimekeeping = payload => {
 export const workOffTimekeeping = payload => {
   console.log("adasdsa");
   return handleResult(getAxios.post(`app/api/workoff`, payload));
+};
+export const getListTimekeepingDayEmployee=(dateGet)=>{
+  return handleResult(
+    getAxios.get(
+      `/app/api/getListTimekeepingDayEmployee?dateGet=${dateGet}`
+    )
+  );
+}
+export const getListTimekeepingMonthEmployee = (startDate, endDate,id_employee) => {
+  console.log("startDate", startDate);
+  console.log("endDate", endDate);
+  return handleResult(
+    getAxios.get(
+      `/app/api/getListTimekeepingMonthEmployee?startDate=${startDate}&endDate=${endDate}&id_employee=${id_employee}`
+    )
+  );
 };
 export const uploadImage = payload => {
   return handleResult(

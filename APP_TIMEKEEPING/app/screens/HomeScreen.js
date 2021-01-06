@@ -1,4 +1,3 @@
-import theme from "@app/constants/Theme";
 import React, { Component } from "react";
 import {
   View,
@@ -38,7 +37,8 @@ import NetInfo from "@react-native-community/netinfo";
 import { LinesLoader } from "react-native-indicator";
 import Modal from "react-native-modal";
 import { Dropdown } from "react-native-material-dropdown";
-
+import NavigationUtil from "@app/navigation/NavigationUtil";
+import theme from "@app/constants/Theme";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 export default class HomeScreen extends Component {
@@ -401,6 +401,13 @@ export default class HomeScreen extends Component {
             />
           </View>
         </View>
+        <TouchableOpacity
+          onPress={()=>{
+            NavigationUtil.navigate(SCREEN_ROUTER.TIMEKEEPING_EMPLOYEE);
+          }}
+        >
+          <Text>chuyeern man danh sach</Text>
+        </TouchableOpacity>
         <View
           style={{
             flexDirection: "row",
@@ -480,7 +487,7 @@ export default class HomeScreen extends Component {
           ]}
         >
           <View style={[styles.rowTable, { flex: 1 }]}>
-            <Text style={theme.fonts.regular14} />
+            <Text style={theme.fonts.regular14} >STT</Text>
           </View>
           <View style={[styles.rowTable, { flex: 4 }]}>
             <Text

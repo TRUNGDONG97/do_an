@@ -22,7 +22,7 @@ import OneSignal from "react-native-onesignal";
 import { requestLogin } from "@api";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 import reactotron from "reactotron-react-native";
-export default class LoginScreen extends Component {
+export  class LoginScreen extends Component {
   static navigationOptions = {
     header: null
   };
@@ -68,8 +68,7 @@ export default class LoginScreen extends Component {
           isLoading: false,
           data: response.data
         },
-        () => {
-          AsyncStorage.setItem("position",response.data.position)
+        () => { 
           AsyncStorage.setItem("token", response.data.token, () =>
             NavigationUtil.navigate(SCREEN_ROUTER.MAIN)
           );
@@ -136,6 +135,15 @@ export default class LoginScreen extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
 
 const styles = StyleSheet.create({
   container: {

@@ -111,6 +111,8 @@ const MainStack = createStackNavigator({
     [SCREEN_ROUTER.HOME]: HomeScreen,
     [SCREEN_ROUTER.CHANGE_PASSWORD]: ChangePassWordScreen,
     [SCREEN_ROUTER.CHANGE_USER_INFO]: ChangeUserInfo,
+    [SCREEN_ROUTER.TIMEKEEPING_EMPLOYEE]:TimekeepingEmployee,
+    [SCREEN_ROUTER.TIMEKEEPING_OF_EMPLOYEE]:TimekeepingOfEmployee
 },
     {
         defaultNavigationOptions: {
