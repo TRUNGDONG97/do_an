@@ -49,14 +49,14 @@ const searchTimekeeping = async (req, res) => {
       limit: Constants.PER_PAGE,
       // order: [["last_name", "ASC"]],
     });
-    console.log("rows",rows);
+    console.log("rows",count);
     var urlTable = `${process.cwd()}/src/table/TimekeepingDayTable.pug`;
     var htmlTable = await pug.renderFile(urlTable, {
     timekeeping:rows,
       STT: (currentPage - 1) * Constants.PER_PAGE,
       currentPage,
-      pageCount: count,
-      pages: getArrayPages(req)(count, currentPage),
+      pageCount: PageCount(count),
+      pages: getArrayPages(req)( PageCount(count), currentPage),
     });
     res.send({
       htmlTable,

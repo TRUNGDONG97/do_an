@@ -12,7 +12,8 @@
                 th(scope='col') Ngày công
                 th(scope='col') Ghi chú
                 th(scope='col') Trạng thái
-                //- th 
+                th
+                    input(type='checkbox', value='')
         tbody#tbodyTableEmployee
             if timekeeping.length <=0        
                 tr
@@ -30,6 +31,8 @@
                         td #{item.workday}
                         td #{item.note}
                         td  #{item.type==1?"Đã xác nhận":"Chưa xác nhận"}
+                        td
+                            input(type='checkbox')
     #paginateEmployee.row.float-right
         if pageCount>=1
             if  pages.prev>0

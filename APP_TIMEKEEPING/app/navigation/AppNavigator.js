@@ -13,8 +13,8 @@ import R from '@R';
 import theme from "@theme";
 import { Icon, ImageViewerScreen } from '@component'
 import ChangeUserInfo from '@screen/user/ChangeUserInfo'
-import CameraScreen from '@screen/class/CameraScreen'
-
+import TimekeepingEmployee from '@screen/Timekeeping/TimekeepingEmployee'
+import TimekeepingOfEmployee from '@screen/Timekeeping/TimekeepingOfEmployee'
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
 const Auth = createStackNavigator({
@@ -111,7 +111,6 @@ const MainStack = createStackNavigator({
     [SCREEN_ROUTER.HOME]: HomeScreen,
     [SCREEN_ROUTER.CHANGE_PASSWORD]: ChangePassWordScreen,
     [SCREEN_ROUTER.CHANGE_USER_INFO]: ChangeUserInfo,
-    [SCREEN_ROUTER.CAMERA]: CameraScreen,
 },
     {
         defaultNavigationOptions: {

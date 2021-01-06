@@ -17,6 +17,7 @@ import AppNavigator from './app/navigation/AppNavigator';
 import NavigationUtil from './app/navigation/NavigationUtil';
 import store from "./app/redux/store";
 import AppContainer from './app/navigation/AppContainer'
+import LoginScreen from './app/screens/auth/LoginScreen';
 class App extends Component {
 
   render() {
