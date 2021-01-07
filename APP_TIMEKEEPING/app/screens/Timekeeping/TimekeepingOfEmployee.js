@@ -12,9 +12,7 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import LinearGradient from "react-native-linear-gradient";
-import {
-    getListTimekeepingMonthEmployee
-} from "@api";
+import { getListTimekeepingMonthEmployee } from "@api";
 import {
   AppHeader,
   Block,
@@ -34,7 +32,6 @@ import NetInfo from "@react-native-community/netinfo";
 import { LinesLoader } from "react-native-indicator";
 import Modal from "react-native-modal";
 import { Dropdown } from "react-native-material-dropdown";
-import NavigationUtil from "@app/navigation/NavigationUtil";
 import theme from "@app/constants/Theme";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -63,7 +60,7 @@ export default class TimekeepingOfEmployee extends Component {
       status: 4,
       note: "",
       btnLoadingWorkOff: false,
-      employee:this.props.navigation.getParam('employee')
+      employee: this.props.navigation.getParam("employee")
     };
   }
 
@@ -71,10 +68,14 @@ export default class TimekeepingOfEmployee extends Component {
     this.getListTimekeeping();
   }
   getListTimekeeping = async () => {
-    const { startDate, endDate,employee } = this.state;
+    const { startDate, endDate, employee } = this.state;
     try {
       this.setState({ isLoading: true });
-      const response = await getListTimekeepingMonthEmployee(startDate, endDate,employee.id);
+      const response = await getListTimekeepingMonthEmployee(
+        startDate,
+        endDate,
+        employee.id
+      );
       reactotron.log("response", response);
       if (response.code == 200) {
         this.setState({
@@ -340,17 +341,19 @@ export default class TimekeepingOfEmployee extends Component {
     return (
       <View>
         <View style={styles._viewUser}>
-        {this._renderInfoItem(
-            "Name :",employee.first_name+" "+employee.last_name
-          )}
           {this._renderInfoItem(
-            "Id :",employee.id
+            "Name :",
+            employee.first_name + " " + employee.last_name
           )}
+          {this._renderInfoItem("Id :", employee.id)}
           {this._renderInfoItem(
             "Time late :",
             timeLate ? timeLate + " minute" : 0 + " minute"
           )}
-          {this._renderInfoItem("Day", dayWork ? dayWork+ " day " : 0 + " day ")}
+          {this._renderInfoItem(
+            "Day",
+            dayWork ? dayWork + " day " : 0 + " day "
+          )}
         </View>
         <View
           style={{
@@ -405,8 +408,6 @@ export default class TimekeepingOfEmployee extends Component {
             />
           </View>
         </View>
-
-      
       </View>
     );
   }
@@ -425,7 +426,7 @@ export default class TimekeepingOfEmployee extends Component {
           ]}
         >
           <View style={[styles.rowTable, { flex: 1 }]}>
-            <Text style={theme.fonts.regular14} >STT</Text>
+            <Text style={theme.fonts.regular14}>STT</Text>
           </View>
           <View style={[styles.rowTable, { flex: 4 }]}>
             <Text
@@ -496,7 +497,7 @@ export default class TimekeepingOfEmployee extends Component {
             showsVerticalScrollIndicator={false}
           >
             {this._renderHeaderTable()}
-            {!data||data.length == 0 ? (
+            {!data || data.length == 0 ? (
               <Empty description={"No Data"} />
             ) : (
               data.map((item, index) => (

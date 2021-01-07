@@ -29,7 +29,6 @@ import {
 import R from "@R";
 import theme from "@theme";
 import { SCREEN_ROUTER, GENDER } from "@app/constants/Constant";
-import NavigationUtil from "@app/navigation/NavigationUtil";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 import { showMessages } from "@app/utils/Alert";
 import reactotron from "reactotron-react-native";
@@ -255,7 +254,7 @@ export class ChangeUserInfo extends Component {
             placeholder="Địa chỉ"
           />
           <Button
-          style={{alignSelf:"center"}}
+            style={{ alignSelf: "center" }}
             title="Update"
             onPress={() => {
               this._updateUser();
@@ -286,6 +285,7 @@ export class ChangeUserInfo extends Component {
         email: email.trim(),
         address: address.trim()
       });
+      this.props.navigation.goBack();
     }
   }
 }
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
   _viewUser: {
     // justifyContent:'space-between',
     marginHorizontal: 20,
-    marginBottom:40,
+    marginBottom: 40,
     marginTop: 10,
     // width:theme.dimension.width*0.9,
     backgroundColor: theme.colors.white,

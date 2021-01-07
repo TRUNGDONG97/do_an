@@ -8,7 +8,8 @@ import {
   ScrollView,
   Dimensions,
   RefreshControl,
-  TextInput
+  TextInput,
+  BackHandler
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import LinearGradient from "react-native-linear-gradient";
@@ -37,7 +38,7 @@ import NetInfo from "@react-native-community/netinfo";
 import { LinesLoader } from "react-native-indicator";
 import Modal from "react-native-modal";
 import { Dropdown } from "react-native-material-dropdown";
-import NavigationUtil from "@app/navigation/NavigationUtil";
+
 import theme from "@app/constants/Theme";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -71,7 +72,14 @@ export default class HomeScreen extends Component {
 
   componentDidMount() {
     this.getListTimekeeping();
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    return true;
+  };
   getListTimekeeping = async () => {
     const { startDate, endDate } = this.state;
 
@@ -346,7 +354,10 @@ export default class HomeScreen extends Component {
             "Time late :",
             timeLate ? timeLate + " minute" : 0 + " minute"
           )}
-          {this._renderInfoItem("Day", dayWork ? dayWork+ " day " : 0 + " day ")}
+          {this._renderInfoItem(
+            "Day",
+            dayWork ? dayWork + " day " : 0 + " day "
+          )}
         </View>
         <View
           style={{
@@ -402,8 +413,8 @@ export default class HomeScreen extends Component {
           </View>
         </View>
         <TouchableOpacity
-          onPress={()=>{
-            NavigationUtil.navigate(SCREEN_ROUTER.TIMEKEEPING_EMPLOYEE);
+          onPress={() => {
+            // NavigationUtil.navigate(SCREEN_ROUTER.TIMEKEEPING_EMPLOYEE);
           }}
         >
           <Text>chuyeern man danh sach</Text>
@@ -465,7 +476,7 @@ export default class HomeScreen extends Component {
               start={{ x: 0.7, y: 1 }} //transparent
               end={{ x: 0, y: 0.1 }}
             >
-                <Text style={styles.text}>Work Off</Text>
+              <Text style={styles.text}>Work Off</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -487,7 +498,7 @@ export default class HomeScreen extends Component {
           ]}
         >
           <View style={[styles.rowTable, { flex: 1 }]}>
-            <Text style={theme.fonts.regular14} >STT</Text>
+            <Text style={theme.fonts.regular14}>STT</Text>
           </View>
           <View style={[styles.rowTable, { flex: 4 }]}>
             <Text
@@ -558,7 +569,7 @@ export default class HomeScreen extends Component {
             showsVerticalScrollIndicator={false}
           >
             {this._renderHeaderTable()}
-            {!data||data.length == 0 ? (
+            {!data || data.length == 0 ? (
               <Empty description={"No Data"} />
             ) : (
               data.map((item, index) => (

@@ -14,7 +14,6 @@ import {
 import i18 from "@i18";
 import theme from "@theme";
 import R from "@R";
-import NavigationUtil from "@app/navigation/NavigationUtil";
 import { SCREEN_ROUTER } from "@app/constants/Constant";
 // import OneSignal from "react-native-onesignal";
 import reactotron from "reactotron-react-native";
@@ -113,8 +112,8 @@ export class UserScreen extends Component {
   }
   _renderBody() {
     const { UserInfoState } = this.props;
-    // reactotron.log('UserInfoState',UserInfoState)
-    if (UserInfoState.isLoading) return <Loading />;
+    console.log("UserInfoState", UserInfoState);
+    if (!UserInfoState || UserInfoState.isLoading) return <Loading />;
     if (UserInfoState.error)
       return (
         <Error
@@ -205,7 +204,7 @@ export class UserScreen extends Component {
               </Text>
               <TouchableOpacity
                 onPress={() =>
-                  NavigationUtil.navigate(SCREEN_ROUTER.CHANGE_USER_INFO)
+                  this.props.navigation.navigate(SCREEN_ROUTER.CHANGE_USER_INFO)
                 }
               >
                 <Icon.FontAwesome
@@ -225,7 +224,7 @@ export class UserScreen extends Component {
 
           <View style={styles._viewInfo}>
             {this._renderOption("Change password", () => {
-              NavigationUtil.navigate(SCREEN_ROUTER.CHANGE_PASSWORD);
+              this.props.navigation.navigate(SCREEN_ROUTER.CHANGE_PASSWORD);
             })}
             {this._renderOption("Log out", () => {
               showConfirm(
@@ -246,7 +245,7 @@ export class UserScreen extends Component {
       if (response) {
         await AsyncStorage.setItem("token", "");
         AsyncStorage.clear();
-        NavigationUtil.navigate(SCREEN_ROUTER.AUTH_LOADING);
+        this.props.navigation.navigate(SCREEN_ROUTER.AUTH_LOADING);
       }
     } catch (error) {
       Toast.show("Vui lòng thử lại", BACKGROUND_TOAST.FAIL);

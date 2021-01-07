@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Alert } from "react-native";
-import NavigationUtil from "../navigation/NavigationUtil";
 import I18n from "../i18n/i18n";
 import AsyncStorage from "@react-native-community/async-storage";
 import { SCREEN_ROUTER } from "@constant";
@@ -40,7 +39,7 @@ function createAxios() {
         }, 100);
 
         AsyncStorage.setItem("token", "", () => {
-          NavigationUtil.navigate(SCREEN_ROUTER.AUTH);
+          this.props.navigation.navigate(SCREEN_ROUTER.AUTH_LOADING);
         });
       } else if (response.data && response.data.status != 1) {
         setTimeout(() => {
@@ -80,8 +79,6 @@ export const requestLogin = payload => {
 export const requestLogout = payload => {
   return handleResult(getAxios.get("logout"));
 };
-
-
 
 //get User infor
 export const getUserInfo = () => {
@@ -125,14 +122,16 @@ export const workOffTimekeeping = payload => {
   console.log("adasdsa");
   return handleResult(getAxios.post(`app/api/workoff`, payload));
 };
-export const getListTimekeepingDayEmployee=(dateGet)=>{
+export const getListTimekeepingDayEmployee = dateGet => {
   return handleResult(
-    getAxios.get(
-      `/app/api/getListTimekeepingDayEmployee?dateGet=${dateGet}`
-    )
+    getAxios.get(`/app/api/getListTimekeepingDayEmployee?dateGet=${dateGet}`)
   );
-}
-export const getListTimekeepingMonthEmployee = (startDate, endDate,id_employee) => {
+};
+export const getListTimekeepingMonthEmployee = (
+  startDate,
+  endDate,
+  id_employee
+) => {
   console.log("startDate", startDate);
   console.log("endDate", endDate);
   return handleResult(

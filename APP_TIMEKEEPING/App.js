@@ -5,32 +5,21 @@
  * @format
  * @flow
  */
-
-import DropdownAlertUtil from '@app/components/DropdownAlertUtil';
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import codePush from "react-native-code-push";
-import DropdownAlert from 'react-native-dropdownalert';
 // import OneSignal from 'react-native-onesignal'; // Import package from node modules
 import { Provider } from "react-redux";
-import Reactotron from 'reactotron-react-native';
-import NavigationUtil from './app/navigation/NavigationUtil';
+import Reactotron from "reactotron-react-native";
 import store from "./app/redux/store";
-import AppContainer from './app/navigation/AppContainer'
-import LoginScreen from './app/screens/auth/LoginScreen';
+import RootNavigation from "@app/navigation/RootNavigation";
 class App extends Component {
-
   render() {
     return (
       <Provider store={store}>
-        <AppContainer/>
-        <DropdownAlert
-          ref={alertRef => DropdownAlertUtil.setTopDropdownAlert(alertRef)}
-          onTap={DropdownAlertUtil.onTap}
-        />
+        <RootNavigation />
       </Provider>
-    )
+    );
   }
-
 
   // constructor(properties) {
   //   super(properties);
@@ -62,17 +51,13 @@ class App extends Component {
   // onIds(device) {
   //   Reactotron.log('Device info: ', device);
   // }
-  
 }
 
 let codePushOptions = {
   checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-  installMode: codePush.InstallMode.ON_NEXT_RESUME,
+  installMode: codePush.InstallMode.ON_NEXT_RESUME
 };
-
-
 
 MyApp = codePush(codePushOptions)(App);
 
-export default MyApp
-
+export default MyApp;

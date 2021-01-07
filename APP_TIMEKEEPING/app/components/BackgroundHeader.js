@@ -1,8 +1,13 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View, TouchableOpacity, Platform } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Platform
+} from "react-native";
 import Svg, { Circle, Rect, Path } from "react-native-svg";
 import theme from "@theme";
-import NavigationUtil from "../navigation/NavigationUtil";
 const width10 = width - 10;
 
 export default class BackgroundHeader extends Component {

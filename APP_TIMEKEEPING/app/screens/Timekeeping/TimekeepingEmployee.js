@@ -32,7 +32,6 @@ import NetInfo from "@react-native-community/netinfo";
 import { LinesLoader } from "react-native-indicator";
 import Modal from "react-native-modal";
 import { Dropdown } from "react-native-material-dropdown";
-import NavigationUtil from "@app/navigation/NavigationUtil";
 import theme from "@app/constants/Theme";
 export default class TimekeepingEmployee extends Component {
   constructor(props) {
@@ -49,8 +48,8 @@ export default class TimekeepingEmployee extends Component {
       data: [],
       error: null,
       dateGet: year + "-" + month1 + "-" + date2,
-      btnLoadingCancel:false,
-      btnLoadingConfirm:false
+      btnLoadingCancel: false,
+      btnLoadingConfirm: false
     };
   }
   componentDidMount() {
@@ -95,7 +94,7 @@ export default class TimekeepingEmployee extends Component {
     return (
       <Block>
         <SafeAreaView style={theme.styles.containter}>
-        <BackgroundHeader />
+          <BackgroundHeader />
           <WindsHeader title="List Timekeeping" />
           {this._renderBody()}
         </SafeAreaView>
@@ -103,7 +102,13 @@ export default class TimekeepingEmployee extends Component {
     );
   }
   _renderBody() {
-    const { error, isLoading, data,btnLoadingConfirm,btnLoadingCancel } = this.state;
+    const {
+      error,
+      isLoading,
+      data,
+      btnLoadingConfirm,
+      btnLoadingCancel
+    } = this.state;
     // reactotron.log("data", data);
     if (error) {
       return (
@@ -127,10 +132,10 @@ export default class TimekeepingEmployee extends Component {
             marginTop: 120
           }}
         >
-          <Text >Day :</Text>
+          <Text>Day :</Text>
           <DatePicker
             style={{ width: width * 0.3, marginLeft: 10 }}
-            customStyles={{color:theme.colors.white}}
+            customStyles={{ color: theme.colors.white }}
             date={this.state.dateGet}
             mode="date"
             placeholder="select date"
@@ -189,7 +194,6 @@ export default class TimekeepingEmployee extends Component {
               )}
             </LinearGradient>
           </TouchableOpacity>
-         
         </View>
         <ScrollView
           contentContainerStyle={{
@@ -278,8 +282,11 @@ export default class TimekeepingEmployee extends Component {
               index % 2 ? theme.colors.backgroundBlueItem : theme.colors.white
           }
         ]}
-        onPress={()=>{
-            NavigationUtil.navigate(SCREEN_ROUTER.TIMEKEEPING_OF_EMPLOYEE,{'employee':item.employee})
+        onPress={() => {
+          this.props.navigation.navigate(
+            SCREEN_ROUTER.TIMEKEEPING_OF_EMPLOYEE,
+            { employee: item.employee }
+          );
         }}
       >
         <View style={[styles.rowTable, { flex: 1 }]}>
@@ -314,8 +321,8 @@ export default class TimekeepingEmployee extends Component {
           />
         </View>
         <View style={[styles.rowTable, { flex: 1 }]}>
-            <Checkbox size={16} status={false} />
-          </View>
+          <Checkbox size={16} status={false} />
+        </View>
       </TouchableOpacity>
     );
   }

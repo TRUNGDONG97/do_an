@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
-  TextInput
+  TextInput,
+  BackHandler
 } from "react-native";
 import { LoginButton, AccessToken, LoginManager } from "react-native-fbsdk";
 
@@ -13,7 +14,6 @@ import AsyncStorage from "@react-native-community/async-storage";
 import theme from "@theme";
 import { SCREEN_ROUTER } from "@constant";
 import Icon from "@component/Icon";
-import NavigationUtil from "@app/navigation/NavigationUtil";
 import { Block, LoadingProgressBar, Button, FastImage } from "@component";
 import { connect } from "react-redux";
 import R from "@R";
@@ -22,7 +22,7 @@ import OneSignal from "react-native-onesignal";
 import { requestLogin } from "@api";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 import reactotron from "reactotron-react-native";
-export  class LoginScreen extends Component {
+export class LoginScreen extends Component {
   static navigationOptions = {
     header: null
   };
@@ -41,54 +41,62 @@ export  class LoginScreen extends Component {
         deviceID: status.userId
       });
     });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    return true;
+  };
   login = async () => {
-    // NavigationUtil.navigate(SCREEN_ROUTER.MAIN)
-    if (
-      this.state.username.trim().length == 0 ||
-      this.state.password.trim().length == 0
-    ) {
-      message = "Mời bạn cập nhật đầy đủ thông tin";
-      showMessages(R.strings.notification, message);
-      return;
-    }
-    this.setState({ ...this.state, isLoading: true });
-    try {
-      const response = await requestLogin({
-        user: this.state.username,
-        password: this.state.password,
-        deviceID: this.state.deviceID,
-      });
-      // reactotron.log(response)
-      this.setState(
-        {
-          ...this.state,
-          error: null,
-          isLoading: false,
-          data: response.data
-        },
-        () => { 
-          AsyncStorage.setItem("token", response.data.token, () =>
-            NavigationUtil.navigate(SCREEN_ROUTER.MAIN)
-          );
-        }
-      );
-    } catch (err) {
-      this.setState(
-        {
-          ...this.state,
-          error: null,
-          isLoading: false,
-          data: null
-        })
-      if (err.message == "Network Error") {
-        Toast.show(I18n.t("network_err"), BACKGROUND_TOAST.FAIL);
-      }
-      //showMessages(I18n.t("notification"),I18n.t("error") );
-      Toast.show('Vui lòng thử lại', BACKGROUND_TOAST.FAIL)
-      this.setState({ ...this.state, error: err, isLoading: false });
-    }
+    AsyncStorage.setItem("token", "response.data.token", () =>
+      this.props.navigation.navigate(SCREEN_ROUTER.MAIN, { typeLogin: 1 })
+    );
+    // if (
+    //   this.state.username.trim().length == 0 ||
+    //   this.state.password.trim().length == 0
+    // ) {
+    //   message = "Mời bạn cập nhật đầy đủ thông tin";
+    //   showMessages(R.strings.notification, message);
+    //   return;
+    // }
+    // this.setState({ ...this.state, isLoading: true });
+    // try {
+    //   const response = await requestLogin({
+    //     user: this.state.username,
+    //     password: this.state.password,
+    //     deviceID: this.state.deviceID
+    //   });
+    //   // reactotron.log(response)
+    //   this.setState(
+    //     {
+    //       ...this.state,
+    //       error: null,
+    //       isLoading: false,
+    //       data: response.data
+    //     },
+    //     () => {
+    //       AsyncStorage.setItem("token", response.data.token, () =>
+    //         this.prop.navigation.navigate(SCREEN_ROUTER.HOME)
+    //       );
+    //     }
+    //   );
+    // } catch (err) {
+    //   this.setState({
+    //     ...this.state,
+    //     error: null,
+    //     isLoading: false,
+    //     data: null
+    //   });
+    //   if (err.message == "Network Error") {
+    //     Toast.show(I18n.t("network_err"), BACKGROUND_TOAST.FAIL);
+    //   }
+    //   //showMessages(I18n.t("notification"),I18n.t("error") );
+    //   Toast.show("Vui lòng thử lại", BACKGROUND_TOAST.FAIL);
+    //   this.setState({ ...this.state, error: err, isLoading: false });
+    // }
   };
 
   render() {
@@ -130,26 +138,30 @@ export  class LoginScreen extends Component {
             {R.strings.forgot_password}
           </Text>
         </TouchableOpacity> */}
-        <Button style={{ marginTop: 40 }} title={R.strings.login} onPress={this.login} />
+        <Button
+          style={{ marginTop: 40 }}
+          title={R.strings.login}
+          onPress={this.login}
+        />
       </KeyboardAvoidingView>
     );
   }
 }
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({});
 
-})
+const mapDispatchToProps = {};
 
-const mapDispatchToProps = {
-
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     // justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: "white"
   },
   img: {
     width: width / 1.5,
