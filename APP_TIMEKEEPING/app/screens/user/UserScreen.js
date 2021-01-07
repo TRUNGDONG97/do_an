@@ -17,7 +17,7 @@ import R from "@R";
 import { SCREEN_ROUTER } from "@app/constants/Constant";
 // import OneSignal from "react-native-onesignal";
 import reactotron from "reactotron-react-native";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { requestLogout } from "@app/constants/Api";
 import {
   WindsHeader,
@@ -30,7 +30,7 @@ import {
 } from "@app/components";
 import { Avatar } from "react-native-elements";
 import { showConfirm } from "@app/utils/Alert";
-import { getUserInfo } from "../../redux/actions";
+import { getUserInfo } from '@app/redux/actions'
 import { connect } from "react-redux";
 
 export class UserScreen extends Component {
@@ -42,9 +42,9 @@ export class UserScreen extends Component {
     };
   }
 
-  async componentDidMount() {
-    this.props.getUserInfo();
-  }
+  componentDidMount() {
+    this.props.getUserInfo()
+}
 
   render() {
     return (
@@ -244,6 +244,7 @@ export class UserScreen extends Component {
       const response = await requestLogout();
       if (response) {
         await AsyncStorage.setItem("token", "");
+        await AsyncStorage.setItem("typeLogin", "");
         AsyncStorage.clear();
         this.props.navigation.navigate(SCREEN_ROUTER.AUTH_LOADING);
       }
@@ -277,15 +278,12 @@ const styles = StyleSheet.create({
     borderRadius: 5
   }
 });
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   UserInfoState: state.userReducer
-});
+})
 
 const mapDispatchToProps = {
   getUserInfo
-};
+}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(UserScreen)

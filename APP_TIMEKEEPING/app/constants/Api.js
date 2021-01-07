@@ -1,14 +1,14 @@
 import axios from "axios";
 import { Alert } from "react-native";
 import I18n from "../i18n/i18n";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SCREEN_ROUTER } from "@constant";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 // singleton  network client
 function createAxios() {
   // AsyncStorage.setItem("token", '2323226DADAD') //full
   var axiosInstant = axios.create();
-  axiosInstant.defaults.baseURL = "http://b51dbc098702.ngrok.io/app";
+  axiosInstant.defaults.baseURL = "http://e7819bcb666a.ngrok.io/app";
   axiosInstant.defaults.timeout = 20000;
   axiosInstant.defaults.headers = { "Content-Type": "application/json" };
 

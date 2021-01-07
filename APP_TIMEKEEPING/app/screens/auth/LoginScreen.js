@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { LoginButton, AccessToken, LoginManager } from "react-native-fbsdk";
 
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import theme from "@theme";
 import { SCREEN_ROUTER } from "@constant";
 import Icon from "@component/Icon";
@@ -51,52 +51,48 @@ export class LoginScreen extends Component {
     return true;
   };
   login = async () => {
-    AsyncStorage.setItem("token", "response.data.token", () =>
-      this.props.navigation.navigate(SCREEN_ROUTER.MAIN, { typeLogin: 1 })
-    );
-    // if (
-    //   this.state.username.trim().length == 0 ||
-    //   this.state.password.trim().length == 0
-    // ) {
-    //   message = "Mời bạn cập nhật đầy đủ thông tin";
-    //   showMessages(R.strings.notification, message);
-    //   return;
-    // }
-    // this.setState({ ...this.state, isLoading: true });
-    // try {
-    //   const response = await requestLogin({
-    //     user: this.state.username,
-    //     password: this.state.password,
-    //     deviceID: this.state.deviceID
-    //   });
-    //   // reactotron.log(response)
-    //   this.setState(
-    //     {
-    //       ...this.state,
-    //       error: null,
-    //       isLoading: false,
-    //       data: response.data
-    //     },
-    //     () => {
-    //       AsyncStorage.setItem("token", response.data.token, () =>
-    //         this.prop.navigation.navigate(SCREEN_ROUTER.HOME)
-    //       );
-    //     }
-    //   );
-    // } catch (err) {
-    //   this.setState({
-    //     ...this.state,
-    //     error: null,
-    //     isLoading: false,
-    //     data: null
-    //   });
-    //   if (err.message == "Network Error") {
-    //     Toast.show(I18n.t("network_err"), BACKGROUND_TOAST.FAIL);
-    //   }
-    //   //showMessages(I18n.t("notification"),I18n.t("error") );
-    //   Toast.show("Vui lòng thử lại", BACKGROUND_TOAST.FAIL);
-    //   this.setState({ ...this.state, error: err, isLoading: false });
-    // }
+    if (
+      this.state.username.trim().length == 0 ||
+      this.state.password.trim().length == 0
+    ) {
+      message = "Mời bạn cập nhật đầy đủ thông tin";
+      showMessages(R.strings.notification, message);
+      return;
+    }
+    this.setState({ ...this.state, isLoading: true });
+    try {
+      const response = await requestLogin({
+        user: this.state.username,
+        password: this.state.password,
+        deviceID: this.state.deviceID
+      });
+      // reactotron.log(response)
+      this.setState({
+        ...this.state,
+        error: null,
+        isLoading: false,
+        data: response.data
+      });
+      reactotron.log("response.data.position",response.data.position)
+      reactotron.log("response.data.position",response.data.token)
+      await AsyncStorage.setItem("token", response.data.token);
+      await AsyncStorage.setItem("typeLogin", response.data.position.toString());
+      this.props.navigation.navigate(SCREEN_ROUTER.MAIN, { typeLogin: 1 });
+    } catch (err) {
+      reactotron.log(err)
+      this.setState({
+        ...this.state,
+        error: null,
+        isLoading: false,
+        data: null
+      });
+      if (err.message == "Network Error") {
+        Toast.show(I18n.t("network_err"), BACKGROUND_TOAST.FAIL);
+      }
+      //showMessages(I18n.t("notification"),I18n.t("error") );
+      Toast.show("Vui lòng thử lại", BACKGROUND_TOAST.FAIL);
+      this.setState({ ...this.state, error: err, isLoading: false });
+    }
   };
 
   render() {

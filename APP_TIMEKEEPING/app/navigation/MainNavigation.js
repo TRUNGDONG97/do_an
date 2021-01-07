@@ -9,15 +9,17 @@ import TimekeepingEmployee from "@app/screens/Timekeeping/TimekeepingEmployee";
 import theme from "@app/constants/Theme";
 import { Icon, ImageViewerScreen } from "@component";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import reactotron from "reactotron-react-native";
 const Tab = createBottomTabNavigator();
-export default function MainNavigation({ navigation,route }) {
-  const{typeLogin}= route.params.typeLogin
-
-  const getTabBarIcon = (name, focused, tintColor) => {
+export default function MainNavigation({ navigation, route }) {
+  const { typeLogin } = route.params;
+  reactotron.log("typeLogin", typeLogin);
+  const getTabBarIcon = (index, focused) => {
     let iconName = "basket";
     let iconSize = focused ? 25 : 20;
-    switch (name) {
-      case SCREEN_ROUTER.HOME: {
+    let tintColor = focused ? theme.colors.active : theme.colors.gray2;
+    switch (index) {
+      case 0: {
         iconName = "earth";
         return (
           <Icon.Fontisto
@@ -28,7 +30,7 @@ export default function MainNavigation({ navigation,route }) {
           />
         );
       }
-      case SCREEN_ROUTER.TIMEKEEPING_EMPLOYEE: {
+      case 1: {
         iconName = "team";
         return (
           <Icon.AntDesign
@@ -39,11 +41,11 @@ export default function MainNavigation({ navigation,route }) {
           />
         );
       }
-      case SCREEN_ROUTER.NOTIFICATION: {
+      case 2: {
         iconName = "bell";
         break;
       }
-      case SCREEN_ROUTER.USER: {
+      case 3: {
         iconName = "user";
         break;
       }
@@ -58,7 +60,7 @@ export default function MainNavigation({ navigation,route }) {
     );
   };
   const MyTabBar = ({ state, descriptors, navigation }) => {
-    console.log("state", state.routes);
+    reactotron.log("state", state.routes);
     // console.log("descriptors", descriptors);
     // console.log("navigation", navigation);
     return (
@@ -66,7 +68,8 @@ export default function MainNavigation({ navigation,route }) {
         style={{
           flexDirection: "row",
           height: 58,
-          width: "100%"
+          width: "100%",
+          backgroundColor: "red"
         }}
       >
         {state.routes.map((route, index) => {
@@ -99,24 +102,42 @@ export default function MainNavigation({ navigation,route }) {
           };
 
           return (
-            <TouchableOpacity
-              accessibilityRole="button"
-              accessibilityState={isFocused ? { selected: true } : {}}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
-              onPress={onPress}
-              onLongPress={onLongPress}
+            <View
               style={{
                 flex: 1,
-                borderTopColor: theme.colors.borderTopColor,
-                backgroundColor: theme.colors.primary,
-                height: 58
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: theme.colors.white,
+                borderColor: theme.colors.border,
+                borderTopWidth: 0.5
               }}
             >
-              <Text style={{ color: isFocused ? "#673ab7" : "#222" }}>
-                {label}
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                accessibilityRole="button"
+                accessibilityState={isFocused ? { selected: true } : {}}
+                accessibilityLabel={options.tabBarAccessibilityLabel}
+                testID={options.tabBarTestID}
+                onPress={onPress}
+                onLongPress={onLongPress}
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                {getTabBarIcon(index, isFocused)}
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    color: isFocused
+                      ? theme.colors.tintColor
+                      : theme.colors.gray2
+                  }}
+                >
+                  {label}
+                </Text>
+              </TouchableOpacity>
+            </View>
           );
         })}
       </View>
@@ -135,10 +156,12 @@ export default function MainNavigation({ navigation,route }) {
     >
       <Tab.Screen name={SCREEN_ROUTER.HOME} component={HomeScreen} />
 
-      <Tab.Screen
-        name={SCREEN_ROUTER.TIMEKEEPING_EMPLOYEE}
-        component={TimekeepingEmployee}
-      />
+      {!!typeLogin &&typeLogin == 1 && (
+        <Tab.Screen
+          name={SCREEN_ROUTER.TIMEKEEPING_EMPLOYEE}
+          component={TimekeepingEmployee}
+        />
+      )}
 
       <Tab.Screen
         name={SCREEN_ROUTER.NOTIFICATION}

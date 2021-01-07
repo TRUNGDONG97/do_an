@@ -412,13 +412,6 @@ export default class HomeScreen extends Component {
             />
           </View>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            // NavigationUtil.navigate(SCREEN_ROUTER.TIMEKEEPING_EMPLOYEE);
-          }}
-        >
-          <Text>chuyeern man danh sach</Text>
-        </TouchableOpacity>
         <View
           style={{
             flexDirection: "row",

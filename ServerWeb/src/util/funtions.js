@@ -102,6 +102,7 @@ module.exports.checkTimeCheckinMorning = async (time) => {
   //time đơn vị phút
   try {
     const getConfigTime = await ConfigtimeModel.findAll();
+    console.log("getConfigTime",getConfigTime[0].time_start_checkin_morning);
     if (
       time >= getConfigTime[0].time_start_checkin_morning &&
       time <= getConfigTime[0].time_end_checkin_morning
@@ -119,6 +120,7 @@ module.exports.checkTimeCheckoutMorning = async (time) => {
   //time đơn vị phút
   try {
     const getConfigTime = await ConfigtimeModel.findAll();
+   
     if (
       time >= getConfigTime[0].time_start_checkout_morning &&
       time <= getConfigTime[0].time_end_checkout_morning

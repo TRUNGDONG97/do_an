@@ -14,7 +14,7 @@ const SCREEN_ROUTER = {
   LIST_ABSENT:'list_absent',
   DETAIL_CLASS:'detail_class',
   CAMERA:'camera_screen',
-  TIMEKEEPING_EMPLOYEE:"timekeeping_employee",
+  TIMEKEEPING_EMPLOYEE:"Timekeeping",
   TIMEKEEPING_OF_EMPLOYEE:"timekeeping_of_employee"
 };
 const LIKE_STATE = {

@@ -13,8 +13,8 @@
     "reverse": "adb reverse tcp:9090 tcp:9090; adb reverse tcp:19001 tcp:19001;"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/art": "^1.1.2",
-    "@react-native-community/async-storage": "^1.6.2",
     "@react-native-community/google-signin": "^3.0.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.9",

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import AppNavigator from "./AppNavigator";
 import OneSignal from "react-native-onesignal";
 import reactotron from "reactotron-react-native";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SCREEN_ROUTER } from "@constant";
 export class AppContainer extends Component {
   constructor(properties) {

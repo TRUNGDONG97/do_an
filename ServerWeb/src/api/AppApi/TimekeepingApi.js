@@ -64,7 +64,7 @@ const checkin = async (req, res, next) => {
       return;
     }
     const getConfigTime = await ConfigtimeModel.findAll();
-
+    // console.log("getConfigTime", getDataTimekeeping(employee[0].id),);
     //lay cham cong buoi sang
     const timekeepingMorning = await TimekeepingModel.findAll({
       where: {
@@ -83,14 +83,14 @@ const checkin = async (req, res, next) => {
     // console.log("getCurrentTime", getCurrentTime());
     // console.log(
     //   "checkTimeCheckinMorning(getCurrentTime())",
-    //   checkTimeCheckinMorning(getCurrentTime())
+    //   await checkTimeCheckinMorning(getCurrentTime())
     // );
     // console.log(
     //   "checkTimeCheckinAfternoon(getCurrentTime())",
     //   checkTimeCheckinAfternoon(getCurrentTime())
     // );
     //checkin buổi sáng
-    if (checkTimeCheckinMorning(getCurrentTime())) {
+    if (await checkTimeCheckinMorning(getCurrentTime())) {
       // check xin nghỉ buổi sáng hay ngày hôm đó chưa
       const getWorkOff = await TimekeepingModel.findAll({
         where: {
@@ -159,12 +159,12 @@ const checkin = async (req, res, next) => {
         status: 1,
         code: 200,
         message: "Checkin thành công",
-        data: getDataTimekeeping(employee[0].id),
+        data: await getDataTimekeeping(employee[0].id),
       });
       return;
     }
     //checkin buổi chiều
-    if (checkTimeCheckinAfternoon(getCurrentTime())) {
+    if (await checkTimeCheckinAfternoon(getCurrentTime())) {
       const getWorkOffApternoon = await TimekeepingModel.findAll({
         where: {
           date_timekeeping: getCurrentDate(),
@@ -250,7 +250,7 @@ const checkin = async (req, res, next) => {
         status: 1,
         code: 200,
         message: "Checkin thành công",
-        data: getDataTimekeeping(employee[0].id),
+        data: await getDataTimekeeping(employee[0].id),
       });
       return;
     }
@@ -333,7 +333,7 @@ const checkout = async (req, res, next) => {
       },
     });
 
-    if (checkTimeCheckoutMorning(getCurrentTime())) {
+    if (await checkTimeCheckoutMorning(getCurrentTime())) {
       if (timekeepingMorning.length < 1) {
         res.json({
           status: 0,
@@ -379,7 +379,7 @@ const checkout = async (req, res, next) => {
         status: 1,
         code: 200,
         message: "Bạn checkout thành công .",
-        data: getDataTimekeeping(employee[0].id),
+        data: await getDataTimekeeping(employee[0].id),
       });
       return;
     }
@@ -397,7 +397,7 @@ const checkout = async (req, res, next) => {
         },
       },
     });
-    if (checkTimeCheckoutAfternoon(getCurrentTime())) {
+    if (await checkTimeCheckoutAfternoon(getCurrentTime())) {
       if (
         (timekeepingMorning.length < 1 ||
           (timekeepingMorning.length > 1 &&
@@ -448,7 +448,7 @@ const checkout = async (req, res, next) => {
           status: 1,
           code: 200,
           message: "Bạn checkout thành công .",
-          data: getDataTimekeeping(employee[0].id),
+          data: await getDataTimekeeping(employee[0].id),
         });
         return;
       }
@@ -489,7 +489,7 @@ const checkout = async (req, res, next) => {
         status: 1,
         code: 200,
         message: "Bạn checkout thành công .",
-        data: getDataTimekeeping(employee[0].id),
+        data: await getDataTimekeeping(employee[0].id),
       });
       return;
     }
@@ -511,9 +511,10 @@ const checkout = async (req, res, next) => {
   }
 };
 const workoff = async (req, res) => {
+  const { token } = req.headers;
+  const { status, date, note } = req.body;
+  console.log("workoff");
   try {
-    const { token } = req.headers;
-    const { status, date, note } = req.body;
     if (token == "") {
       res.json({
         status: 0,
@@ -579,7 +580,7 @@ const workoff = async (req, res) => {
         status: 1,
         code: 200,
         message: `Bạn xin nghỉ sáng ngày ${date}  thành công .`,
-        data: getDataTimekeeping(employee[0].id),
+        data: await getDataTimekeeping(employee[0].id),
       });
       return;
     }
@@ -623,12 +624,12 @@ const workoff = async (req, res) => {
         status: 1,
         code: 200,
         message: `Bạn xin nghỉ chiều ngày ${date}  thành công .`,
-        data: getDataTimekeeping(employee[0].id),
+        data: await getDataTimekeeping(employee[0].id),
       });
       return;
     }
     // xin nghỉ cả ngày
-    if (status == 3) {
+    if (status == 4) {
       const timekeepingDay = await TimekeepingModel.findAll({
         where: {
           date_timekeeping: date,
@@ -656,12 +657,12 @@ const workoff = async (req, res) => {
         workday: 0,
         note,
       });
-      console.log(`Bạn xin nghỉ  ngày ${date}  thành công .`);
+      console.log(`Bạn xin nghỉ  ngày ${date}  thành công .`,await getDataTimekeeping(employee[0].id));
       res.json({
         status: 1,
         code: 200,
         message: `Bạn xin nghỉ  ngày ${date}  thành công .`,
-        data: getDataTimekeeping(employee[0].id),
+        data:await getDataTimekeeping(employee[0].id),
       });
       return;
     }
@@ -703,6 +704,7 @@ const getDataTimekeeping = async (id_employee) => {
             [Op.between]: [startDate, endDate],
           },
           id_employee,
+          type:1
         },
         required: false,
         // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],

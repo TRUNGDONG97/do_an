@@ -10,7 +10,7 @@ import {
 import R from "@R";
 import { SCREEN_ROUTER } from "@app/constants/Constant";
 import { FastImage, Block } from "@app/components";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import reactotron from "reactotron-react-native";
 import { connect } from "react-redux";
 // import dsds from  ""
@@ -24,8 +24,13 @@ export class AuthLoadingScreen extends Component {
 
   handleActiveApp = async () => {
     let token = await AsyncStorage.getItem("token");
+    reactotron.log("token",token)
     if (!!token) {
-      this.props.navigation.navigate(SCREEN_ROUTER.MAIN, { typeLogin: 1 });
+      let typeLogin = await AsyncStorage.getItem("typeLogin");
+      reactotron.log("typeLogin", typeLogin);
+      this.props.navigation.navigate(SCREEN_ROUTER.MAIN, {
+        typeLogin:1
+      });
     } else {
       this.props.navigation.navigate(SCREEN_ROUTER.LOGIN);
     }
