@@ -5,17 +5,17 @@ const SCREEN_ROUTER = {
   LOGIN: "Login",
   AUTH_LOADING: "AuthLoading",
   FORGOT_PASS: "ForgotPassword",
-  USER: 'User',
-  CLASS: 'Class',
-  NOTIFICATION: 'Notification',
-  STUDY: 'Study',
-  CHANGE_PASSWORD: 'ChangePassWord',
-  CHANGE_USER_INFO:'ChangeUserInfo',
-  LIST_ABSENT:'list_absent',
-  DETAIL_CLASS:'detail_class',
-  CAMERA:'camera_screen',
-  TIMEKEEPING_EMPLOYEE:"Timekeeping",
-  TIMEKEEPING_OF_EMPLOYEE:"timekeeping_of_employee"
+  USER: "User",
+  CLASS: "Class",
+  NOTIFICATION: "Notification",
+  STUDY: "Study",
+  CHANGE_PASSWORD: "ChangePassWord",
+  CHANGE_USER_INFO: "ChangeUserInfo",
+  LIST_ABSENT: "list_absent",
+  DETAIL_CLASS: "detail_class",
+  CAMERA: "camera_screen",
+  TIMEKEEPING_EMPLOYEE: "Timekeeping",
+  TIMEKEEPING_OF_EMPLOYEE: "timekeeping_of_employee"
 };
 const LIKE_STATE = {
   LIKE: 1,
@@ -25,22 +25,19 @@ const LIKE_STATE = {
 const TOPIC = {
   TOPIC_1: 1,
   TOPIC_2: 2
-}
+};
 
 const CATEGORY = {
   CATEGORY_1: 1,
   CATEGORY_2: 2,
   CATEGORY_2: 3
-}
+};
 const GENDER = {
   MALE: 1,
-  FEMALE: 0,
-}
-export {
-  SCREEN_ROUTER,
-  LIKE_STATE,
-  TOPIC,
-  CATEGORY,
-  GENDER
+  FEMALE: 0
 };
-
+const TYPE_LOGIN = {
+  LEADER: "leader",
+  EMPLOYEE: "employee"
+};
+export { SCREEN_ROUTER, LIKE_STATE, TOPIC, CATEGORY, GENDER, TYPE_LOGIN };

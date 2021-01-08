@@ -8,8 +8,10 @@ import { LoginScreen } from "@app/screens/auth/LoginScreen";
 import HomeScreen from "@app/screens/HomeScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import NotificationScreen from "@app/screens/notification/NotificationScreen";
-import { UserScreen } from "@app/screens/user/UserScreen";
+import  UserScreen  from "@app/screens/user/UserScreen";
 import MainNavigation from "./MainNavigation";
+import { connect } from "react-redux";
+import TimekeepingOfEmployee from "@app/screens/Timekeeping/TimekeepingOfEmployee";
 const RootStack = createStackNavigator();
 
 const RootNavigation = () => {
@@ -29,10 +31,20 @@ const RootNavigation = () => {
             name={SCREEN_ROUTER.MAIN}
             component={MainNavigation}
           />
+          <RootStack.Screen
+            name={SCREEN_ROUTER.TIMEKEEPING_OF_EMPLOYEE}
+            component={TimekeepingOfEmployee}
+          />
         </RootStack.Navigator>
       </NavigationContainer>
     </View>
   );
 };
+const mapStateToProps = state => ({});
 
-export default RootNavigation;
+const mapDispatchToProps = {};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RootNavigation);

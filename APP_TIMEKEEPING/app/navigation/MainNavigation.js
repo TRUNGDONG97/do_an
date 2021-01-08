@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { SCREEN_ROUTER } from "@app/constants/Constant";
+import { SCREEN_ROUTER, TYPE_LOGIN } from "@app/constants/Constant";
 import HomeScreen from "@app/screens/HomeScreen";
 import NotificationScreen from "@app/screens/notification/NotificationScreen";
-import { UserScreen } from "@app/screens/user/UserScreen";
+import  UserScreen  from "@app/screens/user/UserScreen";
 import TimekeepingEmployee from "@app/screens/Timekeeping/TimekeepingEmployee";
 import theme from "@app/constants/Theme";
 import { Icon, ImageViewerScreen } from "@component";
@@ -156,7 +156,7 @@ export default function MainNavigation({ navigation, route }) {
     >
       <Tab.Screen name={SCREEN_ROUTER.HOME} component={HomeScreen} />
 
-      {!!typeLogin &&typeLogin == 1 && (
+      {!!typeLogin && typeLogin == TYPE_LOGIN.LEADER && (
         <Tab.Screen
           name={SCREEN_ROUTER.TIMEKEEPING_EMPLOYEE}
           component={TimekeepingEmployee}

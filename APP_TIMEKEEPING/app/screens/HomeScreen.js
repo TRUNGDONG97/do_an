@@ -9,8 +9,10 @@ import {
   Dimensions,
   RefreshControl,
   TextInput,
-  BackHandler
+  BackHandler,
+  Platform
 } from "react-native";
+import Permissions, { PERMISSIONS } from "react-native-permissions";
 import DatePicker from "react-native-datepicker";
 import LinearGradient from "react-native-linear-gradient";
 import {
@@ -31,7 +33,6 @@ import {
   Loading,
   Error
 } from "@component";
-import { SCREEN_ROUTER } from "@app/constants/Constant";
 import reactotron from "reactotron-react-native";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 import NetInfo from "@react-native-community/netinfo";
@@ -40,6 +41,7 @@ import Modal from "react-native-modal";
 import { Dropdown } from "react-native-material-dropdown";
 
 import theme from "@app/constants/Theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 export default class HomeScreen extends Component {
@@ -70,10 +72,50 @@ export default class HomeScreen extends Component {
     };
   }
 
-  componentDidMount() {
-    this.getListTimekeeping();
+  async componentDidMount() {
+    // this.getListTimekeeping();
+    console.log("checkPermission", await this.checkPermission());
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+  checkPermission = async () => {
+    let checkFirstTimeRequest = await AsyncStorage.getItem("REQUEST_LOCATION");
+    let checkLocationInUse;
+    if (Platform.OS === "ios") {
+      checkLocationInUse = await Permissions.check(
+        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+      );
+    } else {
+      checkLocationInUse = await Permissions.check(
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
+      );
+    }
+    console.log("checkLocationInUse", checkLocationInUse);
+    if (!checkFirstTimeRequest) {
+      AsyncStorage.setItem("REQUEST_LOCATION", "true");
+      Permissions.request("location")
+        .then(response => {
+          console.log("response", response);
+          if (response == "granted") {
+            return true;
+          }
+          return false;
+          // location.current = response;
+          // getMyLocation();
+        })
+        .catch(e => {
+          console.log(e);
+          return false;
+        });
+    } else {
+      if (checkLocationInUse === "granted") {
+        // getMyLocation();
+        return true;
+      } else {
+        return false;
+        // onDidMount();
+      }
+    }
+  };
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -108,6 +150,14 @@ export default class HomeScreen extends Component {
   };
 
   checkin = async () => {
+    const checkPermission = await this.checkPermission();
+    if (!checkPermission) {
+      Toast.show(
+        "Ban chưa cho phép quyền truy cập vị trí sẽ không thể lấy địa chỉ mac",
+        BACKGROUND_TOAST.FAIL
+      );
+      return;
+    }
     var date = new Date();
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
@@ -163,6 +213,14 @@ export default class HomeScreen extends Component {
     }
   };
   checkout = async () => {
+    const checkPermission = await this.checkPermission();
+    if (!checkPermission) {
+      Toast.show(
+        "Ban chưa cho phép quyền truy cập vị trí sẽ không thể lấy địa chỉ mac",
+        BACKGROUND_TOAST.FAIL
+      );
+      return;
+    }
     var date = new Date();
     var month = date.getMonth() + 1;
     var year = date.getFullYear();

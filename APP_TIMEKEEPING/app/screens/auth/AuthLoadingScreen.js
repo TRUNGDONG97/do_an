@@ -24,12 +24,12 @@ export class AuthLoadingScreen extends Component {
 
   handleActiveApp = async () => {
     let token = await AsyncStorage.getItem("token");
-    reactotron.log("token",token)
+    // reactotron.log("token",token)
     if (!!token) {
       let typeLogin = await AsyncStorage.getItem("typeLogin");
-      reactotron.log("typeLogin", typeLogin);
+      console.log("typeLogin", typeLogin);
       this.props.navigation.navigate(SCREEN_ROUTER.MAIN, {
-        typeLogin:1
+        typeLogin
       });
     } else {
       this.props.navigation.navigate(SCREEN_ROUTER.LOGIN);
