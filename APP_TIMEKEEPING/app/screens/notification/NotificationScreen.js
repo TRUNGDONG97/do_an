@@ -35,7 +35,7 @@ class FlatListItem extends Component {
         rippleDuration={800}
         rippleSequential={true}
       >
-        <Icon.Ionicons name="md-notifications" size={35} color="#F58634" />
+        <Icon.FontAwesome name="bell" size={35} color="#F58634" />
         <View style={styles._txtTitle}>
           <Text
             numberOfLines={2}

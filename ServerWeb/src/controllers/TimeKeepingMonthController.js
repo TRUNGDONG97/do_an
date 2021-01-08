@@ -50,6 +50,8 @@ const seacherListTimekeeping = async (req, res, next) => {
             date_timekeeping: {
               [Op.between]: [startDate, endDate],
             },
+            is_active:1,
+            type:1
           },
           required: false,
         },

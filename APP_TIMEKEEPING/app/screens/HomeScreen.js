@@ -73,9 +73,9 @@ export default class HomeScreen extends Component {
   }
 
   async componentDidMount() {
-    // this.getListTimekeeping();
-    console.log("checkPermission", await this.checkPermission());
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    this.getListTimekeeping();
+    // console.log("checkPermission", await this.checkPermission());
+    // BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   checkPermission = async () => {
     let checkFirstTimeRequest = await AsyncStorage.getItem("REQUEST_LOCATION");
@@ -271,6 +271,10 @@ export default class HomeScreen extends Component {
   };
   workOff = async () => {
     const { note, dayOff, status } = this.state;
+    var date = new Date();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var date1 = date.getDate();
     try {
       this.setState({
         error: false,

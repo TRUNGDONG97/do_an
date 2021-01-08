@@ -30,8 +30,21 @@ style
           .col-md-6.col-sm-6.col-6
             + propEmployee('txtAddAddress','Địa chỉ','text')
             + propEmployee('txtAddEmail','Email','text')
-            + propEmployee('txtDepartment','Bộ phận','text')
-            + propEmployee('txtPosition','Vị trí','text')
+            .row
+              label.col-md-4.col-sm-4.col-4(style='padding-top:6px;padding-right:10px;') Bộ phận:
+              .col-md-8.col-sm-8.col-8(style='margin-bottom:20px;')
+                select#addDepartment.form-control.text_seach.seach_parent(name='status' style='margin-right:20px;')
+                  option(value='') --Lựa chon--
+                  option(value='1') Nhân sự
+                  option(value='2') Lập trình
+                  option(value='3') Kinh doanh
+            .row
+              label.col-md-4.col-sm-4.col-4(style='padding-top:6px;padding-right:10px;') Vị trí:
+              .col-md-8.col-sm-8.col-8(style='margin-bottom:20px;')
+                select#addPosition.form-control.text_seach.seach_parent(name='status' style='margin-right:20px;')
+                  option(value='') --Lựa chon--
+                  option(value='1') Sếp 
+                  option(value='0') Nhân viên
             .row(style='margin-top:20px;')
               label.col-md-4.col-sm-4.col-4(style='padding-right:10px;') Giới tính:
               .col-md-8.col-sm-8.col-8

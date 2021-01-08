@@ -38,10 +38,11 @@ router.get("/getConfigTime",ConfigTimeController.getConfigTime)
 router.post("/updateTimeConfig",ConfigTimeController.updateTimeConfig)
 
 router.post('/seacherListTimekeepingDay',TimekeepingDayController.searchTimekeeping)
-// seacherDetailTimekeeping
+router.post('/confirmTimekeeping',TimekeepingDayController.confirmTimekeeping)
+router.post('/deleteTimekeeping',TimekeepingDayController.deleteTimekeeping)
+// deleteTimekeeping
 router.get("/", function (req, res, next) {
   res.redirect("admin/login");
-  // res.render('IndexView');
 });
 
 module.exports = router;

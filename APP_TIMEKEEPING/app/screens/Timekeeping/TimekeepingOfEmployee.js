@@ -60,7 +60,7 @@ export default class TimekeepingOfEmployee extends Component {
       status: 4,
       note: "",
       btnLoadingWorkOff: false,
-      employee: this.props.navigation.getParam("employee")
+      employee: this.props.route.params.employee
     };
   }
 

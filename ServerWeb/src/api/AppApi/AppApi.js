@@ -269,7 +269,7 @@ const changePass = async (req, res, next) => {
     });
     return;
   } catch (error) {
-    console.log(error,"dsđs");
+    console.log(error, "dsđs");
     res.json({
       status: 0,
       code: 404,
@@ -329,6 +329,7 @@ const getListTimekeeping = async (req, res, next) => {
               [Op.between]: [startDate, endDate],
             },
             id_employee: employee.rows[0].id,
+            is_active: 1,
           },
           required: false,
           // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
@@ -340,7 +341,6 @@ const getListTimekeeping = async (req, res, next) => {
       },
       row: true,
       group: ["employee.id"],
-
     });
     const listTimekeeping = await TimekeepingModel.findAll({
       where: {
@@ -348,17 +348,21 @@ const getListTimekeeping = async (req, res, next) => {
           [Op.between]: [startDate, endDate],
         },
         id_employee: employee.rows[0].id,
+        is_active: 1,
       },
-      order: [["date_timekeeping", "DESC"], ["time_checkin", "DESC"]],
-    })
+      order: [
+        ["date_timekeeping", "DESC"],
+        ["time_checkin", "DESC"],
+      ],
+    });
     res.json({
       status: 1,
       code: 200,
       message: "Thành công",
       data: {
-        timeLate: TimeLateAndDay[0].get('countTimeLate'),
-        dayWork: TimeLateAndDay[0].get('countWorkday'),
-        listTimekeeping
+        timeLate: TimeLateAndDay[0].get("countTimeLate"),
+        dayWork: TimeLateAndDay[0].get("countWorkday"),
+        listTimekeeping,
       },
     });
     return;
@@ -374,12 +378,10 @@ const getListTimekeeping = async (req, res, next) => {
   }
 };
 
-
 export default {
   notification,
   getUserInfo,
   changeUserInfo,
   changePass,
   getListTimekeeping,
-
 };

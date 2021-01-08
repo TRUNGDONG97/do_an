@@ -49,7 +49,8 @@ export default class TimekeepingEmployee extends Component {
       error: null,
       dateGet: year + "-" + month1 + "-" + date2,
       btnLoadingCancel: false,
-      btnLoadingConfirm: false
+      btnLoadingConfirm: false,
+      department: "Nhân sự"
     };
   }
   componentDidMount() {
@@ -64,7 +65,8 @@ export default class TimekeepingEmployee extends Component {
       reactotron.log("response getListTimekeepingDayEmployee", response.data);
       if (response.code == 200) {
         this.setState({
-          data: response.data
+          data: response.data.listEmployees,
+          department: response.data.department
         });
       }
       this.setState({
@@ -107,7 +109,8 @@ export default class TimekeepingEmployee extends Component {
       isLoading,
       data,
       btnLoadingConfirm,
-      btnLoadingCancel
+      btnLoadingCancel,
+      department
     } = this.state;
     // reactotron.log("data", data);
     if (error) {
@@ -124,12 +127,19 @@ export default class TimekeepingEmployee extends Component {
     }
     return (
       <View style={{ flex: 1 }}>
+        <View style={styles._viewUser}>
+          {this._renderInfoItem("Department", department)}
+          {/* {this._renderInfoItem(
+            "Day",
+            dayWork ? dayWork + " day " : 0 + " day "
+          )} */}
+        </View>
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             marginHorizontal: 30,
-            marginTop: 120
+            marginTop: 34
           }}
         >
           <Text>Day :</Text>
@@ -152,7 +162,7 @@ export default class TimekeepingEmployee extends Component {
         <View
           style={{
             flexDirection: "row",
-            marginTop: 30
+            // marginTop: 10
           }}
         >
           <TouchableOpacity
@@ -324,6 +334,41 @@ export default class TimekeepingEmployee extends Component {
           <Checkbox size={16} status={false} />
         </View>
       </TouchableOpacity>
+    );
+  }
+  _renderInfoItem(title, text) {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          paddingHorizontal: 10,
+          paddingVertical: 5,
+          marginLeft: 20
+        }}
+      >
+        <Text
+          style={[
+            theme.fonts.medium15,
+            {
+              color: theme.colors.backgroundHeader,
+              width: 120
+            }
+          ]}
+        >
+          {title}
+        </Text>
+        <Text
+          style={[
+            theme.fonts.medium15,
+            {
+              color: theme.colors.backgroundHeader,
+              flex: 1
+            }
+          ]}
+        >
+          : {text}
+        </Text>
+      </View>
     );
   }
 }

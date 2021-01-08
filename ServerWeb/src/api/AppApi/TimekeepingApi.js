@@ -666,6 +666,15 @@ const workoff = async (req, res) => {
       });
       return;
     }
+    if (token == "") {
+      res.json({
+        status: 0,
+        code: 404,
+        message: "thất bại",
+        data: "",
+      });
+      return;
+    }
   } catch (error) {
     console.log("error", error);
     res.json({
@@ -704,7 +713,8 @@ const getDataTimekeeping = async (id_employee) => {
             [Op.between]: [startDate, endDate],
           },
           id_employee,
-          type:1
+          type:1,
+          is_active:1
         },
         required: false,
         // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],

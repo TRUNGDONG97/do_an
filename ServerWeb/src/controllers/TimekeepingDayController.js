@@ -4,7 +4,7 @@ import Constants from "../util/contant";
 import { getArrayPages, PageCount } from "../util/funtions";
 import url from "url";
 import pug from "pug";
-import sequelize, { Op } from "sequelize";
+import sequelize, { Op, where } from "sequelize";
 
 const getTimekeeping = async (req, res, next) => {
   res.render("TimekeepingDayView");
@@ -43,20 +43,21 @@ const searchTimekeeping = async (req, res) => {
       ],
       where: {
         date_timekeeping: date,
+        is_active:1
       },
       row: true,
       offset: Constants.PER_PAGE * (currentPage - 1),
       limit: Constants.PER_PAGE,
       // order: [["last_name", "ASC"]],
     });
-    console.log("rows",count);
+    console.log("rows", count);
     var urlTable = `${process.cwd()}/src/table/TimekeepingDayTable.pug`;
     var htmlTable = await pug.renderFile(urlTable, {
-    timekeeping:rows,
+      timekeeping: rows,
       STT: (currentPage - 1) * Constants.PER_PAGE,
       currentPage,
       pageCount: PageCount(count),
-      pages: getArrayPages(req)( PageCount(count), currentPage),
+      pages: getArrayPages(req)(PageCount(count), currentPage),
     });
     res.send({
       htmlTable,
@@ -68,7 +69,55 @@ const searchTimekeeping = async (req, res) => {
     return;
   }
 };
+const confirmTimekeeping = async (req, res) => {
+  const { arrId } = req.body;
+  const arrIdUpdate = JSON.parse(arrId);
+  try {
+    await TimekeepingModel.update(
+      {
+        type: 1,
+      },
+      {
+        where: {
+          id: [arrIdUpdate],
+        },
+      }
+    );
+    res.send({
+      result: 3,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(404).send();
+    return;
+  }
+};
+const deleteTimekeeping = async (req, res) => {
+  const { arrId } = req.body;
+  const arrIdUpdate = JSON.parse(arrId);
+  try {
+    await TimekeepingModel.update(
+      {
+        is_active: 0,
+      },
+      {
+        where: {
+          id: [arrIdUpdate],
+        },
+      }
+    );
+    res.send({
+      result: 3,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(404).send();
+    return;
+  }
+};
 export default {
   getTimekeeping,
   searchTimekeeping,
+  confirmTimekeeping,
+  deleteTimekeeping
 };

@@ -67,7 +67,15 @@ const getListTimekeepingDayEmployee = async (req, res) => {
       status: 1,
       code: 200,
       message: "Thành công",
-      data: listEmployees,
+      data: {
+        listEmployees,
+        department:
+          employee[0].department == 1
+            ? "Nhân sự"
+            : employee[0].department == 2
+            ? "Lập trình"
+            : "Kinh doanh",
+      },
     });
     return;
   } catch (error) {
@@ -108,6 +116,7 @@ const getListTimekeepingMonthEmployee = async (req, res) => {
               [Op.between]: [startDate, endDate],
             },
             id_employee,
+            is_active:1
           },
           required: false,
           // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
@@ -115,7 +124,7 @@ const getListTimekeepingMonthEmployee = async (req, res) => {
       ],
       where: {
         is_active: 1,
-        id:id_employee,
+        id: id_employee,
       },
       row: true,
       group: ["employee.id"],
@@ -126,6 +135,7 @@ const getListTimekeepingMonthEmployee = async (req, res) => {
           [Op.between]: [startDate, endDate],
         },
         id_employee,
+        is_active:1
       },
       order: [
         ["date_timekeeping", "DESC"],

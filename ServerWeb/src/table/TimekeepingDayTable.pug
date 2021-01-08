@@ -13,7 +13,7 @@
                 th(scope='col') Ghi chú
                 th(scope='col') Trạng thái
                 th
-                    input(type='checkbox', value='')
+                    input#checkAll(type='checkbox' )
         tbody#tbodyTableEmployee
             if timekeeping.length <=0        
                 tr
@@ -31,23 +31,23 @@
                         td #{item.workday}
                         td #{item.note}
                         td  #{item.type==1?"Đã xác nhận":"Chưa xác nhận"}
-                        td
-                            input(type='checkbox')
+                        td 
+                            input(type='checkbox' disabled=item.type==1 value=item class=item.type==1?"comfirm":"notConfirm" )
     #paginateEmployee.row.float-right
         if pageCount>=1
             if  pages.prev>0
-                button.btn.page-item(onclick='searchEmployee(1)')
+                button.btn.page-item(onclick='searchTimekeeping(1)')
                     i.fas.fa-angle-double-left
-                button.btn.page-item(onclick='searchEmployee('+pages.prev+')')
+                button.btn.page-item(onclick='searchTimekeeping('+pages.prev+')')
                     i.fas.fa-chevron-left
             if pages
                 each page in pages.pages
                     if page==currentPage
-                        button#paginateActive.btn.page-item(onclick='searchEmployee('+page+')') #{page}
+                        button#paginateActive.btn.page-item(onclick='searchTimekeeping('+page+')') #{page}
                     else
-                        button.btn.page-item(onclick='searchEmployee('+page+')') #{page}                    
+                        button.btn.page-item(onclick='searchTimekeeping('+page+')') #{page}                    
             if  pages.next <= pageCount
-                button.btn.page-item(onclick='searchEmployee('+pages.next+')')
+                button.btn.page-item(onclick='searchTimekeeping('+pages.next+')')
                     i.fas.fa-chevron-right
-                button.btn.page-item(onclick='searchEmployee('+pageCount+')')
+                button.btn.page-item(onclick='searchTimekeeping('+pageCount+')')
                     i.fas.fa-angle-double-right

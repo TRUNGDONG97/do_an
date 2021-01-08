@@ -83,11 +83,11 @@ const addEmployee = async () => {
   var address = $.trim($("#txtAddAddress").val());
   var email = $.trim($("#txtAddEmail").val());
   var gener = $("#addSexFemale").prop("checked");
-  var position = $.trim($("#txtPosition").val());
-  var department = $.trim($("#txtDepartment").val());
+  var position = $.trim($("#addPosition").val());
+  var department = $.trim($("#addDepartment").val());
   console.log("employee_code", employee_code);
-  console.log("txtPosition", txtPosition);
-  console.log("txtDepartment", txtDepartment);
+  console.log("txtPosition", position);
+  console.log("txtDepartment", department);
   //get file image
   // var fileUpload = $("#ImageStudent").get(0);
   // var files = fileUpload.files;
@@ -244,9 +244,9 @@ const editEmployee = (employee) => {
   } else {
     $("#editSexFemale").attr("checked", true);
   }
-  $("#txtEditPosition").val(employee.position);
+  $("#editPosition").val(employee.position);
   $("#txtEditEmployeeCode").val(employee.employee_code);
-  $("#txtEditDepartment").val(employee.department);
+  $("#editDepartment").val(employee.department);
   $("#idEmployee").val(employee.id);
 };
 const saveEmployee = () => {
@@ -259,9 +259,9 @@ const saveEmployee = () => {
   var address = $.trim($("#txtEditAddress").val());
   var email = $.trim($("#txtEditEmail").val());
   var gener = $("#editSexMale").prop("checked");
-  var position = $.trim($("#txtEditPosition").val());
+  var position = $.trim($("#editPosition").val());
   var employee_code = $.trim($("#txtEditEmployeeCode").val());
-  var department = $.trim($("#txtEditDepartment").val())
+  var department = $.trim($("#editDepartment").val())
   // console.log("gener",gener)
   // console.log("first_name",first_name)
   // console.log("last_name",last_name)
