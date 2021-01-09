@@ -113,7 +113,7 @@ export class UserScreen extends Component {
   _renderBody() {
     const { UserInfoState } = this.props;
     console.log("UserInfoState", UserInfoState);
-    if (!UserInfoState || UserInfoState.isLoading) return <Loading />;
+    if ( UserInfoState.isLoading) return <Loading />;
     if (UserInfoState.error)
       return (
         <Error

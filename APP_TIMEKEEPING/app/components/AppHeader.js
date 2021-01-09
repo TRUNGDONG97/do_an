@@ -37,11 +37,11 @@ class AppHeader extends Component {
       ...props
     } = this.props;
     const parent = navigation.dangerouslyGetParent();
-    const showBackButton =
-      !hideBackButton &&
-      parent &&
-      parent.state &&
-      parent.state.routeName !== SCREEN_ROUTER.MAIN;
+    // const showBackButton =
+    //   !hideBackButton &&
+    //   parent &&
+    //   parent.state &&
+    //   parent.state.routeName !== SCREEN_ROUTER.MAIN;
 
     return (
       <Header
@@ -51,7 +51,7 @@ class AppHeader extends Component {
           marginTop: Platform.OS == "ios" ? 0 : -StatusBar.currentHeight
         }}
         leftComponent={
-          showBackButton && (
+          !hideBackButton && (
             <View
               style={{
                 // flex: 1,
@@ -65,7 +65,7 @@ class AppHeader extends Component {
             >
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.goBack();
+                  navigation.goBack();
                 }}
               >
                 <Icon.AntDesign

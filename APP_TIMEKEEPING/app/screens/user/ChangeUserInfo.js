@@ -61,7 +61,7 @@ export class ChangeUserInfo extends Component {
   render() {
     return (
       <Block>
-        <AppHeader title="Change Infomation" />
+        <AppHeader title="Change Infomation" navigation={this.props.navigation}/>
         <SafeAreaView style={theme.styles.containter}>
           <KeyboardAvoidingView
             enabled

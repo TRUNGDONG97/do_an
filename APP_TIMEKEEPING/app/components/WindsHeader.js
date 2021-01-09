@@ -51,7 +51,11 @@ class WindsHeader extends Component {
             style={{ position: "absolute", left: 20 }}
             onPress={() => this.props.navigation.goBack()}
           >
-            <Icon.Ionicons name="ios-arrow-back" size={25} color="#fff" />
+          <Icon.AntDesign
+                  name="left"
+                  size={25}
+                  color={theme.colors.white}
+                />
           </TouchableOpacity>
         )}
         <Text

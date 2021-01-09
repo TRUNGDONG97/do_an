@@ -22,6 +22,7 @@ import ImageViewerScreen from "./ImageViewerScreen";
 import CommentItem from "./CommentItem";
 import ActionSheet from "./ActionSheet";
 import Checked from "./Checked";
+import ItemTableEmployee from "./ItemTableEmployee";
 export {
   Block,
   AppHeader,
@@ -46,5 +47,6 @@ export {
   ImageViewerScreen,
   CommentItem,
   ActionSheet,
-  Checked
+  Checked,
+  ItemTableEmployee
 };

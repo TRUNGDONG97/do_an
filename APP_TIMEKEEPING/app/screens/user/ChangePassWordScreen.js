@@ -79,7 +79,7 @@ export class ChangePassWordScreen extends Component {
     return (
       <Block>
         <SafeAreaView style={theme.styles.containter}>
-          <AppHeader title="Change Password" />
+          <AppHeader title="Change Password"  navigation={this.props.navigation}/>
           {this._renderBody()}
         </SafeAreaView>
       </Block>

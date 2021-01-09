@@ -629,7 +629,7 @@ export default class TimekeepingOfEmployee extends Component {
       <Block>
         <SafeAreaView style={theme.styles.containter}>
           <BackgroundHeader />
-          <WindsHeader title="List Timekeeping Employee" />
+          <WindsHeader title="List Timekeeping Employee" navigation={this.props.navigation} showBackButton/>
           {this._renderBody()}
           {this.renderModal()}
         </SafeAreaView>

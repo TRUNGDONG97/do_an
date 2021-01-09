@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     _imgTick: {
-        width: 18,
-        height: 18,
+        width: 14,
+        height: 14,
         position: "absolute",
         left: 0,
-        bottom: -2
+        bottom: 0,
     },
     _vCheckBox: {
         borderWidth: 1,

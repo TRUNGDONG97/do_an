@@ -12,6 +12,8 @@ import  UserScreen  from "@app/screens/user/UserScreen";
 import MainNavigation from "./MainNavigation";
 import { connect } from "react-redux";
 import TimekeepingOfEmployee from "@app/screens/Timekeeping/TimekeepingOfEmployee";
+import  ChangeUserInfo  from "@app/screens/user/ChangeUserInfo";
+import  ChangePassWordScreen  from "@app/screens/user/ChangePassWordScreen";
 const RootStack = createStackNavigator();
 
 const RootNavigation = () => {
@@ -35,6 +37,15 @@ const RootNavigation = () => {
             name={SCREEN_ROUTER.TIMEKEEPING_OF_EMPLOYEE}
             component={TimekeepingOfEmployee}
           />
+          <RootStack.Screen
+            name={SCREEN_ROUTER.CHANGE_USER_INFO}
+            component={ChangeUserInfo}
+          />
+          <RootStack.Screen
+            name={SCREEN_ROUTER.CHANGE_PASSWORD}
+            component={ChangePassWordScreen}
+          />
+
         </RootStack.Navigator>
       </NavigationContainer>
     </View>

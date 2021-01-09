@@ -14,16 +14,14 @@ import DatePicker from "react-native-datepicker";
 import LinearGradient from "react-native-linear-gradient";
 import { getListTimekeepingDayEmployee } from "@api";
 import {
-  AppHeader,
   Block,
-  Button,
-  Empty,
   Checkbox,
   BackgroundHeader,
   WindsHeader,
   Icon,
   Loading,
-  Error
+  Error,
+  ItemTableEmployee
 } from "@component";
 import { SCREEN_ROUTER } from "@app/constants/Constant";
 import reactotron from "reactotron-react-native";
@@ -50,12 +48,53 @@ export default class TimekeepingEmployee extends Component {
       dateGet: year + "-" + month1 + "-" + date2,
       btnLoadingCancel: false,
       btnLoadingConfirm: false,
-      department: "Nhân sự"
+      department: "Nhân sự",
+      listId: [],
+      statusCheckAll: false
     };
   }
   componentDidMount() {
     this.getListTimekeepingDay();
   }
+  checkStatus = id => {
+    return this.state.listId.includes(id);
+  };
+  setCheckAll = () => {
+    const { statusCheckAll, data } = this.state;
+    if (statusCheckAll) {
+      this.setState({
+        listId: [],
+        statusCheckAll: !statusCheckAll
+      });
+    } else {
+      let arrId = [];
+      for (let index = 0; index < data.length; index++) {
+        arrId.push(data[index].id);
+      }
+      this.setState({
+        listId: arrId,
+        statusCheckAll: !statusCheckAll
+      });
+    }
+   
+  };
+  checkBoxItem = id => {
+    const { listId } = this.state;
+    let status = this.checkStatus(id);
+    if (status) {
+      let newListId = listId.filter(item => item !== id);
+      this.setState({
+        listId: newListId
+      });
+    } else {
+      let newListId = [];
+      newListId.push(id);
+      console.log("newListId", newListId);
+      this.setState({
+        listId: listId.concat(newListId)
+      });
+    }
+  };
   getListTimekeepingDay = async () => {
     const { dateGet } = this.state;
 
@@ -80,6 +119,14 @@ export default class TimekeepingEmployee extends Component {
         error: true
       });
     }
+  };
+  confirm = () => {
+    const { listId } = this.state;
+    // console.log("listId", listId);
+  };
+  cancel = () => {
+    const { listId } = this.state;
+    // console.log("listId", listId);
   };
   converMinuteToTime = time => {
     var hour = Math.floor(time / 60);
@@ -161,7 +208,7 @@ export default class TimekeepingEmployee extends Component {
         </View>
         <View
           style={{
-            flexDirection: "row",
+            flexDirection: "row"
             // marginTop: 10
           }}
         >
@@ -169,7 +216,7 @@ export default class TimekeepingEmployee extends Component {
             disabled={btnLoadingConfirm}
             style={{ flex: 1, marginHorizontal: 10, borderRadius: 5 }}
             onPress={() => {
-              this.checkin();
+              this.confirm();
             }}
           >
             <LinearGradient
@@ -189,7 +236,7 @@ export default class TimekeepingEmployee extends Component {
           <TouchableOpacity
             disabled={btnLoadingCancel}
             style={{ flex: 1, marginHorizontal: 10, borderRadius: 5 }}
-            onPress={this.checkout}
+            onPress={this.cancel}
           >
             <LinearGradient
               style={styles.bgButton}
@@ -231,9 +278,16 @@ export default class TimekeepingEmployee extends Component {
               <Empty description={"No Data"} />
             ) : (
               data.map((item, index) => (
-                <View key={index.toString()} style={{ width: "100%" }}>
-                  {this._renderRowTable(item, index)}
-                </View>
+                <ItemTableEmployee
+                  key={index.toString()}
+                  index={index}
+                  item={item}
+                  navigation={this.props.navigation}
+                  // status={this.state.statusCheckAll}
+                  listId={this.state.listId}
+                  checkBoxItem={this.checkBoxItem}
+                  listId={this.state.listId}
+                />
               ))
             )}
           </ScrollView>
@@ -276,13 +330,17 @@ export default class TimekeepingEmployee extends Component {
             <Text style={theme.fonts.regular14}>Status</Text>
           </View>
           <View style={[styles.rowTable, { flex: 1 }]}>
-            <Checkbox size={16} status={false} />
+            <Checkbox
+              size={16}
+              status={this.state.statusCheckAll}
+              onPress={this.setCheckAll}
+            />
           </View>
         </View>
       </View>
     );
   }
-  _renderRowTable(item, index) {
+  _renderRowTable(item, index, status) {
     return (
       <TouchableOpacity
         style={[
@@ -331,7 +389,11 @@ export default class TimekeepingEmployee extends Component {
           />
         </View>
         <View style={[styles.rowTable, { flex: 1 }]}>
-          <Checkbox size={16} status={false} />
+          <Checkbox
+            size={16}
+            status={status}
+            onPress={() => this.checkBoxItem(item.id)}
+          />
         </View>
       </TouchableOpacity>
     );
