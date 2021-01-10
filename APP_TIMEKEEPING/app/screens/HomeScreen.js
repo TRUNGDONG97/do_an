@@ -44,6 +44,7 @@ import theme from "@app/constants/Theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
+// MAIN FUNCTION
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -150,6 +151,13 @@ export default class HomeScreen extends Component {
   };
 
   checkin = async () => {
+     // LẤY NGÀY THÁNG NĂM HIỆN TẠI
+     var date = new Date();
+     var month = date.getMonth() + 1;
+     var year = date.getFullYear();
+     var date1 = date.getDate();
+  
+    // CHECK QUYỀN VỊ TRÍ
     const checkPermission = await this.checkPermission();
     if (!checkPermission) {
       Toast.show(
@@ -158,13 +166,10 @@ export default class HomeScreen extends Component {
       );
       return;
     }
-    var date = new Date();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-    var date1 = date.getDate();
     this.setState({
       btnLoadingCheckin: true
     });
+    // LẤY ĐỊA CHỈ MAC
     var checkConnect = await NetInfo.fetch();
     console.log("checkConnect", checkConnect.details.bssid);
     if (
@@ -183,8 +188,9 @@ export default class HomeScreen extends Component {
         return;
       }
       try {
+        // GỌI API
         const response = await checkinTimekeeping({
-          address_mac: checkConnect.details.bssid
+          address_mac: checkConnect.details.bssid // GỬI PARAM LÊN
         });
         reactotron.log(response, "checkin");
         if (response.code == 200) {
@@ -195,24 +201,32 @@ export default class HomeScreen extends Component {
             startDate: year + "-" + month + "-" + "01",
             endDate: year + "-" + month + "-" + date1
           });
+          Toast.show("Thành công", BACKGROUND_TOAST.SUCCESS);
         }
         this.setState({
           btnLoadingCheckin: false
         });
       } catch (error) {
         console.log("error", error);
+        Toast.show("Đã có lỗi xảy ra", BACKGROUND_TOAST.FAIL);
         this.setState({
           btnLoadingCheckin: false
         });
       }
     } else {
       this.setState({
-        btnLoadingCheckin: true
+        btnLoadingCheckin: false
       });
       Toast.show("Bạn chưa kết nối wifi", BACKGROUND_TOAST.FAIL);
     }
   };
+  
   checkout = async () => {
+    var date = new Date();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var date1 = date.getDate();
+
     const checkPermission = await this.checkPermission();
     if (!checkPermission) {
       Toast.show(
@@ -221,13 +235,11 @@ export default class HomeScreen extends Component {
       );
       return;
     }
-    var date = new Date();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-    var date1 = date.getDate();
+
     this.setState({
       btnLoadingCheckout: true
     });
+    // LẤY ĐỊA CHỈ MAC
     var checkConnect = await NetInfo.fetch();
     console.log("checkConnect", checkConnect.details.bssid);
     if (
@@ -252,11 +264,13 @@ export default class HomeScreen extends Component {
             startDate: year + "-" + month + "-" + "01",
             endDate: year + "-" + month + "-" + date1
           });
+          Toast.show("Thành công", BACKGROUND_TOAST.SUCCESS);
         }
         this.setState({
           btnLoadingCheckout: false
         });
       } catch (error) {
+        Toast.show("Đã có lỗi xảy ra", BACKGROUND_TOAST.FAIL);
         console.log("error", error);
         this.setState({
           btnLoadingCheckout: false
@@ -269,6 +283,7 @@ export default class HomeScreen extends Component {
       Toast.show("Đã có lỗi xảy ra", BACKGROUND_TOAST.FAIL);
     }
   };
+  
   workOff = async () => {
     const { note, dayOff, status } = this.state;
     var date = new Date();
@@ -295,6 +310,7 @@ export default class HomeScreen extends Component {
           startDate: year + "-" + month + "-" + "01",
           endDate: year + "-" + month + "-" + date1
         });
+        Toast.show("Thành công", BACKGROUND_TOAST.SUCCESS);
       }
       this.setState({
         btnLoadingWorkOff: false
@@ -302,6 +318,7 @@ export default class HomeScreen extends Component {
       });
     } catch (error) {
       console.log("error", error);
+      Toast.show("Đã có lỗi xảy ra", BACKGROUND_TOAST.FAIL);
       this.setState({
         btnLoadingWorkOff: false
         // isVisible:false

@@ -5,17 +5,7 @@ import sequelize, { Op } from "sequelize";
 import TimekeepingModel from "../../models/TimekeepingModel";
 import MacAddressModel from "../../models/MacAddressModel";
 import ConfigtimeModel from "../../models/ConfigtimeModel";
-import {
-  checkTimeCheckinAfternoon,
-  checkTimeCheckinMorning,
-  checkTimeCheckoutAfternoon,
-  checkTimeCheckoutMorning,
-  getCurrentTime,
-  getCurrentDate,
-  pushNotification,
-} from "../../util/funtions";
-import Contant from "../../util/contant";
-import DateUtil from "../../util/DateUtil";
+
 const getListTimekeepingDayEmployee = async (req, res) => {
   try {
     const { token } = req.headers;
@@ -59,6 +49,7 @@ const getListTimekeepingDayEmployee = async (req, res) => {
         },
       ],
       where: {
+        is_active: 1,
         date_timekeeping: dateGet,
       },
       row: true,
@@ -164,6 +155,7 @@ const getListTimekeepingMonthEmployee = async (req, res) => {
     return;
   }
 };
+
 export default {
   getListTimekeepingDayEmployee,
   getListTimekeepingMonthEmployee,

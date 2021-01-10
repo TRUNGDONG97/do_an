@@ -1,12 +1,12 @@
-import React, { useState,useImperativeHandle } from "react";
+import React, { useState, useImperativeHandle } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import theme from "@app/constants/Theme";
 import { Checkbox, Icon } from "@component";
 import { SCREEN_ROUTER } from "@app/constants/Constant";
-const ItemTableEmployee = (props,ref) => {
-  const { item, index,checkBoxItem,status,listId } = props;
+const ItemTableEmployee = (props, ref) => {
+  const { item, index, checkBoxItem, status, listId } = props;
   //  const [statusState, setStatusState] = useState(status);
-  
+
   const convertMinuteToTime = time => {
     var hour = Math.floor(time / 60);
     var minute = time % 60;
@@ -39,7 +39,7 @@ const ItemTableEmployee = (props,ref) => {
       <View style={[styles.rowTable, { flex: 4 }]}>
         <Text
           style={theme.fonts.regular14}
-          // numberOfLines={2}
+        // numberOfLines={2}
         >
           {item.employee.first_name + " " + item.employee.last_name}
         </Text>
@@ -65,14 +65,18 @@ const ItemTableEmployee = (props,ref) => {
         />
       </View>
       <View style={[styles.rowTable, { flex: 1 }]}>
-        <Checkbox
+        {item.type !== 1 ? <Checkbox
           size={16}
           status={listId.includes(item.id)}
           onPress={() => {
             // setStatusState(!statusState);
             checkBoxItem(item.id);
           }}
-        />
+        /> : <View style={{
+          height: 16, width: 16,
+          borderWidth: 1,
+          borderColor: theme.colors.gray,
+        }} />  }
       </View>
     </TouchableOpacity>
   );

@@ -8,7 +8,7 @@ import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 function createAxios() {
   // AsyncStorage.setItem("token", '2323226DADAD') //full
   var axiosInstant = axios.create();
-  axiosInstant.defaults.baseURL = "http://2287113bf4ec.ngrok.io/app";
+  axiosInstant.defaults.baseURL = "http://e0f2941850bf.ngrok.io/app";
   axiosInstant.defaults.timeout = 20000;
   axiosInstant.defaults.headers = { "Content-Type": "application/json" };
 
@@ -100,10 +100,6 @@ export const getListTimekeeping = (startDate, endDate) => {
   );
 };
 
-export const getListAbsent = () => {
-  return handleResult(getAxios.get("student/getListAbsentClass"));
-};
-
 //get notification
 export const getListNotification = () => {
   return handleResult(getAxios.get("/app/api/notification"));
@@ -119,8 +115,13 @@ export const checkoutTimekeeping = payload => {
   return handleResult(getAxios.post(`app/api/checkout`, payload));
 };
 export const workOffTimekeeping = payload => {
-  console.log("adasdsa");
   return handleResult(getAxios.post(`app/api/workoff`, payload));
+};
+export const confirmTimekeeping = payload => {
+  return handleResult(getAxios.post(`app/api/confirm`, payload));
+};
+export const cancelTimekeeping = payload => {
+  return handleResult(getAxios.post(`app/api/cancel`, payload));
 };
 export const getListTimekeepingDayEmployee = dateGet => {
   return handleResult(
@@ -138,16 +139,5 @@ export const getListTimekeepingMonthEmployee = (
     getAxios.get(
       `/app/api/getListTimekeepingMonthEmployee?startDate=${startDate}&endDate=${endDate}&id_employee=${id_employee}`
     )
-  );
-};
-export const uploadImage = payload => {
-  return handleResult(
-    getAxios.post(`student/uploadImage`, payload, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data"
-      }
-      // onUploadProgress: callback,
-    })
   );
 };

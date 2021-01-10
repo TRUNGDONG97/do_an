@@ -274,10 +274,7 @@ export class ChangeUserInfo extends Component {
       showMessages("Thông báo", "Bạn chưa nhập email");
     } else if (!filter.test(email)) {
       showMessages("Thông báo", "Bạn nhập sai email");
-    } else if (!vnf_regex.test(phone)) {
-      showMessages("Thông báo", "Bạn nhập không đúng dạng số điện thoại");
-    }
-    {
+    }else{
       this.props.updateUser({
         phone: phone.trim(),
         birthday: birthday,

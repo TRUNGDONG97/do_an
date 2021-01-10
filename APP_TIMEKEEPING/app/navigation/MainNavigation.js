@@ -10,6 +10,7 @@ import theme from "@app/constants/Theme";
 import { Icon, ImageViewerScreen } from "@component";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import reactotron from "reactotron-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const Tab = createBottomTabNavigator();
 export default function MainNavigation({ navigation, route }) {
   const { typeLogin } = route.params;

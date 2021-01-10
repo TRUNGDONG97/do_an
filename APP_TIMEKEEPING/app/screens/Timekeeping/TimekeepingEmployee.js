@@ -12,7 +12,11 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import LinearGradient from "react-native-linear-gradient";
-import { getListTimekeepingDayEmployee } from "@api";
+import {
+  getListTimekeepingDayEmployee,
+  confirmTimekeeping,
+  cancelTimekeeping
+} from "@api";
 import {
   Block,
   Checkbox,
@@ -21,7 +25,8 @@ import {
   Icon,
   Loading,
   Error,
-  ItemTableEmployee
+  ItemTableEmployee,
+  Empty
 } from "@component";
 import { SCREEN_ROUTER } from "@app/constants/Constant";
 import reactotron from "reactotron-react-native";
@@ -56,9 +61,108 @@ export default class TimekeepingEmployee extends Component {
   componentDidMount() {
     this.getListTimekeepingDay();
   }
+
+  getListTimekeepingDay = async () => {
+    const { dateGet } = this.state;
+
+    try {
+      this.setState({ isLoading: true });
+      const response = await getListTimekeepingDayEmployee(dateGet);
+      reactotron.log("response getListTimekeepingDayEmployee", response.data);
+      if (response.code == 200) {
+        this.setState({
+          data: response.data.listEmployees,
+          department: response.data.department,
+          statusCheckAll:false,
+          listId:[]
+        });
+      }
+      this.setState({
+        isLoading: false,
+        error: false
+      });
+    } catch (error) {
+      Toast.show("Đã có lỗi xảy ra", BACKGROUND_TOAST.FAIL);
+      this.setState({
+        isLoading: false,
+        error: true
+      });
+    }
+  };
+  confirm = async () => {
+    const { listId, dateGet } = this.state;
+    if (listId.length < 1) {
+      Toast.show("Bạn chưa chọn chấm công nào", BACKGROUND_TOAST.FAIL);
+      return;
+    }
+    try {
+      this.setState({
+        btnLoadingConfirm: true
+      });
+      const response = await confirmTimekeeping({
+        listId,
+        date: dateGet
+      });
+      reactotron.log(response, "confirm");
+      if (response.code == 200) {
+        this.setState({
+          data: response.data.listEmployees,
+          department: response.data.department,
+          listId:[],
+          statusCheckAll:false
+        });
+        Toast.show("Thành công", BACKGROUND_TOAST.SUCCESS);
+      }
+      this.setState({
+        btnLoadingConfirm: false
+      });
+    } catch (error) {
+      Toast.show("Đã có lỗi xảy ra", BACKGROUND_TOAST.FAIL);
+      this.setState({
+        btnLoadingConfirm: false
+      });
+    }
+  };
+  cancel = async () => {
+    const { listId, dateGet } = this.state;
+    if (listId.length < 1) {
+      Toast.show("Bạn chưa chọn chấm công nào", BACKGROUND_TOAST.FAIL);
+      return;
+    }
+    try {
+      this.setState({
+        btnLoadingCancel: true
+      });
+      const response = await cancelTimekeeping({
+        listId,
+        date: dateGet
+      });
+      reactotron.log(response, "cancel");
+      if (response.code == 200) {
+        this.setState({
+          data: response.data.listEmployees,
+          department: response.data.department,
+          listId:[],
+          statusCheckAll:false
+        });
+        Toast.show("Thành công", BACKGROUND_TOAST.SUCCESS);
+      }
+
+      this.setState({
+        btnLoadingCancel: false
+      });
+      
+    } catch (error) {
+      Toast.show("Đã có lỗi xảy ra", BACKGROUND_TOAST.FAIL);
+      this.setState({
+        btnLoadingCancel: false
+      });
+    }
+  };
   checkStatus = id => {
     return this.state.listId.includes(id);
   };
+
   setCheckAll = () => {
     const { statusCheckAll, data } = this.state;
     if (statusCheckAll) {
@@ -76,7 +180,6 @@ export default class TimekeepingEmployee extends Component {
         statusCheckAll: !statusCheckAll
       });
     }
-   
   };
   checkBoxItem = id => {
     const { listId } = this.state;
@@ -94,39 +197,6 @@ export default class TimekeepingEmployee extends Component {
         listId: listId.concat(newListId)
       });
     }
-  };
-  getListTimekeepingDay = async () => {
-    const { dateGet } = this.state;
-
-    try {
-      this.setState({ isLoading: true });
-      const response = await getListTimekeepingDayEmployee(dateGet);
-      reactotron.log("response getListTimekeepingDayEmployee", response.data);
-      if (response.code == 200) {
-        this.setState({
-          data: response.data.listEmployees,
-          department: response.data.department
-        });
-      }
-      this.setState({
-        isLoading: false,
-        error: false
-      });
-    } catch (error) {
-      Toast.show("Đã có lỗi xảy ra", BACKGROUND_TOAST.FAIL);
-      this.setState({
-        isLoading: false,
-        error: true
-      });
-    }
-  };
-  confirm = () => {
-    const { listId } = this.state;
-    // console.log("listId", listId);
-  };
-  cancel = () => {
-    const { listId } = this.state;
-    // console.log("listId", listId);
   };
   converMinuteToTime = time => {
     var hour = Math.floor(time / 60);

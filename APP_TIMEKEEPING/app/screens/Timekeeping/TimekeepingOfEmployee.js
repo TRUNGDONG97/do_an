@@ -285,6 +285,22 @@ export default class TimekeepingOfEmployee extends Component {
       </View>
     );
   }
+  getStatus(status) {
+    switch (status) {
+      case 0:
+        return "Not check out";
+      case 1:
+        return "Checked out";
+      case 2:
+        return "Off in morning";
+      case 0:
+        return "Off in afternoon";
+      case 0:
+        return "Off all day";
+      default:
+        return "Not check out";
+    }
+  }
   _renderRowTable(item, index) {
     return (
       <View
@@ -321,9 +337,14 @@ export default class TimekeepingOfEmployee extends Component {
           <Text style={theme.fonts.regular14}>{item.time_late}</Text>
         </View>
         <View style={[styles.rowTable, { flex: 2 }]}>
+          <Text style={theme.fonts.regular14}>
+            {this.getStatus(item.status)}
+          </Text>
+        </View>
+        <View style={[styles.rowTable, { flex: 1 }]}>
           <Icon.Octicons
             name="primitive-dot"
-            color={item.status == 1 ? theme.colors.green : theme.colors.red}
+            color={item.type == 1 ? theme.colors.green : theme.colors.red}
             size={16}
           />
         </View>
@@ -447,6 +468,9 @@ export default class TimekeepingOfEmployee extends Component {
           </View>
           <View style={[styles.rowTable, { flex: 2 }]}>
             <Text style={theme.fonts.regular14}>Status</Text>
+          </View>
+          <View style={[styles.rowTable, { flex: 1 }]}>
+            <Text style={theme.fonts.regular14} />
           </View>
         </View>
       </View>

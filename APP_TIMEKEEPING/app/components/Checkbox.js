@@ -27,7 +27,7 @@ export default class Checkbox extends Component {
 const styles = StyleSheet.create({
     _vContainer: {
         flexDirection: "row",
-        paddingVertical: 10,
+        // paddingVertical: 10,
         alignItems: "center"
     },
     _imgTick: {
@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
     _vCheckBox: {
         borderWidth: 1,
         borderColor: "black",
-        marginRight: 10,
         justifyContent: "center",
         alignItems: "center"
     }
