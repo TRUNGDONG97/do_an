@@ -246,7 +246,7 @@ export class UserScreen extends Component {
         await AsyncStorage.setItem("token", "");
         await AsyncStorage.setItem("typeLogin", "");
         AsyncStorage.clear();
-        this.props.navigation.navigate(SCREEN_ROUTER.AUTH_LOADING);
+        this.props.navigation.push(SCREEN_ROUTER.AUTH_LOADING);
       }
     } catch (error) {
       Toast.show("Vui lòng thử lại", BACKGROUND_TOAST.FAIL);

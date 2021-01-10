@@ -21,7 +21,11 @@ export class AuthLoadingScreen extends Component {
       this.handleActiveApp();
     }, 1500);
   }
-
+  componentWillUnmount() {
+    setTimeout(() => {
+      this.handleActiveApp();
+    }, 1500);
+  }
   handleActiveApp = async () => {
     let token = await AsyncStorage.getItem("token");
     // reactotron.log("token",token)

@@ -4,8 +4,8 @@ import crypto from "crypto-js";
 import EmployeeModel from "../../models/EmployeeModel";
 const login = async (req, res, next) => {
   const { user, password, deviceID } = req.body;
-  // console.log(user);
-  // console.log(password);
+  console.log(user);
+  console.log(password);
   // console.log(type);
 
   console.log(deviceID, "device_id");
@@ -27,6 +27,7 @@ const login = async (req, res, next) => {
           is_active:1
         },
       });
+      console.log(employee);
       if (employee.count < 1) {
         res.json({
           status: 0,

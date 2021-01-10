@@ -8,7 +8,6 @@ import {
   TextInput,
   BackHandler
 } from "react-native";
-import { LoginButton, AccessToken, LoginManager } from "react-native-fbsdk";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import theme from "@theme";
@@ -22,6 +21,7 @@ import OneSignal from "react-native-onesignal";
 import { requestLogin } from "@api";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 import reactotron from "reactotron-react-native";
+import I18n from '../../i18n/i18n'
 export class LoginScreen extends Component {
   static navigationOptions = {
     header: null
@@ -66,7 +66,7 @@ export class LoginScreen extends Component {
         password: this.state.password,
         deviceID: this.state.deviceID
       });
-      // reactotron.log(response)
+      reactotron.log(response)
       this.setState({
         ...this.state,
         error: null,
@@ -85,7 +85,7 @@ export class LoginScreen extends Component {
           response.data.position == 1 ? TYPE_LOGIN.LEADER : TYPE_LOGIN.EMPLOYEE
       });
     } catch (err) {
-      reactotron.log(err);
+      console.log(err);
       this.setState({
         ...this.state,
         error: null,
