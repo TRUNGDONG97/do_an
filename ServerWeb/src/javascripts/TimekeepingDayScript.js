@@ -83,6 +83,14 @@ const confirmTimekeeping = () => {
         arrId.push(timekeeping.id)
     }
   });
+  if(arrId.length<1){
+    swal({
+      title: "Bạn chưa chọn chấm công nào.",
+      text: "",
+      icon: "warning",
+    });
+    return;
+  }
   $.ajax({
     url: "/confirmTimekeeping",
     type: "POST",
@@ -93,6 +101,12 @@ const confirmTimekeeping = () => {
     .done(function (res) {
       console.log(res);
       searchTimekeeping(1)
+      swal({
+        title: "Xác nhận thành công",
+        text: "",
+        icon: "success",
+        dangerMode: true,
+      });
       return;
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
@@ -126,6 +140,14 @@ const deleteTimekeeping = () => {
           arrId.push(timekeeping.id)
       }
     });
+    if(arrId.length<1){
+      swal({
+        title: "Bạn chưa chọn chấm công nào.",
+        text: "",
+        icon: "warning",
+      });
+      return;
+    }
     $.ajax({
       url: "/deleteTimekeeping",
       type: "POST",
@@ -136,6 +158,12 @@ const deleteTimekeeping = () => {
       .done(function (res) {
         console.log(res);
         searchTimekeeping(1)
+        swal({
+          title: "Hủy thành công",
+          text: "",
+          icon: "success",
+          dangerMode: true,
+        });
         return;
       })
       .fail(function (jqXHR, textStatus, errorThrown) {

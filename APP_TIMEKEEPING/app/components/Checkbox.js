@@ -9,6 +9,7 @@ export default class Checkbox extends Component {
         return (
             <View style={styles._vContainer}>
                 <TouchableOpacity
+                // hitSlop={{}}
                     onPress={onPress}
                     style={[styles._vCheckBox, {
                         width: size,

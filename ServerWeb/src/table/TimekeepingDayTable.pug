@@ -32,7 +32,7 @@
                         td #{item.note}
                         td  #{item.type==1?"Đã xác nhận":"Chưa xác nhận"}
                         td 
-                            input(type='checkbox' disabled=item.type==1 value=item class=item.type==1?"comfirm":"notConfirm" )
+                            input(type='checkbox' disabled=item.type==1||item.status==0 value=item class=item.type==1||item.status==0?"comfirm":"notConfirm" )
     #paginateEmployee.row.float-right
         if pageCount>=1
             if  pages.prev>0

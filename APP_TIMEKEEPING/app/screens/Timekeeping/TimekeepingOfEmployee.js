@@ -293,9 +293,9 @@ export default class TimekeepingOfEmployee extends Component {
         return "Checked out";
       case 2:
         return "Off in morning";
-      case 0:
+      case 3:
         return "Off in afternoon";
-      case 0:
+      case 4:
         return "Off all day";
       default:
         return "Not check out";

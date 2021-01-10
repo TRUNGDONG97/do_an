@@ -65,18 +65,18 @@ const ItemTableEmployee = (props, ref) => {
         />
       </View>
       <View style={[styles.rowTable, { flex: 1 }]}>
-        {item.type !== 1 ? <Checkbox
-          size={16}
-          status={listId.includes(item.id)}
-          onPress={() => {
-            // setStatusState(!statusState);
-            checkBoxItem(item.id);
-          }}
-        /> : <View style={{
+        {item.type == 1||item.status==0 ?<View style={{
           height: 16, width: 16,
           borderWidth: 1,
           borderColor: theme.colors.gray,
-        }} />  }
+        }} /> :<Checkbox
+        size={16}
+        status={listId.includes(item.id)}
+        onPress={() => {
+          // setStatusState(!statusState);
+          checkBoxItem(item.id);
+        }}
+      />    }
       </View>
     </TouchableOpacity>
   );

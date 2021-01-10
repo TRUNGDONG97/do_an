@@ -5,7 +5,11 @@ import { getArrayPages, PageCount } from "../util/funtions";
 import url from "url";
 import pug from "pug";
 import sequelize, { Op, where } from "sequelize";
-
+import DateUtil from "../util/DateUtil";
+import {
+  pushNotification,
+} from "../util/funtions";
+import NotificationModel from "../models/NotificationModel";
 const getTimekeeping = async (req, res, next) => {
   res.render("TimekeepingDayView");
 };
@@ -43,7 +47,7 @@ const searchTimekeeping = async (req, res) => {
       ],
       where: {
         date_timekeeping: date,
-        is_active:1
+        is_active: 1,
       },
       row: true,
       offset: Constants.PER_PAGE * (currentPage - 1),
@@ -79,10 +83,40 @@ const confirmTimekeeping = async (req, res) => {
       },
       {
         where: {
-          id: [arrIdUpdate],
+          id: arrIdUpdate,
         },
       }
     );
+    const listEmployees = await TimekeepingModel.findAll({
+      include: [
+        {
+          model: EmployeeModel,
+        }
+      ],
+      where: {
+        id:arrIdUpdate
+      },
+    });
+    console.log('listEmployees',listEmployees);
+    // for (let index = 0; index < listEmployees.length; index++) {
+    //   const element = array[index];
+      
+    // }
+    listEmployees.forEach(async element => {
+      await NotificationModel.create({
+        created_date: DateUtil.formatInputDate(new Date()),
+        type: 1,
+        id_employee: element.employee.id,
+        content:"Chấm công ngày " + element.date_timekeeping+ " được xác nhận." ,
+      });
+      if(!!element.employee.device_id){
+        console.log("device",element.employee.device_id);
+        pushNotification(
+          element.employee.device_id,"Chấm công ngày " + element.date_timekeeping+ " được xác nhận." ,
+          {}
+        );
+      }
+    });
     res.send({
       result: 3,
     });
@@ -95,6 +129,7 @@ const confirmTimekeeping = async (req, res) => {
 const deleteTimekeeping = async (req, res) => {
   const { arrId } = req.body;
   const arrIdUpdate = JSON.parse(arrId);
+  console.log(arrIdUpdate);
   try {
     await TimekeepingModel.update(
       {
@@ -102,10 +137,41 @@ const deleteTimekeeping = async (req, res) => {
       },
       {
         where: {
-          id: [arrIdUpdate],
+          id: arrIdUpdate,
         },
       }
     );
+    const listEmployees = await TimekeepingModel.findAll({
+      include: [
+        {
+          model: EmployeeModel,
+        }
+      ],
+      where: {
+        id:arrIdUpdate
+      },
+    });
+    console.log('listEmployees',listEmployees);
+    // for (let index = 0; index < listEmployees.length; index++) {
+    //   const element = array[index];
+      
+    // }
+    listEmployees.forEach(async element => {
+      await NotificationModel.create({
+        created_date: DateUtil.formatInputDate(new Date()),
+        type: 1,
+        id_employee: element.employee.id,
+        content:"Bạn đã bị hủy chấm công ngày " + element.date_timekeeping+ " ." ,
+      });
+      if(!!element.employee.device_id){
+        console.log("device",element.employee.device_id);
+        pushNotification(
+          element.employee.device_id,"Bạn đã bị hủy chấm công ngày " + element.date_timekeeping+ " ." ,
+          {}
+        );
+      }
+    });
+   
     res.send({
       result: 3,
     });
@@ -119,5 +185,5 @@ export default {
   getTimekeeping,
   searchTimekeeping,
   confirmTimekeeping,
-  deleteTimekeeping
+  deleteTimekeeping,
 };

@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   },
   tvInput: {
     paddingLeft: "5%",
-    height: 43,
+    // height: 43,
     width: "85%",
     borderColor: "#07c9e7",
     borderWidth: 0.9,

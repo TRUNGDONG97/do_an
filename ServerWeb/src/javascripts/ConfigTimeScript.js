@@ -140,6 +140,7 @@ const getConfigTime = () => {
 };
 
 const updateTimeConfig = () => {
+  // check internet
   if (!navigator.onLine) {
     swal({
       title: "Kiểm tra kết nối internet!",
@@ -148,6 +149,7 @@ const updateTimeConfig = () => {
     });
     return;
   }
+  //lấy dữ liệu từ view
   var max_time_late = $.trim($("#max_time_late").val());
   var time_start_work_morning = $.trim($("#time_start_work_morning").val());
 
@@ -193,6 +195,8 @@ const updateTimeConfig = () => {
     time_start_checkout_afternoon
   );
   time_end_checkout_afternoon = converTimeToMinute(time_end_checkout_afternoon);
+
+  // giaotiep vs server
   $.ajax({
     url: "/updateTimeConfig",
     type: "POST",
@@ -216,6 +220,7 @@ const updateTimeConfig = () => {
     },
   })
     .done(function (res) {
+      // thành công 
       console.log("res", res);
       $("#modalLoad").modal("hide");
       //   getConfigTime();
@@ -226,7 +231,7 @@ const updateTimeConfig = () => {
       });
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
-      // If
+      //thất bại
       $("#modalLoad").modal("hide");
       swal({
         title: "Đã có lỗi xảy ra",

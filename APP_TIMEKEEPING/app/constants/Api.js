@@ -8,7 +8,7 @@ import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 function createAxios() {
   // AsyncStorage.setItem("token", '2323226DADAD') //full
   var axiosInstant = axios.create();
-  axiosInstant.defaults.baseURL = "http://e0f2941850bf.ngrok.io/app";
+  axiosInstant.defaults.baseURL = "http://e6551748ca23.ngrok.io/app";
   axiosInstant.defaults.timeout = 20000;
   axiosInstant.defaults.headers = { "Content-Type": "application/json" };
 

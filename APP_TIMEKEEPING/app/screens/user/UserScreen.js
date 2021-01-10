@@ -242,7 +242,7 @@ export class UserScreen extends Component {
   _logout = async () => {
     try {
       const response = await requestLogout();
-      if (response) {
+      if (response) { 
         await AsyncStorage.setItem("token", "");
         await AsyncStorage.setItem("typeLogin", "");
         AsyncStorage.clear();
