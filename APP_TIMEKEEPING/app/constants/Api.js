@@ -39,7 +39,7 @@ function createAxios() {
         }, 100);
 
         AsyncStorage.setItem("token", "", () => {
-          this.props.navigation.navigate(SCREEN_ROUTER.AUTH_LOADING);
+          // this.props.navigation.navigate(SCREEN_ROUTER.AUTH_LOADING);
         });
       } else if (response.data && response.data.status != 1) {
         setTimeout(() => {

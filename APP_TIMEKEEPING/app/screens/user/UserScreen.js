@@ -30,7 +30,7 @@ import {
 } from "@app/components";
 import { Avatar } from "react-native-elements";
 import { showConfirm } from "@app/utils/Alert";
-import { getUserInfo } from '@app/redux/actions'
+import { getUserInfo } from "@app/redux/actions";
 import { connect } from "react-redux";
 
 export class UserScreen extends Component {
@@ -43,8 +43,8 @@ export class UserScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.getUserInfo()
-}
+    this.props.getUserInfo();
+  }
 
   render() {
     return (
@@ -113,7 +113,7 @@ export class UserScreen extends Component {
   _renderBody() {
     const { UserInfoState } = this.props;
     console.log("UserInfoState", UserInfoState);
-    if ( UserInfoState.isLoading) return <Loading />;
+    if (UserInfoState.isLoading) return <Loading />;
     if (UserInfoState.error)
       return (
         <Error
@@ -240,13 +240,18 @@ export class UserScreen extends Component {
     );
   }
   _logout = async () => {
+    const { navigation } = this.props;
     try {
       const response = await requestLogout();
-      if (response) { 
+      if (response) {
         await AsyncStorage.setItem("token", "");
         await AsyncStorage.setItem("typeLogin", "");
         AsyncStorage.clear();
-        this.props.navigation.push(SCREEN_ROUTER.AUTH_LOADING);
+        // this.props.navigation.push(SCREEN_ROUTER.AUTH_LOADING);
+        navigation.reset({
+          index: 1,
+          routes: [{ name: keyNavigation.AUTH_LOADING }]
+        });
       }
     } catch (error) {
       Toast.show("Vui lòng thử lại", BACKGROUND_TOAST.FAIL);
@@ -278,12 +283,15 @@ const styles = StyleSheet.create({
     borderRadius: 5
   }
 });
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   UserInfoState: state.userReducer
-})
+});
 
 const mapDispatchToProps = {
   getUserInfo
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserScreen)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserScreen);
