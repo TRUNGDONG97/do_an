@@ -321,10 +321,11 @@ const checkout = async (req, res, next) => {
 
     const timekeepingMorning = await TimekeepingModel.findAll({
       where: {
-        date_timekeeping: getCurrentDate(),// tìm kiếm checkin của ngày hiện tại
+        date_timekeeping: getCurrentDate(), // tìm kiếm checkin của ngày hiện tại
         is_active: 1, //đag hoạt độn
         id_employee: employee[0].id, //của nhân viên đó
-        time_checkin: { // trong khoảng thời gian checkin buổi sáng
+        time_checkin: {
+          // trong khoảng thời gian checkin buổi sáng
           [Op.between]: [
             getConfigTime[0].time_start_checkin_morning,
             getConfigTime[0].time_end_checkin_morning,
@@ -332,9 +333,9 @@ const checkout = async (req, res, next) => {
         },
       },
     });
-// check out vào bsang
+    // check out vào bsang
     if (await checkTimeCheckoutMorning(getCurrentTime())) {
-// kt checkin hay chưa
+      // kt checkin hay chưa
       if (timekeepingMorning.length < 1) {
         res.json({
           status: 0,
@@ -636,7 +637,7 @@ const workoff = async (req, res) => {
           date_timekeeping: date,
           is_active: 1,
           id_employee: employee[0].id,
-          status: [3, 4]
+          status: [3, 4],
         },
       });
       if (timekeepingOffAfter.length > 0) {
@@ -692,7 +693,7 @@ const workoff = async (req, res) => {
           date_timekeeping: date,
           is_active: 1,
           id_employee: employee[0].id,
-          status: [2, 3, 4]
+          status: [2, 3, 4],
         },
       });
       if (timekeepingDayOff.length > 0) {
@@ -714,12 +715,15 @@ const workoff = async (req, res) => {
         workday: 0,
         note,
       });
-      console.log(`Bạn xin nghỉ  ngày ${date}  thành công .`,await getDataTimekeeping(employee[0].id));
+      // console.log(
+      //   `Bạn xin nghỉ  ngày ${date}  thành công .`,
+      //   await getDataTimekeeping(employee[0].id)
+      // );
       res.json({
         status: 1,
         code: 200,
         message: `Bạn xin nghỉ  ngày ${date}  thành công .`,
-        data:await getDataTimekeeping(employee[0].id),
+        data: await getDataTimekeeping(employee[0].id),
       });
       return;
     }
@@ -753,6 +757,8 @@ const getDataTimekeeping = async (id_employee) => {
   var endDate = year + "-" + month + "-" + date1;
   let TimeLateAndDay = await EmployeeModel.findAll({
     attributes: [
+      "id",
+      "device_id",
       [
         sequelize.fn("sum", sequelize.col("timekeepings.workday")),
         "countWorkday",
@@ -770,8 +776,8 @@ const getDataTimekeeping = async (id_employee) => {
             [Op.between]: [startDate, endDate],
           },
           id_employee,
-          type:1,
-          is_active:1
+          type: 1,
+          is_active: 1,
         },
         required: false,
         // order: [["date_timekeeping", "DESC"],["time_checkin","DESC"]],
@@ -796,6 +802,25 @@ const getDataTimekeeping = async (id_employee) => {
       ["time_checkin", "DESC"],
     ],
   });
+  const getConfigTime = await ConfigtimeModel.findAll();
+  // thong bao ve khi di qua thoi gian di muon
+  if (TimeLateAndDay[0].get("countTimeLate") > getConfigTime[0].max_time_late) {
+    // tạo thông báo ở database
+    await NotificationModel.create({
+      created_date: DateUtil.formatInputDate(new Date()),
+      type: 1,
+      id_employee: TimeLateAndDay[0].id,
+      content: "Bạn đang quá thời gian đi muộn cho phép",
+    });
+
+    //gửi thông báo về
+    if (TimeLateAndDay[0].device_id) {
+      pushNotification(
+        TimeLateAndDay[0].device_id,
+        "Bạn đang quá thời gian đi muộn cho phép"
+      );
+    }
+  }
   var data = {
     timeLate: TimeLateAndDay[0].get("countTimeLate"),
     dayWork: TimeLateAndDay[0].get("countWorkday"),
