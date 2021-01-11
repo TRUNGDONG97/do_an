@@ -5,7 +5,10 @@ import sequelize, { Op } from "sequelize";
 import TimekeepingModel from "../../models/TimekeepingModel";
 import MacAddressModel from "../../models/MacAddressModel";
 import ConfigtimeModel from "../../models/ConfigtimeModel";
-
+import DateUtil from "../../util/DateUtil";
+import {
+  pushNotification,
+} from "../../util/funtions";
 const leaderComfirmTimekeeping = async (req, res) => {
   const { token } = req.headers;
   const { listId, date } = req.body;
@@ -53,6 +56,37 @@ const leaderComfirmTimekeeping = async (req, res) => {
         },
       }
     );
+    // push  noti ve
+    const listEmployees = await TimekeepingModel.findAll({
+      include: [
+        {
+          model: EmployeeModel,
+        }
+      ],
+      where: {
+        id:listId
+      },
+    });
+    console.log('listEmployees',listEmployees);
+    // for (let index = 0; index < listEmployees.length; index++) {
+    //   const element = array[index];
+      
+    // }
+    listEmployees.forEach(async element => {
+      await NotificationModel.create({
+        created_date: DateUtil.formatInputDate(new Date()),
+        type: 1,
+        id_employee: element.employee.id,
+        content:"Chấm công ngày " + element.date_timekeeping+ " được xác nhận." ,
+      });
+      if(!!element.employee.device_id){
+        console.log("device",element.employee.device_id);
+        pushNotification(
+          element.employee.device_id,"Chấm công ngày " + element.date_timekeeping+ " được xác nhận." ,
+          {}
+        );
+      }
+    });
     res.json({
       status: 1,
       code: 200,
@@ -126,6 +160,33 @@ const leaderCancelTimekeeping = async (req, res) => {
         },
       }
     );
+// push  noti ve
+    const listEmployees = await TimekeepingModel.findAll({
+      include: [
+        {
+          model: EmployeeModel,
+        }
+      ],
+      where: {
+        id:listId
+      },
+    });
+
+    listEmployees.forEach(async element => {
+      await NotificationModel.create({
+        created_date: DateUtil.formatInputDate(new Date()),
+        type: 1,
+        id_employee: element.employee.id,
+        content:"Chấm công ngày " + element.date_timekeeping+ " được xác nhận." ,
+      });
+      if(!!element.employee.device_id){
+        console.log("device",element.employee.device_id);
+        pushNotification(
+          element.employee.device_id,"Chấm công ngày " + element.date_timekeeping+ " được xác nhận." ,
+          {}
+        );
+      }
+    });
     res.json({
       status: 1,
       code: 200,
