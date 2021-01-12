@@ -171,6 +171,7 @@ export default class HomeScreen extends Component {
     });
     // LẤY ĐỊA CHỈ MAC
     var checkConnect = await NetInfo.fetch();
+    
     console.log("checkConnect", checkConnect.details.bssid);
     if (
       !!checkConnect &&

@@ -209,7 +209,7 @@ const getMacOnServer = async (req, res, next) => {
             } else {
                 console.log(currentConnections,"currentConnections");
                 res.send({
-                    macAddress:currentConnections[0].mac
+                    macAddress:currentConnections[0].bssid
                 });
             }
         });

@@ -40,7 +40,7 @@ const searchEmployee = (currentPage) => {
     return;
   }
   var nameEmployee = $.trim($("#txtNameEmployee").val());
-  var employee_code = $.trim($("#txtEmployeeCode").val());
+  var employee_code = $.trim($("#findEmployeeCode").val());
   console.log("employee_code",employee_code);
   $.ajax({
     url: "/searchEmployee",
@@ -461,7 +461,7 @@ const importEmployee = () => {
       arrEmployee = XLSX.utils.sheet_to_row_object_array(
         workbook.Sheets[firstSheet]
       );
-      // console.log(JSON.stringify(arrEmployee), "arr");
+      console.log(JSON.stringify(arrEmployee), "arr");
       $.ajax({
         url: "/importListEmployee",
         type: "POST",

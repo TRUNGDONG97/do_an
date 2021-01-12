@@ -14,7 +14,8 @@ const searchEmployee = async (req, res, next) => {
   try {
     const { currentPage, employee_code, nameEmployee } = req.body;
     console.log("employee_code", employee_code);
-    // console.log("nameEmployee", nameEmployee);
+    console.log("nameEmployee", nameEmployee);
+    console.log("ccurrentPagerentPage", currentPage);
     const { count, rows } = await EmployeeModel.findAndCountAll({
       where: {
         [Op.and]: [
@@ -250,6 +251,7 @@ const deleteEmployee = async (req, res, next) => {
 };
 const importListEmployee = async (req, res, next) => {
   try {
+    console.log("req.body.arrEmployee",req.body.arrEmployee);
     const arrEmployee = JSON.parse(req.body.arrEmployee);
     // console.log(DateUtil.formatInputDate(arrEmployee[2].birthday),"arrEmployee")
     console.log(arrEmployee[0], "arrEmployee");
