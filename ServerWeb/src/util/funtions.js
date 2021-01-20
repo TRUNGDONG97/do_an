@@ -183,10 +183,12 @@ module.exports.getCurrentDate = () => {
   return year + "-" + month + "-" + dates;
 };
 module.exports.converMinuteToTime = (time) => {
-  var minute = time % 60;
+  let minute = time % 60;
   if (minute.toString().length == 1) {
     minute = "0" + minute.toString();
   }
+  var hour = Math.floor(time / 60)
+
   // console.log("Dsda", Math.floor(time / 60) + ":" + minute);
-  return Math.floor(time / 60) + ":" + minute;
+  return hour + ":" + minute;
 };

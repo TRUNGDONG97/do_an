@@ -1,7 +1,7 @@
 import EmployeeModel from "../models/EmployeeModel";
 import TimekeepingModel from "../models/TimekeepingModel";
 import Constants from "../util/contant";
-import { getArrayPages, PageCount } from "../util/funtions";
+import { getArrayPages, PageCount ,converMinuteToTime} from "../util/funtions";
 import url from "url";
 import pug from "pug";
 import sequelize, { Op, where } from "sequelize";
@@ -54,7 +54,11 @@ const searchTimekeeping = async (req, res) => {
       limit: Constants.PER_PAGE,
       // order: [["last_name", "ASC"]],
     });
-    console.log("rows", count);
+    for (let index = 0; index < rows.length; index++) {
+      rows[index].time_checkin=converMinuteToTime(rows[index].time_checkin)
+      rows[index].time_checkout=converMinuteToTime(rows[index].time_checkout)
+    }
+    // console.log("rows", count);
     var urlTable = `${process.cwd()}/src/table/TimekeepingDayTable.pug`;
     var htmlTable = await pug.renderFile(urlTable, {
       timekeeping: rows,

@@ -3,7 +3,7 @@ const OPTION = {
   httpOnly: true, // The cookie only accessible by the web server
   signed: true,
 };
-const PER_PAGE = 10; 
+const PER_PAGE = 30; 
 const PAGE_SIZE = 10;
 
 const TIME_ABSENT = 5;

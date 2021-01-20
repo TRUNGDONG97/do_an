@@ -32,6 +32,8 @@ import { Avatar } from "react-native-elements";
 import { showConfirm } from "@app/utils/Alert";
 import { getUserInfo } from "@app/redux/actions";
 import { connect } from "react-redux";
+import Toast from "react-native-root-toast";
+import { BACKGROUND_TOAST } from "@app/utils/Toast";
 
 export class UserScreen extends Component {
   constructor(props) {
@@ -243,14 +245,14 @@ export class UserScreen extends Component {
     const { navigation } = this.props;
     try {
       const response = await requestLogout();
-      if (response) {
+      if (response.code==200) {
         await AsyncStorage.setItem("token", "");
         await AsyncStorage.setItem("typeLogin", "");
-        AsyncStorage.clear();
+        // AsyncStorage.clear();
         // this.props.navigation.push(SCREEN_ROUTER.AUTH_LOADING);
-        navigation.reset({
+        this.props.navigation.reset({
           index: 1,
-          routes: [{ name: keyNavigation.AUTH_LOADING }]
+          routes: [{ name: SCREEN_ROUTER.AUTH_LOADING }]
         });
       }
     } catch (error) {

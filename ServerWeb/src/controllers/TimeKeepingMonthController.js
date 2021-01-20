@@ -1,7 +1,7 @@
 import EmployeeModel from "../models/EmployeeModel";
 import TimekeepingModel from "../models/TimekeepingModel";
 import Constants from "../util/contant";
-import { getArrayPages, PageCount } from "../util/funtions";
+import { getArrayPages, PageCount,converMinuteToTime } from "../util/funtions";
 import url from "url";
 import pug from "pug";
 import sequelize, { Op } from "sequelize";
@@ -162,8 +162,11 @@ const seacherDetailTimekeeping = async (req, res, next) => {
         ["time_checkin", "DESC"],
       ],
     });
-
-    console.log("rows", rows);
+    for (let index = 0; index < rows.length; index++) {
+      rows[index].time_checkin=converMinuteToTime(rows[index].time_checkin)
+      rows[index].time_checkout=converMinuteToTime(rows[index].time_checkout)
+    }
+    // console.log("rows", rows);
     const pageCount = PageCount(count);
     // console.log("pageCount", pageCount);
 

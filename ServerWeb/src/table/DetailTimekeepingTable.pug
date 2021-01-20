@@ -12,16 +12,16 @@ table.table.table-bordered.table-hover
     tbody#tbodyTableAdmin
         if listTimekeeping.length <=0        
             tr
-                td(colspan='6' style='text-align: center;') Chưa có chấm công nào.
+                td(colspan='7' style='text-align: center;') Chưa có chấm công nào.
         else
             each item in listTimekeeping
                 tr
                     td #{STT=STT+1}
                     td #{item.date_timekeeping}
-                    td #{Math.floor(item.time_checkin/60)+":"+item.time_checkin%60}
-                    td #{Math.floor(item.time_checkout/60)+":"+item.time_checkout%60}
+                    td #{item.time_checkin}
+                    td #{item.time_checkout}
                     td #{item.time_late}
-                    td #{item.status==0?"Chưa checkout":"Checkout thành công"}
+                    td #{item.type==0 ?"Chưa xác nhận" :"Đã xác nhận "}
                     td #{item.note}
                 
 #paginateAdmin.row.float-right(style='margin-right:10px ')

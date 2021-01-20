@@ -4,7 +4,7 @@ $(document).ready(function () {
     var date = new Date();
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
-    $('h4').append(month + "/" + year)
+    // $('h4').append(month + "/" + year)
     seacherListTimekeeping(1)
     $(".datepicker").datepicker({
         weekStart: 1,
