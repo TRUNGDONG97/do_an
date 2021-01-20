@@ -9,7 +9,7 @@ import md5 from "md5";
 import DateUtil from "../util/DateUtil";
 import excel from "exceljs";
 import MacAdress from "../models/MacAddressModel";
-import getMAC, { isMAC } from 'getmac'
+
 var wifi = require('node-wifi');
 const getMacAddress = async (req, res, next) => {
     res.render('MacAddressView');

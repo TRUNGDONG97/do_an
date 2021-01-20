@@ -1,14 +1,11 @@
 const OPTION = {
-  maxAge: 1000 * 60 * 30, // would expire after 30 minutes
+  maxAge: 1000 * 60 * 10, // would expire after 10 minutes
   httpOnly: true, // The cookie only accessible by the web server
   signed: true,
 };
 const PER_PAGE = 10; 
 const PAGE_SIZE = 10;
-// const TYPE_LOGIN = {
-//     STUDENT: 1,
-//     TEACHER: 2
-// }
+
 const TIME_ABSENT = 5;
 const TYPE_NOTIFICATION = {
   ABSENT_CLASS_END: 1,

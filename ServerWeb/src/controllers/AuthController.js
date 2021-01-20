@@ -59,7 +59,7 @@ const postLogin = async (req, res, ) => {
     if (user.length > 0) {
       // console.log()
       var timeNow = new Date().getTime();
-      var token = crypto.AES.encrypt(timeNow.toString(), password).toString();
+      var token = crypto.AES.encrypt(timeNow.toString(), password).toString();//sinh ra token
       // console.log(token);
       await AdminModel.update(
         {
@@ -71,6 +71,7 @@ const postLogin = async (req, res, ) => {
           },
         }
       );
+      // lưu token
       res.cookie("token", token, Constants.OPTION);
       // res.cookie('password', user[0].password, Constants.OPTION)
       res.cookie("username", user[0].username, Constants.OPTION);

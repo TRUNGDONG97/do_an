@@ -75,6 +75,7 @@ export class LoginScreen extends Component {
       });
       reactotron.log("response.data.position", response.data.position);
       reactotron.log("response.data.position", response.data.token);
+      // lưu dưới app
       await AsyncStorage.setItem("token", response.data.token);
       await AsyncStorage.setItem(
         "typeLogin",

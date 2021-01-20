@@ -37,6 +37,7 @@ const login = async (req, res, next) => {
         });
         return;
       } else {
+        // tạo token
         var timeNow = new Date().getTime();
         var token = crypto.AES.encrypt(
           timeNow.toString(),
